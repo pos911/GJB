@@ -1,0 +1,56 @@
+name: Data Collector Pipeline
+
+on:
+  schedule:
+    # 13:25 KST = 04:25 UTC
+    - cron: '25 4 * * *'
+    # 01:25 KST = 16:25 UTC
+    - cron: '25 16 * * *'
+  workflow_dispatch: # 수동 실행 허용
+
+jobs:
+  collect-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Collector Script
+        env:
+          SECRET_JSON: ${{ secrets.SECRET_JSON }}
+        run: |
+          # 현재 KST 기준의 시간을 가져와서 실행 옵션 결정
+          HOUR_KST=$(TZ=Asia/Seoul date +%H)
+          
+          if [ "$HOUR_KST" -eq "01" ]; then
+            echo "Running for yesterday's data..."
+            python main.py --date yesterday
+          else
+            echo "Running for today's data..."
+            python main.py --date today
+          fi
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # 새롭게 생성되거나 갱신된 JSON 데이터를 스테이징
+          git add web/public/data/
+          
+          # 변경사항이 있을 경우에만 커밋 및 푸시
+          git commit -m "Auto-update collected data" || echo "No changes to commit"
+          git push
