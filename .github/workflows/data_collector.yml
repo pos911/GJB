@@ -2,16 +2,21 @@ name: Data Collector Pipeline
 
 on:
   schedule:
-    # 13:25 KST = 04:25 UTC
+    # 낮 13:25 KST = 04:25 UTC
     - cron: '25 4 * * *'
-    # 01:25 KST = 16:25 UTC
+    # 새벽 01:25 KST = 16:25 UTC (전날)
     - cron: '25 16 * * *'
-  workflow_dispatch: # 수동 실행 허용
+  workflow_dispatch:
+    inputs:
+      date_option:
+        description: 'today 또는 yesterday'
+        required: false
+        default: 'today'
 
 jobs:
   collect-data:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -25,32 +30,30 @@ jobs:
           cache: 'pip'
 
       - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
-      - name: Run Collector Script
-        env:
-          SECRET_JSON: ${{ secrets.SECRET_JSON }}
+      - name: Determine Date Option
+        id: date_opt
         run: |
-          # 현재 KST 기준의 시간을 가져와서 실행 옵션 결정
-          HOUR_KST=$(TZ=Asia/Seoul date +%H)
-          
-          if [ "$HOUR_KST" -eq "01" ]; then
-            echo "Running for yesterday's data..."
-            python main.py --date yesterday
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "DATE_OPTION=${{ github.event.inputs.date_option }}" >> $GITHUB_OUTPUT
           else
-            echo "Running for today's data..."
-            python main.py --date today
+            HOUR_KST=$(TZ=Asia/Seoul date +%H)
+            if [ "$HOUR_KST" -lt 6 ]; then
+              echo "DATE_OPTION=yesterday" >> $GITHUB_OUTPUT
+            else
+              echo "DATE_OPTION=today" >> $GITHUB_OUTPUT
+            fi
           fi
 
-      - name: Commit and Push Changes
+      - name: Run Collector
+        env:
+          SECRET_JSON: ${{ secrets.SECRET_JSON }}
+        run: python main.py --date ${{ steps.date_opt.outputs.DATE_OPTION }}
+
+      - name: Commit and Push
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-          # 새롭게 생성되거나 갱신된 JSON 데이터를 스테이징
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add web/public/data/
-          
-          # 변경사항이 있을 경우에만 커밋 및 푸시
-          git commit -m "Auto-update collected data" || echo "No changes to commit"
-          git push
+          git diff --cached --quiet || (git commit -m "Auto-update collected data $(TZ=Asia/Seoul date +'%Y-%m-%d %H:%M KST')" && git push)

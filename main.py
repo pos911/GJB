@@ -3,10 +3,12 @@ import sys
 import json
 import argparse
 import logging
-import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 import re
+import pytz
+
+KST = pytz.timezone('Asia/Seoul')
 
 from collectors.naver import fetch_naver_news, fetch_naver_blog
 from collectors.youtube import fetch_youtube_videos
@@ -31,6 +33,8 @@ def setup_logging(target_date, keyword):
     fh = logging.FileHandler(log_filename, encoding='utf-8')
     fh.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # 로그 시간을 KST로 강제
+    formatter.converter = lambda *args: datetime.now(KST).timetuple()
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     
@@ -72,15 +76,10 @@ def parse_args():
     parser.set_defaults(detail=None)
     return parser.parse_args()
 
-from datetime import datetime, timedelta
-import pytz
 
 def merge_config(file_config, args):
     config = file_config.copy()
-    
-    tz_str = file_config.get("timezone", "Asia/Seoul")
-    target_tz = pytz.timezone(tz_str)
-    now_kst = datetime.now(target_tz)
+    now_kst = datetime.now(KST)
     
     date_val = args.date if args.date else file_config.get("target_date")
     if date_val == "today":
@@ -192,10 +191,10 @@ def save_outputs(target_date, safe_keyword, summary_data, detail_data, raw_data)
             "keyword": safe_keyword,
             "summary_file": f"/data/{entry_id}_summary.json",
             "details_file": f"/data/{entry_id}_details.json",
-            "generated_at": datetime.now().isoformat()
+            "generated_at": datetime.now(KST).isoformat()
         })
     else:
-        existing["generated_at"] = datetime.now().isoformat()
+        existing["generated_at"] = datetime.now(KST).isoformat()
         
     # Sort descending by date
     index_data.sort(key=lambda x: x["target_date"], reverse=True)
