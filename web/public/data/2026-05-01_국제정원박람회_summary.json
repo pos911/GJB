@@ -1,0 +1,41 @@
+[
+  {
+    "target_date": "2026-05-01",
+    "keyword": "국제정원박람회",
+    "source": "naver_news",
+    "source_label": "네이버 뉴스",
+    "collected_count": 178,
+    "raw_count": 178,
+    "deduped_count": 159,
+    "error_count": 0,
+    "api_pages_called": 10,
+    "status": "OK",
+    "message": "Success"
+  },
+  {
+    "target_date": "2026-05-01",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "collected_count": 492,
+    "raw_count": 492,
+    "deduped_count": 485,
+    "error_count": 0,
+    "api_pages_called": 10,
+    "status": "OK",
+    "message": "Success"
+  },
+  {
+    "target_date": "2026-05-01",
+    "keyword": "국제정원박람회",
+    "source": "youtube",
+    "source_label": "유튜브",
+    "collected_count": 48,
+    "raw_count": 48,
+    "deduped_count": 44,
+    "error_count": 0,
+    "api_pages_called": 1,
+    "status": "OK",
+    "message": "Success"
+  }
+]

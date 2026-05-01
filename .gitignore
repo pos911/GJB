@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.env
+secret.json
+
+# Outputs & Logs
+logs/
+outputs/
+
+# Web App
+web/node_modules/
+web/dist/
+web/.DS_Store

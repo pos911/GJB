@@ -1,0 +1,33 @@
+{
+  "keywords": [
+    "국제정원박람회"
+  ],
+  "target_date": "2026-05-01",
+  "timezone": "Asia/Seoul",
+  "sources": [
+    "naver_news",
+    "naver_blog",
+    "youtube"
+  ],
+  "max_pages": {
+    "naver_news": 10,
+    "naver_blog": 10,
+    "youtube": 10
+  },
+  "page_size": {
+    "naver_news": 100,
+    "naver_blog": 100,
+    "youtube": 50
+  },
+  "output_formats": [
+    "json",
+    "csv",
+    "xlsx"
+  ],
+  "include_detail_list": true,
+  "request_interval_seconds": 0.2,
+  "retry": {
+    "max_attempts": 3,
+    "backoff_seconds": 2
+  }
+}
