@@ -2,6 +2,8 @@ name: Data Collector Pipeline
 
 on:
   schedule:
+    # KST 01:00 = UTC 16:00
+    - cron: '0 16 * * *'
     # KST 09:00 = UTC 00:00
     - cron: '0 0 * * *'
     # KST 12:00 = UTC 03:00
