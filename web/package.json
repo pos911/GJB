@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/check-public-data.js && vite build && node scripts/check-dist-data.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
