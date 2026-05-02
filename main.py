@@ -52,11 +52,8 @@ def get_safe_keyword(keyword):
     """
     if not keyword:
         return "default"
-    # 한글, 영문, 숫자 외 제거
     safe = re.sub(r'[^가-힣a-zA-Z0-9]', '_', keyword)
-    # 연속된 _ 하나로
     safe = re.sub(r'_+', '_', safe)
-    # 앞뒤 _ 제거
     return safe.strip('_')
 
 def update_index(index_path, entry):
@@ -73,7 +70,6 @@ def update_index(index_path, entry):
             logger.error(f"Error reading index.json: {e}")
             index_data = []
             
-    # 기존에 동일 id가 있으면 교체, 없으면 추가
     found = False
     for i, item in enumerate(index_data):
         if item.get("id") == entry["id"]:
@@ -83,7 +79,6 @@ def update_index(index_path, entry):
     if not found:
         index_data.append(entry)
         
-    # target_date 기준 내림차순 정렬 (동일 날짜면 generated_at 내림차순)
     index_data.sort(key=lambda x: (x.get("target_date", ""), x.get("generated_at", "")), reverse=True)
     
     os.makedirs(os.path.dirname(index_path), exist_ok=True)
@@ -114,32 +109,17 @@ def apply_safety_gate(items, config):
         
         gate_reason = None
         
-        # 1. 카테고리 허용값 검증
         if category not in allowed_categories:
             gate_reason = "safety_gate:invalid_public_category"
-
-        # 2. 블로그인데 서울 앵커가 전혀 없음
         elif source == "naver_blog" and seoul_score == 0:
             gate_reason = "safety_gate:blog_no_seoul_anchor"
-            
-        # 3. 서울 앵커가 없는데 노이즈나 타지역 점수가 있음
         elif seoul_score == 0 and (other_score > 0 or noise_score > 0):
             gate_reason = "safety_gate:no_seoul_anchor_with_noise_or_other"
-            
-        # 4. AI 검토 대상이었으나 검증 실패/오류/불확실
         elif item.get("ai_needed") and (not item.get("ai_used") or ai_result != "relevant"):
             gate_reason = "safety_gate:ai_unverified_or_uncertain"
 
-        # 예외: 서울 앵커가 확실하고 가이드 성 정보인 경우 차단 해제 (위 조건들보다 우선 순위 낮음)
-        # 하지만 여기서는 위 조건들이 엄격하므로, seoul_score > 0 인 경우는 대부분 통과됨.
-        # noise_terms가 '주차/추천' 등만 있는 경우 relevance.py에서 이미 noise_score로 잡히지만 
-        # seoul_anchor_score > 0 이면 'kept' 상태로 옴.
-        
         if gate_reason:
-            # 예외 체크: 서울 앵커가 0보다 크면 2,3번 조건은 해당 안됨. 
-            # 1번(카테고리)과 4번(AI)이 주된 차단 요인이 됨.
             if seoul_score > 0:
-                # 서울 앵커가 있으면 웬만하면 살려두되, AI가 명시적으로 부적합 판정했거나 카테고리가 이상한 경우만 차단
                 if category in allowed_categories and (not item.get("ai_needed") or (item.get("ai_used") and ai_result == "relevant")):
                     gate_reason = None
 
@@ -174,94 +154,115 @@ def main():
     safe_keyword = get_safe_keyword(search_keyword)
     sources_to_run = args.sources.split(',') if args.sources else config.get('sources', [])
     
-    logger.info(f"Starting data collection for '{search_keyword}' (safe: '{safe_keyword}') on {target_date} (KST)")
+    logger.info(f"Starting data collection for '{search_keyword}' on {target_date} (KST)")
     
-    all_items = []
+    raw_results_by_source = {}
+    all_collected_items = []
     
+    # Collection Logic
     if 'naver_news' in sources_to_run:
         res = fetch_naver_news(config, search_keyword, target_date)
-        all_items.extend(res.get('data', []))
+        raw_results_by_source['naver_news'] = res
+        all_collected_items.extend(res.get('data', []))
         
     if 'naver_blog' in sources_to_run:
         res = fetch_naver_blog(config, search_keyword, target_date)
-        all_items.extend(res.get('data', []))
+        raw_results_by_source['naver_blog'] = res
+        all_collected_items.extend(res.get('data', []))
         
     if 'youtube' in sources_to_run:
         res = fetch_youtube_videos(config, search_keyword, target_date)
-        all_items.extend(res.get('data', []))
+        raw_results_by_source['youtube'] = res
+        all_collected_items.extend(res.get('data', []))
 
-    if not all_items:
+    if not all_collected_items:
         logger.warning("No items collected. Exiting.")
         return
 
-    items = normalize_data(all_items)
+    items = normalize_data(all_collected_items)
     items = deduplicate(items)
     items = apply_relevance_classification(items, config)
     items = apply_ai_classification(items, config)
     items = apply_safety_gate(items, config)
 
-    # Public Items Filtering (엄격한 조건)
+    # Public Items Filtering
     allowed_categories = ["confirmed", "related_issue", "comparison", "political_context"]
-    public_items = []
-    for item in items:
-        keep = True
-        if item.get("filter_status") != "kept": keep = False
-        if not item.get("public_visible_default", False): keep = False
-        if item.get("safety_gate_reason"): keep = False
-        if item.get("category") not in allowed_categories: keep = False
-        
-        # AI 결과 검증
-        if item.get("ai_needed"):
-            if not item.get("ai_used") or item.get("ai_result") != "relevant":
-                keep = False
-        
-        if keep:
-            public_items.append(item)
+    public_items = [
+        item for item in items 
+        if item.get("filter_status") == "kept" 
+        and item.get("public_visible_default", False)
+        and not item.get("safety_gate_reason")
+        and item.get("category") in allowed_categories
+        and (not item.get("ai_needed") or (item.get("ai_used") and item.get("ai_result") == "relevant"))
+    ]
     
-    # Calculate statistics
-    summary = {
-        "target_date": target_date,
-        "search_keyword": search_keyword,
-        "safe_keyword": safe_keyword,
-        "generated_at": now_kst.isoformat(),
-        "total_collected": len(all_items),
-        "total_processed": len(items),
-        "public_count": len(public_items),
-        "source_stats": {},
-        "category_stats": {},
-        "seoul_anchor_count": sum(1 for item in items if item.get("seoul_anchor_score", 0) > 0),
-        "other_event_excluded_count": sum(1 for item in items if item.get("category") == "other_event_only"),
-        "noise_excluded_count": sum(1 for item in items if item.get("noise_score", 0) > 0 and item.get("filter_status") == "excluded"),
-        "safety_gate_excluded_count": sum(1 for item in items if item.get("safety_gate_reason")),
-        "ai_candidate_count": sum(1 for item in items if item.get("ai_needed")),
-        "ai_called_count": sum(1 for item in items if item.get("ai_used")),
-        "ai_relevant_count": sum(1 for item in items if item.get("ai_result") == "relevant"),
-        "ai_irrelevant_count": sum(1 for item in items if item.get("ai_result") == "irrelevant"),
-        "ai_uncertain_count": sum(1 for item in items if item.get("ai_result") == "uncertain"),
-        "ai_skipped_due_to_limit_count": sum(1 for item in items if item.get("ai_reason") == "skipped_due_to_limit")
+    # Create Summary Array for Frontend
+    summary_array = []
+    source_labels = {
+        "naver_news": "네이버 뉴스",
+        "naver_blog": "네이버 블로그",
+        "youtube": "유튜브",
+        "total": "전체"
     }
     
-    for item in public_items:
-        src = item.get('source', 'unknown')
-        cat = item.get('category', 'unknown')
-        summary['source_stats'][src] = summary['source_stats'].get(src, 0) + 1
-        summary['category_stats'][cat] = summary['category_stats'].get(cat, 0) + 1
+    sources = list(raw_results_by_source.keys()) + ["total"]
+    for src in sources:
+        if src == "total":
+            src_items = items
+            src_public = public_items
+            collected_count = sum(raw_results_by_source[s].get('api_pages_called', 0) * config.get('page_size', {}).get(s, 100) for s in raw_results_by_source) # Approx
+            # Actually use real collected count from raw results
+            collected_count = sum(len(raw_results_by_source[s].get('raw', [])[0].get('response', {}).get('items', [])) if raw_results_by_source[s].get('raw') else 0 for s in raw_results_by_source) # Still approx
+            # Better: count items before normalize/dedupe
+            collected_count = len(all_collected_items)
+            status = "OK"
+            message = ""
+            pages_called = sum(raw_results_by_source[s].get('api_pages_called', 0) for s in raw_results_by_source)
+        else:
+            src_items = [item for item in items if item.get('source') == src]
+            src_public = [item for item in public_items if item.get('source') == src]
+            collected_count = len([item for item in all_collected_items if item.get('source') == src])
+            status = raw_results_by_source[src].get('status', 'OK')
+            message = raw_results_by_source[src].get('message', '')
+            pages_called = raw_results_by_source[src].get('api_pages_called', 0)
+
+        s_obj = {
+            "target_date": target_date,
+            "keyword": search_keyword,
+            "source": src,
+            "source_label": source_labels.get(src, src),
+            "collected_count": collected_count,
+            "raw_count": collected_count,
+            "current_run_deduped_count": len(src_items),
+            "public_count": len(src_public),
+            "excluded_count": len(src_items) - len(src_public),
+            "status": status,
+            "message": message,
+            "api_pages_called": pages_called,
+            "ai_needed_count": sum(1 for item in src_items if item.get("ai_needed")),
+            "ai_used_count": sum(1 for item in src_items if item.get("ai_used")),
+            "ai_relevant_count": sum(1 for item in src_items if item.get("ai_result") == "relevant"),
+            "ai_uncertain_count": sum(1 for item in src_items if item.get("ai_result") == "uncertain"),
+            "ai_skipped_due_to_limit_count": sum(1 for item in src_items if item.get("ai_reason") == "skipped_due_to_limit")
+        }
+        
+        # Add category counts to summary object
+        categories = ["confirmed", "related_issue", "comparison", "political_context", "weak_match", "other_event_only", "irrelevant", "ai_irrelevant"]
+        for cat in categories:
+            s_obj[f"{cat}_count"] = sum(1 for item in src_items if item.get("category") == cat)
+            
+        summary_array.append(s_obj)
 
     # Save files
-    os.makedirs('outputs', exist_ok=True)
     os.makedirs('web/public/data', exist_ok=True)
-    
     prefix = f"{target_date}_{safe_keyword}"
     
-    # Audit & Details & Summary
     with open(f"web/public/data/{prefix}_filter_audit.json", 'w', encoding='utf-8') as f:
         json.dump(items, f, ensure_ascii=False, indent=2)
-        
     with open(f"web/public/data/{prefix}_details.json", 'w', encoding='utf-8') as f:
         json.dump(public_items, f, ensure_ascii=False, indent=2)
-        
     with open(f"web/public/data/{prefix}_summary.json", 'w', encoding='utf-8') as f:
-        json.dump(summary, f, ensure_ascii=False, indent=2)
+        json.dump(summary_array, f, ensure_ascii=False, indent=2)
 
     # Index Update
     index_entry = {
