@@ -32,7 +32,9 @@
   },
   "relevance_filter": {
     "enabled": true,
-    "ambiguous_ai_enabled": false,
+    "ambiguous_ai_enabled": true,
+    "weak_match_public_default": false,
+    "keep_weak_match_when_ai_unavailable": true,
     "strong_keep_terms": [
       "서울국제정원박람회",
       "2026 서울국제정원박람회",

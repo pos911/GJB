@@ -19,12 +19,15 @@ function formatKSTTime(isoString) {
 }
 
 const Header = ({ datasets, selectedId, onSelect, lastScanTime }) => {
+  const selectedDataset = datasets.find(d => d.id === selectedId);
+
   return (
     <header className="header glass animate-fade-in">
       <div className="header-top">
         <div className="header-title">
-          <h1>Dashboard</h1>
-          <p>Public Opinion &amp; PR Monitoring</p>
+          <h1>국제정원박람회 온라인 상황판</h1>
+          <p className="subtitle-long">네이버 뉴스·블로그·유튜브 데이터를 일자별로 수집해 서울국제정원박람회 관련 온라인 반응과 이슈를 모니터링합니다.</p>
+          <p className="subtitle-short" style={{display: 'none'}}>일자별 온라인 반응·이슈 모니터링</p>
         </div>
         {lastScanTime && (
           <div className="last-scan">
@@ -48,6 +51,12 @@ const Header = ({ datasets, selectedId, onSelect, lastScanTime }) => {
           ))}
         </select>
       </div>
+
+      {selectedDataset && (
+        <div className="dataset-info">
+          기준일 {selectedDataset.target_date} · 검색어 {selectedDataset.keyword} · 최종 생성 {formatKSTTime(selectedDataset.generated_at || lastScanTime)} KST
+        </div>
+      )}
     </header>
   );
 };

@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import './FilterPanel.css';
 
 const CATEGORIES = [
-  { id: 'all', label: '전체', icon: 'All' },
-  { id: 'confirmed', label: '확정 관련', icon: 'OK' },
-  { id: 'related_issue', label: '관련 이슈', icon: 'Issue' },
-  { id: 'comparison', label: '비교/연계', icon: 'Vs' },
-  { id: 'political_context', label: '정치/선거', icon: 'Pol' },
-  { id: 'weak_match', label: '검토 필요', icon: 'Chk' }
+  { id: 'all', label: '전체', icon: 'All', shortDesc: 'Public 노출 대상 전체 결과입니다.' },
+  { id: 'confirmed', label: 'Only 국정박', icon: 'OK', shortDesc: '서울국제정원박람회 자체를 직접 다룬 결과입니다.' },
+  { id: 'related_issue', label: '연계 이슈', icon: 'Issue', shortDesc: '포켓몬, 인파, 교통, 혼잡 등 행사와 연결된 이슈성 결과입니다.' },
+  { id: 'comparison', label: '비교/연관', icon: 'Vs', shortDesc: '고양꽃박람회 등 타 행사와 함께 언급되거나 비교된 결과입니다.' },
+  { id: 'political_context', label: '정치/인물', icon: 'Pol', shortDesc: '오세훈, 정원오, 구청장, 선거 등 정치·인물 맥락이 포함된 결과입니다.' },
+  { id: 'weak_match', label: 'AI 검토대상', icon: 'Chk', shortDesc: '키워드는 잡혔지만 서울국제정원박람회 관련성이 불명확해 AI 검토가 필요한 결과입니다.' }
 ];
 
 const QUICK_TOGGLES = [
@@ -16,8 +16,8 @@ const QUICK_TOGGLES = [
   { id: 'hide_oh_sehoon', label: '오세훈 숨기기', icon: 'Oh' },
   { id: 'hide_jung_wonoh', label: '정원오 숨기기', icon: 'Jw' },
   { id: 'hide_district_mayor', label: '구청장 숨기기', icon: 'Gu' },
-  { id: 'hide_political', label: '정치/선거 글 숨기기', icon: 'Pol' },
-  { id: 'hide_weak', label: '검토 필요 글 숨기기', icon: 'Chk' }
+  { id: 'hide_political', label: '정치/인물 글 숨기기', icon: 'Pol' },
+  { id: 'hide_weak', label: 'AI 검토대상 숨기기', icon: 'Chk' }
 ];
 
 const STORAGE_KEY = 'gjb_filter_state';
@@ -50,6 +50,7 @@ const FilterPanel = ({ onFilterChange, categoryCounts, totalPublic, displayedCou
     savedState?.strongKeywordPriority !== undefined ? savedState.strongKeywordPriority : false
   );
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showDescriptions, setShowDescriptions] = useState(false);
 
   useEffect(() => {
     const state = { activeCategory, toggles, excludeKeywords, strongKeywordPriority };
@@ -91,6 +92,25 @@ const FilterPanel = ({ onFilterChange, categoryCounts, totalPublic, displayedCou
       </div>
 
       <div className="filter-section">
+        <div className="filter-category-header">
+          <button className="category-desc-toggle-btn" onClick={() => setShowDescriptions(!showDescriptions)}>
+            카테고리 설명 {showDescriptions ? '▲' : '▼'}
+          </button>
+        </div>
+        {showDescriptions && (
+          <div className="category-desc-panel animate-fade-in">
+            {CATEGORIES.filter(c => c.id !== 'all').map(cat => (
+              <div key={cat.id} className="desc-item">
+                <span className="desc-label cat-label-tag">{cat.label}</span>
+                <span className="desc-text">{cat.shortDesc}</span>
+              </div>
+            ))}
+            <div className="desc-item">
+              <span className="desc-label cat-label-tag">제외 후보</span>
+              <span className="desc-text">타 행사 단독, 무관, AI 무관 판정 결과로 기본 화면에는 노출하지 않고 검수 모드에서만 확인합니다.</span>
+            </div>
+          </div>
+        )}
         <div className="filter-category-chips">
           {CATEGORIES.map(cat => (
             <button

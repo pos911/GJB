@@ -96,7 +96,7 @@ Gemini API는 전체 결과에 호출하지 않고, **`weak_match`(약한 매칭
 }
 ```
 
-기본값은 `false`이며, 운영자가 필요할 때만 활성화합니다.
+기본값은 `true`이며, API 비용 절감 등 운영자가 원할 때만 `false`로 비활성화합니다.
 
 ### Gemini API Key 설정
 

@@ -12,24 +12,26 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-GEMINI_PROMPT_TEMPLATE = """다음 검색 결과가 2026 서울국제정원박람회(서울숲/성동구 일대)와 관련 있는지 분류하라.
+GEMINI_PROMPT_TEMPLATE = """다음 검색 결과가 2026 서울국제정원박람회(서울숲/성동구 일대)와 관련 있는지 판단하고 카테고리를 분류하라.
 본문 전체가 아니라 검색 결과 제목과 요약문 기준으로만 판단하라.
 
-분류값은 아래 중 하나만 반환하라.
-- relevant
-- irrelevant
-- uncertain
+반환은 JSON으로만 하라.
+{{
+  "result": "relevant|irrelevant|uncertain",
+  "category": "confirmed|related_issue|comparison|political_context|weak_match|irrelevant",
+  "reason": "1문장 근거"
+}}
 
-판단 기준:
-- 서울국제정원박람회, 서울숲, 성동구, 성수동, 뚝섬, 정원도시 서울, 기업동행정원, 매력정원, 포켓몬 정원, 포켓몬 시크릿 포레스트와 관련 있으면 relevant
-- 고양꽃박람회, 순천만국제정원박람회, 태안꽃박람회 등 타 행사만 다루면 irrelevant
-- 검색 결과 제목/요약만으로 판단이 어려우면 uncertain
+분류 기준:
+- confirmed: 서울국제정원박람회 자체를 직접 다루는 결과
+- related_issue: 포켓몬, 인파, 교통, 혼잡, 행사 중단 등 행사 연계 이슈
+- comparison: 고양꽃박람회, 순천만국제정원박람회, 태안꽃박람회 등 타 행사와 비교하거나 함께 언급
+- political_context: 오세훈, 정원오, 구청장, 후보, 선거, 공약 등 정치·인물 맥락 포함
+- irrelevant: 서울국제정원박람회와 관련 없음
+- weak_match: 제목/요약만으로 판단 불가
 
 제목: {title}
-요약: {description}
-
-반환은 JSON으로만 하라.
-{{"result": "relevant|irrelevant|uncertain", "reason": "1문장 근거"}}"""
+요약: {description}"""
 
 
 def get_gemini_api_key(config):
@@ -149,28 +151,30 @@ def classify_with_gemini(item, config):
     
     # 결과 처리
     ai_result = result.get("result", "uncertain")
+    ai_category = result.get("category", "weak_match")
     ai_reason = result.get("reason", "")
     
     item["ai_used"] = True
-    item["ai_category"] = ai_result
+    item["ai_result"] = ai_result
     item["ai_reason"] = ai_reason
     
-    if ai_result == "relevant":
-        # 기존 category 유지 또는 confirmed로 보정
-        item["category"] = "confirmed"
-        item["filter_status"] = "kept"
-        item["public_visible_default"] = True
-        
-    elif ai_result == "irrelevant":
+    if ai_result == "irrelevant" or ai_category == "irrelevant":
         item["category"] = "ai_irrelevant"
         item["filter_status"] = "excluded"
         item["public_visible_default"] = False
+        item["ai_category"] = "irrelevant"
         
-    elif ai_result == "uncertain":
-        # weak_match 유지
+    elif ai_result == "relevant" and ai_category in ["confirmed", "related_issue", "comparison", "political_context"]:
+        item["category"] = ai_category
+        item["filter_status"] = "kept"
+        item["public_visible_default"] = True
+        item["ai_category"] = ai_category
+        
+    elif ai_result == "uncertain" or ai_category == "weak_match":
         item["category"] = "weak_match"
         item["filter_status"] = "review"
-        item["public_visible_default"] = True
+        item["public_visible_default"] = rf.get("weak_match_public_default", False)
+        item["ai_category"] = "weak_match"
     
     return item
 

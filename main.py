@@ -137,10 +137,11 @@ def _compute_source_stats(source_items, exclude_categories):
         "irrelevant_count": _cat_count(source_items, "irrelevant"),
         "ai_irrelevant_count": _cat_count(source_items, "ai_irrelevant"),
         "ai_needed_count": sum(1 for i in source_items if i.get("ai_needed", False)),
+        "ai_called_count": sum(1 for i in source_items if i.get("ai_used", False) or i.get("ai_reason")),
         "ai_used_count": sum(1 for i in source_items if i.get("ai_used", False)),
-        "ai_relevant_count": sum(1 for i in source_items if i.get("ai_category") == "relevant"),
-        "ai_irrelevant_result_count": sum(1 for i in source_items if i.get("ai_category") == "irrelevant"),
-        "ai_uncertain_count": sum(1 for i in source_items if i.get("ai_category") == "uncertain"),
+        "ai_relevant_count": sum(1 for i in source_items if i.get("ai_result") == "relevant"),
+        "ai_irrelevant_result_count": sum(1 for i in source_items if i.get("ai_result") == "irrelevant" or i.get("ai_category") == "ai_irrelevant"),
+        "ai_uncertain_count": sum(1 for i in source_items if i.get("ai_result") == "uncertain"),
     }
 
 
@@ -293,6 +294,15 @@ def print_console(target_date, keyword, summary_data, detail_data, include_detai
             if existing_skipped > 0:
                 print(f"  - 기존 적재 중복 제외: {existing_skipped}건")
             print()
+            
+        if total_row.get("ai_needed_count", 0) > 0:
+            print("AI 검토 결과:")
+            print(f"  - AI 검토대상: {total_row.get('ai_needed_count', 0)}건")
+            print(f"  - AI 호출: {total_row.get('ai_called_count', 0)}건")
+            print(f"  - AI 관련 있음: {total_row.get('ai_relevant_count', 0)}건")
+            print(f"  - AI 무관 제외: {total_row.get('ai_irrelevant_result_count', 0)}건")
+            print(f"  - AI 판단불가: {total_row.get('ai_uncertain_count', 0)}건")
+            print()
     
     print("저장 파일:")
     for path in paths:
@@ -350,6 +360,14 @@ def main():
     for keyword in keywords:
         logger, safe_keyword = setup_logging(target_date, keyword)
         logger.info(f"Starting data collection for '{keyword}' on {target_date}")
+        
+        # AI settings logs
+        from processors.ai_classifier import get_gemini_api_key
+        has_gemini_key = bool(get_gemini_api_key(config))
+        logger.info(f"ambiguous_ai_enabled: {rf.get('ambiguous_ai_enabled', False)}")
+        logger.info(f"gemini_api_key: {'exists' if has_gemini_key else 'missing'}")
+        logger.info(f"weak_match_public_default: {rf.get('weak_match_public_default', False)}")
+        logger.info(f"keep_weak_match_when_ai_unavailable: {rf.get('keep_weak_match_when_ai_unavailable', True)}")
         
         all_detail_data = []
         summary_data = []
@@ -453,7 +471,24 @@ def main():
         exclude_categories = rf.get("exclude_from_public_categories", 
                                      ["other_event_only", "irrelevant", "ai_irrelevant"])
         
-        public_items = [item for item in all_detail_data if item.get("category") not in exclude_categories]
+        weak_default = rf.get("weak_match_public_default", False)
+        keep_unavailable = rf.get("keep_weak_match_when_ai_unavailable", True)
+        
+        public_items = []
+        for item in all_detail_data:
+            cat = item.get("category")
+            if cat in exclude_categories:
+                continue
+            if cat == "weak_match":
+                if weak_default:
+                    public_items.append(item)
+                else:
+                    ai_reason = str(item.get("ai_reason", ""))
+                    if keep_unavailable and (ai_reason == "gemini_api_key_missing" or ai_reason.startswith("gemini_error")):
+                        public_items.append(item)
+            else:
+                public_items.append(item)
+                
         audit_items = all_detail_data  # 전체 (excluded 포함)
         
         # ── 8. summary 통계: source별 정확한 계산 ──

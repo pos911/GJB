@@ -8,14 +8,14 @@ const SOURCES = [
 ];
 
 const CATEGORY_CONFIG = {
-  confirmed: { label: '확정', className: 'badge-confirmed' },
-  related_issue: { label: '이슈', className: 'badge-related-issue' },
-  comparison: { label: '비교', className: 'badge-comparison' },
-  political_context: { label: '정치', className: 'badge-political' },
-  weak_match: { label: '검토', className: 'badge-weak' },
-  other_event_only: { label: '타행사', className: 'badge-other-event' },
+  confirmed: { label: 'Only 국정박', className: 'badge-confirmed' },
+  related_issue: { label: '연계 이슈', className: 'badge-related-issue' },
+  comparison: { label: '비교/연관', className: 'badge-comparison' },
+  political_context: { label: '정치/인물', className: 'badge-political' },
+  weak_match: { label: 'AI 검토대상', className: 'badge-weak' },
+  other_event_only: { label: '타 행사 단독', className: 'badge-other-event' },
   irrelevant: { label: '무관', className: 'badge-irrelevant' },
-  ai_irrelevant: { label: 'AI무관', className: 'badge-ai-irrelevant' }
+  ai_irrelevant: { label: 'AI 무관', className: 'badge-ai-irrelevant' }
 };
 
 const FILTER_STATUS_CONFIG = {
