@@ -9,8 +9,20 @@
   --accent-color: #3b82f6;
   --accent-hover: #60a5fa;
   --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
   --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   --glass-blur: blur(12px);
+  
+  /* Category Colors */
+  --cat-confirmed: #10b981;
+  --cat-related-issue: #6366f1;
+  --cat-comparison: #ec4899;
+  --cat-political: #f59e0b;
+  --cat-weak: #9ca3af;
+  --cat-other-event: #78716c;
+  --cat-irrelevant: #6b7280;
+  --cat-ai-irrelevant: #ef4444;
 }
 
 * {

@@ -3,3 +3,4 @@ pandas
 openpyxl
 python-dateutil
 pytz
+google-genai

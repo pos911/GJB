@@ -7,6 +7,7 @@
 - **네이버 뉴스 검색 API**: `https://openapi.naver.com/v1/search/news.json`
 - **네이버 블로그 검색 API**: `https://openapi.naver.com/v1/search/blog.json`
 - **YouTube Data API v3**: `https://www.googleapis.com/youtube/v3/search`
+- **Google Gemini API** (선택): weak_match 항목 2차 판별용
 
 ## config.json 설정 방법
 `config.json` 파일에 다음 정보들을 기입해야 합니다:
@@ -32,11 +33,148 @@ python main.py --keyword "인공지능" --date 2026-05-01 --sources naver_news,y
 실행이 완료되면 `outputs/` 디렉토리에 다음과 같은 파일들이 생성됩니다 (`{target_date}_{keyword}` 접두사 사용):
 - `*_summary.xlsx`: 요약, 상세, 원천 통계 데이터를 각각의 시트로 포함하는 엑셀 파일.
 - `*_summary.csv`: 채널별 수집/중복제거 건수 및 성공 여부 요약 CSV.
-- `*_details.csv`: 중복이 제거된 최종 상세 리스트 CSV.
-- `*_details.json`: 최종 정규화/중복제거된 상세 데이터 JSON.
+- `*_details.csv`: **public 노출 대상만** 포함하는 최종 상세 리스트 CSV.
+- `*_details.json`: **public 노출 대상만** 포함하는 최종 정규화/중복제거된 상세 데이터 JSON.
+- `*_filter_audit.json`: 수집 후 분류된 **모든 결과**(제외 항목 포함)를 저장하는 감사용 JSON.
 - `*_raw.json`: API 원천 응답 및 호출 기록 JSON.
 
 실행 로그는 `logs/` 디렉토리에 저장됩니다.
+
+---
+
+## 🔍 검색 결과 필터링 시스템
+
+### 네이버 검색 API 특성과 타 행사 결과 혼입
+네이버 검색 API는 관련도 기반으로 결과를 반환하기 때문에, "국제정원박람회"로 검색하면 **고양꽃박람회**, **순천만국제정원박람회** 등 타 행사 결과가 섞일 수 있습니다. 또한 정치인(오세훈, 정원오, 구청장 등)이나 이슈(포켓몬, 성수동 인파 등) 관련 결과도 함께 수집됩니다.
+
+### 분류 정책: 삭제하지 않고 분류하여 보존
+본 프로젝트는 검색 결과를 **무조건 삭제하지 않고** 모든 결과를 `filter_audit.json`에 보존합니다.
+- **public details** (`*_details.json`)에는 서울국제정원박람회와 관련 있는 결과만 저장됩니다.
+- **filter_audit** (`*_filter_audit.json`)에는 제외된 결과까지 포함하여 전체 분류 결과가 저장됩니다.
+
+### 웹 기본 화면에서 제외되는 카테고리
+다음 카테고리는 public details에 포함되지 않으므로 **웹 기본 화면과 count에서 제외**됩니다:
+- `other_event_only`: 타 행사(고양꽃박람회, 순천만 등)만 다루는 글
+- `irrelevant`: 어떤 관련 키워드도 매칭되지 않는 글
+- `ai_irrelevant`: Gemini AI가 무관으로 판정한 글
+
+### 카테고리 분류 기준
+
+| 카테고리 | 설명 | 웹 노출 |
+|----------|------|---------|
+| `confirmed` | 서울국제정원박람회 확정 관련 | ✅ |
+| `related_issue` | 포켓몬, 인파, 교통 등 연계 이슈 | ✅ |
+| `comparison` | 서울국제정원박람회와 타 행사 비교 글 | ✅ |
+| `political_context` | 정치인/선거 맥락에서 행사 언급 | ✅ |
+| `weak_match` | 약한 매칭 (AI 검토 대상) | ✅ |
+| `other_event_only` | 타 행사 단독 글 | ❌ |
+| `irrelevant` | 무관 | ❌ |
+| `ai_irrelevant` | AI 판정 무관 | ❌ |
+
+---
+
+## 🤖 Gemini AI 2차 판별
+
+### 선택적 사용
+Gemini API는 전체 결과에 호출하지 않고, **`weak_match`(약한 매칭) 결과에만 선택적으로 호출**합니다. 이를 통해 API 비용을 절감하면서 분류 정확도를 높입니다.
+
+### 활성화 방법
+`config.json`에서 `ambiguous_ai_enabled`를 `true`로 변경합니다:
+```json
+{
+  "relevance_filter": {
+    "ambiguous_ai_enabled": true
+  }
+}
+```
+
+기본값은 `false`이며, 운영자가 필요할 때만 활성화합니다.
+
+### Gemini API Key 설정
+
+#### 방법 1: secret.json
+```json
+{
+  "naver_client_id": "...",
+  "naver_client_secret": "...",
+  "youtube_api_key": "...",
+  "gemini_api_key": "YOUR_GEMINI_API_KEY"
+}
+```
+
+#### 방법 2: 환경변수
+```bash
+export GEMINI_API_KEY=your_api_key_here
+```
+
+#### 방법 3: SECRET_JSON 환경변수 (GitHub Actions 등)
+```bash
+export SECRET_JSON='{"gemini_api_key": "your_api_key_here", ...}'
+```
+
+우선순위: 환경변수 `GEMINI_API_KEY` → `secret.json` → `SECRET_JSON`
+
+> **참고**: API 키가 없고 `ambiguous_ai_enabled=true`인 경우, 전체 실행은 중단되지 않습니다. Warning 로그만 남기고 weak_match 상태를 유지합니다.
+
+---
+
+## 🔄 기존 적재 데이터 중복 방지
+
+동일한 기사/블로그/영상이 여러 날에 걸쳐 중복 적재되는 것을 방지합니다.
+- `web/public/data/index.json`에 등록된 기존 details 파일을 읽어 중복을 판별합니다.
+- 중복 기준: `external_id` → `canonical_url` → `original_url` → `title + date`
+- 같은 날짜를 재실행할 때는 기존 동일 report를 덮어쓸 수 있습니다 (`allow_overwrite_same_report_id: true`).
+
+---
+
+## 🔎 제외 결과 검수 방법
+
+### filter_audit.json
+`outputs/` 또는 `web/public/data/`에 생성되는 `*_filter_audit.json` 파일에서 제외된 결과를 확인할 수 있습니다.
+
+```bash
+# 파이썬으로 제외 항목만 필터링
+python -c "
+import json
+with open('outputs/2026-05-01_국제정원박람회_filter_audit.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+excluded = [d for d in data if d.get('filter_status') == 'excluded']
+for item in excluded:
+    print(f\"[{item['category']}] {item['title']}\")
+    print(f\"  사유: {item['filter_reason']}\")
+"
+```
+
+### 웹 화면 검수 모드
+웹 대시보드에서 **"제외 후보 보기 (검수 모드)"** 버튼을 클릭하면 제외된 결과를 확인할 수 있습니다. 각 항목에는 제외 사유(`filter_reason`), 매칭된 키워드, AI 판별 결과가 표시됩니다.
+
+---
+
+## 🎛️ 웹 화면 토글 필터
+
+### 카테고리 필터
+상단 카테고리 칩을 클릭하여 특정 분류만 표시할 수 있습니다:
+- 전체 / 확정 관련 / 연계 이슈 / 비교/연관 / 정치/선거 / 검토 필요
+
+### 빠른 숨김 토글
+상세 필터를 펼치면 다음 토글이 제공됩니다:
+- 포켓몬 숨기기
+- 정치인 전체/개별(오세훈, 정원오, 구청장) 숨기기
+- 정치/선거 글 숨기기
+- 검토 필요 글 숨기기
+
+### 직접 제외 키워드 입력
+쉼표로 구분하여 여러 키워드를 입력하면, 해당 키워드가 포함된 결과를 화면에서 숨깁니다.
+
+### 본행사 강한 키워드 우선
+기본값 ON. "서울국제정원박람회" 등 확실한 키워드가 포함된 결과는 제외 키워드가 있어도 숨기지 않습니다.
+
+### localStorage 저장
+토글 상태는 브라우저의 localStorage에 저장되어 새로고침 후에도 유지됩니다.
+
+> **중요**: 웹 토글은 데이터를 삭제하지 않습니다. public details 안에서 화면 표시만 제어합니다.
+
+---
 
 ## ⚠️ 중요 주의사항
 

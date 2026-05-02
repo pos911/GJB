@@ -29,5 +29,87 @@
   "retry": {
     "max_attempts": 3,
     "backoff_seconds": 2
+  },
+  "relevance_filter": {
+    "enabled": true,
+    "ambiguous_ai_enabled": false,
+    "minimum_confirmed_score": 2,
+    "strong_keep_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울숲 국제정원박람회",
+      "서울시 국제정원박람회"
+    ],
+    "target_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "서울숲",
+      "성동구",
+      "성수동",
+      "뚝섬",
+      "광진구",
+      "건대입구",
+      "정원도시 서울",
+      "기업동행정원",
+      "매력정원",
+      "포켓몬 정원",
+      "포켓몬 시크릿 포레스트"
+    ],
+    "other_event_terms": [
+      "고양꽃박람회",
+      "고양국제꽃박람회",
+      "일산호수공원",
+      "순천만국제정원박람회",
+      "순천만",
+      "순천",
+      "태안꽃박람회"
+    ],
+    "political_terms": [
+      "오세훈",
+      "정원오",
+      "구청장",
+      "서울시장 후보",
+      "지방선거",
+      "선거",
+      "공약",
+      "노동절 행보",
+      "후보"
+    ],
+    "politician_terms": {
+      "oh_sehoon": [
+        "오세훈"
+      ],
+      "jung_wonoh": [
+        "정원오"
+      ],
+      "district_mayor": [
+        "구청장"
+      ]
+    },
+    "issue_terms": [
+      "포켓몬",
+      "성수동",
+      "인파",
+      "혼잡",
+      "행사 중단",
+      "경찰",
+      "소방",
+      "교통",
+      "황금연휴"
+    ],
+    "exclude_from_public_categories": [
+      "other_event_only",
+      "irrelevant",
+      "ai_irrelevant"
+    ],
+    "public_categories": [
+      "confirmed",
+      "related_issue",
+      "comparison",
+      "political_context",
+      "weak_match"
+    ],
+    "dedupe_against_existing": true,
+    "allow_overwrite_same_report_id": true
   }
 }

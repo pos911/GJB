@@ -14,6 +14,9 @@ from collectors.naver import fetch_naver_news, fetch_naver_blog
 from collectors.youtube import fetch_youtube_videos
 from processors.normalize import normalize_data
 from processors.dedupe import deduplicate
+from processors.relevance import apply_relevance_classification
+from processors.ai_classifier import apply_ai_classification
+from processors.existing_dedupe import load_existing_item_keys, filter_existing_duplicates
 
 def setup_directories():
     os.makedirs("outputs", exist_ok=True)
@@ -112,13 +115,22 @@ def check_required_keys(config):
         print("오류: YouTube API 키(youtube_api_key)가 secret.json 또는 SECRET_JSON에 설정되지 않았습니다.")
         sys.exit(1)
 
-def save_outputs(target_date, safe_keyword, summary_data, detail_data, raw_data):
+
+def _count_by_category(items, category):
+    """특정 category의 item 수를 반환."""
+    return sum(1 for item in items if item.get("category") == category)
+
+
+def save_outputs(target_date, safe_keyword, summary_data, public_items, raw_data, audit_items=None):
     base_prefix = f"outputs/{target_date}_{safe_keyword}"
     web_data_dir = "web/public/data"
     os.makedirs(web_data_dir, exist_ok=True)
     web_prefix = f"{web_data_dir}/{target_date}_{safe_keyword}"
     
     summary_df = pd.DataFrame(summary_data)
+    
+    # public_items에서 CSV/Excel용 데이터 구성
+    detail_data = public_items
     detail_df = pd.DataFrame(detail_data)
     
     # 1. xlsx
@@ -146,14 +158,14 @@ def save_outputs(target_date, safe_keyword, summary_data, detail_data, raw_data)
                 })
         pd.DataFrame(raw_stats).to_excel(writer, sheet_name="RawStats", index=False)
         
-    # 2. csv
+    # 2. csv (public items only)
     summary_csv_path = f"{base_prefix}_summary.csv"
     summary_df.to_csv(summary_csv_path, index=False, encoding="utf-8-sig")
     
     detail_csv_path = f"{base_prefix}_details.csv"
     detail_df.to_csv(detail_csv_path, index=False, encoding="utf-8-sig")
     
-    # 3. json
+    # 3. json (public items only)
     detail_json_path = f"{base_prefix}_details.json"
     with open(detail_json_path, 'w', encoding='utf-8') as f:
         json.dump(detail_data, f, ensure_ascii=False, indent=2)
@@ -161,8 +173,18 @@ def save_outputs(target_date, safe_keyword, summary_data, detail_data, raw_data)
     raw_json_path = f"{base_prefix}_raw.json"
     with open(raw_json_path, 'w', encoding='utf-8') as f:
         json.dump(raw_data, f, ensure_ascii=False, indent=2)
+    
+    # 4. filter_audit (all items including excluded)
+    if audit_items is not None:
+        audit_json_path = f"{base_prefix}_filter_audit.json"
+        with open(audit_json_path, 'w', encoding='utf-8') as f:
+            json.dump(audit_items, f, ensure_ascii=False, indent=2)
         
-    # 4. Web Data Export
+        web_audit_json_path = f"{web_prefix}_filter_audit.json"
+        with open(web_audit_json_path, 'w', encoding='utf-8') as f:
+            json.dump(audit_items, f, ensure_ascii=False, indent=2)
+        
+    # 5. Web Data Export
     summary_json_path = f"{web_prefix}_summary.json"
     with open(summary_json_path, 'w', encoding='utf-8') as f:
         json.dump(summary_data, f, ensure_ascii=False, indent=2)
@@ -184,17 +206,21 @@ def save_outputs(target_date, safe_keyword, summary_data, detail_data, raw_data)
     # Check if entry already exists and update
     entry_id = f"{target_date}_{safe_keyword}"
     existing = next((item for item in index_data if item["id"] == entry_id), None)
+    
+    entry_obj = {
+        "id": entry_id,
+        "target_date": target_date,
+        "keyword": safe_keyword,
+        "summary_file": f"/data/{entry_id}_summary.json",
+        "details_file": f"/data/{entry_id}_details.json",
+        "filter_audit_file": f"/data/{entry_id}_filter_audit.json" if audit_items is not None else "",
+        "generated_at": datetime.now(KST).isoformat()
+    }
+    
     if not existing:
-        index_data.append({
-            "id": entry_id,
-            "target_date": target_date,
-            "keyword": safe_keyword,
-            "summary_file": f"/data/{entry_id}_summary.json",
-            "details_file": f"/data/{entry_id}_details.json",
-            "generated_at": datetime.now(KST).isoformat()
-        })
+        index_data.append(entry_obj)
     else:
-        existing["generated_at"] = datetime.now(KST).isoformat()
+        existing.update(entry_obj)
         
     # Sort descending by date
     index_data.sort(key=lambda x: x["target_date"], reverse=True)
@@ -228,6 +254,19 @@ def print_console(target_date, keyword, summary_data, detail_data, include_detai
     print(f"총합{'':<11} {total_deduped}개")
     print()
     
+    # 필터링 통계 출력
+    public_count = sum(s.get("public_count", s["deduped_count"]) for s in summary_data)
+    excluded_count = sum(s.get("excluded_count", 0) for s in summary_data)
+    existing_skipped = sum(s.get("existing_duplicate_skipped_count", 0) for s in summary_data)
+    
+    if excluded_count > 0 or existing_skipped > 0:
+        print("필터링 결과:")
+        print(f"  - Public 노출: {public_count}건")
+        print(f"  - 제외: {excluded_count}건")
+        if existing_skipped > 0:
+            print(f"  - 기존 적재 중복 제외: {existing_skipped}건")
+        print()
+    
     print("저장 파일:")
     for path in paths:
         print(f"- {path}")
@@ -243,18 +282,20 @@ def print_console(target_date, keyword, summary_data, detail_data, include_detai
             for idx, item in enumerate(items, 1):
                 title = item["title"]
                 url = item["canonical_url"]
+                category = item.get("category", "")
+                category_badge = f" [{category}]" if category else ""
                 
                 if src_key == "naver_news":
                     date_str = item["published_at_kst"]
-                    print(f"{idx}. {title}\n   - 일시: {date_str}\n   - 링크: {url}")
+                    print(f"{idx}. {title}{category_badge}\n   - 일시: {date_str}\n   - 링크: {url}")
                 elif src_key == "naver_blog":
                     date_str = item["published_date_kst"]
                     author = item["author_or_channel"]
-                    print(f"{idx}. {title}\n   - 작성자: {author}\n   - 일시: {date_str}\n   - 링크: {url}")
+                    print(f"{idx}. {title}{category_badge}\n   - 작성자: {author}\n   - 일시: {date_str}\n   - 링크: {url}")
                 elif src_key == "youtube":
                     date_str = item["published_at_kst"]
                     channel = item["author_or_channel"]
-                    print(f"{idx}. {title}\n   - 채널: {channel}\n   - 일시: {date_str}\n   - 링크: {url}")
+                    print(f"{idx}. {title}{category_badge}\n   - 채널: {channel}\n   - 일시: {date_str}\n   - 링크: {url}")
             print()
     else:
         print("상세 리스트 출력 옵션: 파일 저장 경로만 출력 (비활성화됨)\n")
@@ -273,6 +314,7 @@ def main():
     target_date = config.get("target_date")
     sources = config.get("sources", [])
     include_detail_list = config.get("include_detail_list", False)
+    rf = config.get("relevance_filter", {})
     
     if not keywords or not target_date:
         print("오류: 검색어(keywords)와 기준일(target_date)은 필수입니다.")
@@ -286,6 +328,7 @@ def main():
         summary_data = []
         raw_data = []
         
+        # ── 1. API 수집 ──
         for source in sources:
             logger.info(f"Fetching from {source}...")
             
@@ -320,7 +363,10 @@ def main():
                 "error_message": message if status == "ERROR" else ""
             })
             
+            # ── 2. 정규화 ──
             normalized_items = normalize_data(raw_items)
+            
+            # ── 3. 현재 실행 내 중복 제거 ──
             deduped_items = deduplicate(normalized_items)
             
             collected_count = len(normalized_items)
@@ -341,17 +387,101 @@ def main():
             })
             
             all_detail_data.extend(deduped_items)
+        
+        # ── 4. 기존 적재 데이터 기준 중복 제거 ──
+        total_collected_count = len(all_detail_data)
+        existing_duplicate_skipped_count = 0
+        
+        if rf.get("dedupe_against_existing", False):
+            web_data_dir = "web/public/data"
+            entry_id = f"{target_date}_{safe_keyword}"
+            allow_overwrite = rf.get("allow_overwrite_same_report_id", True)
             
-        # Save Outputs
+            existing_keys = load_existing_item_keys(web_data_dir, entry_id, allow_overwrite)
+            all_detail_data, existing_duplicate_skipped_count = filter_existing_duplicates(all_detail_data, existing_keys)
+            
+            logger.info(f"Existing duplicate check: {existing_duplicate_skipped_count} skipped")
+        
+        current_run_deduped_count = len(all_detail_data)
+        
+        # ── 5. 규칙 기반 relevance 분류 ──
+        all_detail_data = apply_relevance_classification(all_detail_data, config)
+        logger.info("Relevance classification applied")
+        
+        # ── 6. Gemini 2차 판별 (조건부) ──
         try:
-            paths = save_outputs(target_date, safe_keyword, summary_data, all_detail_data, raw_data)
+            all_detail_data = apply_ai_classification(all_detail_data, config)
+        except Exception as e:
+            logger.error(f"AI classification error (non-fatal): {e}")
+        
+        # ── 7. public/audit 분리 ──
+        exclude_categories = rf.get("exclude_from_public_categories", 
+                                     ["other_event_only", "irrelevant", "ai_irrelevant"])
+        
+        public_items = [item for item in all_detail_data if item.get("category") not in exclude_categories]
+        audit_items = all_detail_data  # 전체 (excluded 포함)
+        
+        # ── 8. summary 통계 확장 ──
+        # 카테고리별 count
+        confirmed_count = _count_by_category(all_detail_data, "confirmed")
+        related_issue_count = _count_by_category(all_detail_data, "related_issue")
+        comparison_count = _count_by_category(all_detail_data, "comparison")
+        political_context_count = _count_by_category(all_detail_data, "political_context")
+        weak_match_count = _count_by_category(all_detail_data, "weak_match")
+        other_event_only_count = _count_by_category(all_detail_data, "other_event_only")
+        irrelevant_count = _count_by_category(all_detail_data, "irrelevant")
+        ai_irrelevant_count = _count_by_category(all_detail_data, "ai_irrelevant")
+        
+        # AI 통계
+        ai_needed_count = sum(1 for item in all_detail_data if item.get("ai_needed", False))
+        ai_used_count = sum(1 for item in all_detail_data if item.get("ai_used", False))
+        ai_relevant_count = sum(1 for item in all_detail_data if item.get("ai_category") == "relevant")
+        ai_uncertain_count = sum(1 for item in all_detail_data if item.get("ai_category") == "uncertain")
+        ai_irrelevant_ai_count = sum(1 for item in all_detail_data if item.get("ai_category") == "irrelevant")
+        
+        public_count = len(public_items)
+        excluded_count = len(all_detail_data) - public_count
+        
+        # summary_data에 확장 필드 추가
+        filter_stats = {
+            "total_collected_count": total_collected_count,
+            "current_run_deduped_count": current_run_deduped_count,
+            "existing_duplicate_skipped_count": existing_duplicate_skipped_count,
+            "audit_total_count": len(audit_items),
+            "public_count": public_count,
+            "excluded_count": excluded_count,
+            "confirmed_count": confirmed_count,
+            "related_issue_count": related_issue_count,
+            "comparison_count": comparison_count,
+            "political_context_count": political_context_count,
+            "weak_match_count": weak_match_count,
+            "other_event_only_count": other_event_only_count,
+            "irrelevant_count": irrelevant_count,
+            "ai_irrelevant_count": ai_irrelevant_count,
+            "ai_needed_count": ai_needed_count,
+            "ai_used_count": ai_used_count,
+            "ai_relevant_count": ai_relevant_count,
+            "ai_irrelevant_ai_count": ai_irrelevant_ai_count,
+            "ai_uncertain_count": ai_uncertain_count
+        }
+        
+        for s in summary_data:
+            s.update(filter_stats)
+            s["public_count"] = len([item for item in public_items if item.get("source") == s["source"]])
+            s["excluded_count"] = len([item for item in all_detail_data 
+                                       if item.get("source") == s["source"] and item.get("category") in exclude_categories])
+            s["existing_duplicate_skipped_count"] = existing_duplicate_skipped_count
+        
+        # Save Outputs (public_items for details, audit_items for filter_audit)
+        try:
+            paths = save_outputs(target_date, safe_keyword, summary_data, public_items, raw_data, audit_items)
             logger.info("Output files saved successfully.")
         except Exception as e:
             logger.error(f"Failed to save output files: {e}")
             paths = []
             
-        # Print Console
-        print_console(target_date, keyword, summary_data, all_detail_data, include_detail_list, paths)
+        # Print Console (public_items 기준)
+        print_console(target_date, keyword, summary_data, public_items, include_detail_list, paths)
 
 if __name__ == "__main__":
     main()

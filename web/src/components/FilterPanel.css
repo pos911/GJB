@@ -1,0 +1,295 @@
+/* ===== Filter Panel ===== */
+.filter-panel {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+}
+
+/* Stats Bar */
+.filter-stats-bar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.filter-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.filter-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.filter-stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.filter-stat-value.accent {
+  color: var(--accent-color);
+}
+
+.filter-stat-value.warning {
+  color: #f59e0b;
+}
+
+/* Category Chips */
+.filter-category-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.category-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.category-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+}
+
+.category-chip.active {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.category-chip.active.cat-confirmed {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.category-chip.active.cat-related_issue {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.category-chip.active.cat-comparison {
+  background: rgba(236, 72, 153, 0.15);
+  border-color: #ec4899;
+  color: #ec4899;
+}
+
+.category-chip.active.cat-political_context {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.category-chip.active.cat-weak_match {
+  background: rgba(156, 163, 175, 0.15);
+  border-color: #9ca3af;
+  color: #9ca3af;
+}
+
+.chip-icon {
+  font-size: 0.85rem;
+}
+
+.chip-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Expand Button */
+.filter-expand-btn {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.75rem;
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.filter-expand-btn:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+}
+
+/* Expanded Section */
+.filter-expanded {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.filter-section {
+  margin-bottom: 0.25rem;
+}
+
+.filter-section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Toggle Grid */
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.toggle-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  user-select: none;
+}
+
+.toggle-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.toggle-item input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-slider {
+  width: 36px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.toggle-item input[type="checkbox"]:checked + .toggle-slider {
+  background: var(--accent-color);
+}
+
+.toggle-item input[type="checkbox"]:checked + .toggle-slider::after {
+  transform: translateX(16px);
+}
+
+.toggle-icon {
+  font-size: 0.9rem;
+}
+
+.toggle-label {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+/* Priority Toggle */
+.priority-toggle {
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+/* Keyword Input */
+.keyword-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.keyword-input:focus {
+  border-color: var(--accent-color);
+}
+
+.keyword-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.filter-hint {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 0.3rem;
+  opacity: 0.7;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 480px) {
+  .filter-panel {
+    padding: 0.75rem;
+  }
+
+  .filter-stats-bar {
+    gap: 0.5rem;
+  }
+
+  .filter-stat-value {
+    font-size: 1.1rem;
+  }
+
+  .filter-category-chips {
+    gap: 0.35rem;
+  }
+
+  .category-chip {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.75rem;
+  }
+
+  .toggle-grid {
+    grid-template-columns: 1fr;
+  }
+}
