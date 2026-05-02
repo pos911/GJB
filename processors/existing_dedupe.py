@@ -112,23 +112,31 @@ def filter_existing_duplicates(items, existing_keys):
         existing_keys: load_existing_item_keys로 로드한 기존 키 세트
     
     Returns:
-        tuple: (non_duplicate_items, skipped_count)
+        tuple: (non_duplicate_items, skipped_count, skipped_by_source)
+            - non_duplicate_items: 중복 제거 후 남은 item 리스트
+            - skipped_count: 전체 제거 수
+            - skipped_by_source: source별 제거 수 dict (예: {"naver_news": 3, "youtube": 1})
     """
     if not existing_keys:
-        return items, 0
+        return items, 0, {}
     
     non_duplicates = []
     skipped_count = 0
+    skipped_by_source = {}
     
     for item in items:
         key = build_item_key(item)
         if key in existing_keys:
             skipped_count += 1
+            source = item.get("source", "unknown")
+            skipped_by_source[source] = skipped_by_source.get(source, 0) + 1
             logger.debug(f"Existing duplicate skipped: {item.get('title', '')[:50]}")
         else:
             non_duplicates.append(item)
     
     if skipped_count > 0:
         logger.info(f"Existing duplicate check: {skipped_count} items skipped, {len(non_duplicates)} items remain")
+        for src, cnt in skipped_by_source.items():
+            logger.info(f"  {src}: {cnt} skipped")
     
-    return non_duplicates, skipped_count
+    return non_duplicates, skipped_count, skipped_by_source

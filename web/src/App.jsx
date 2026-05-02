@@ -121,7 +121,7 @@ function App() {
     activeCategory: 'all',
     toggles: {},
     excludeKeywords: '',
-    strongKeywordPriority: true
+    strongKeywordPriority: false
   });
   const [showAudit, setShowAudit] = useState(false);
   const [auditFileUrl, setAuditFileUrl] = useState('');

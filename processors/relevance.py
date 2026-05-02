@@ -2,15 +2,28 @@
 processors/relevance.py
 규칙 기반 검색 결과 관련성 분류 모듈.
 
-검색 결과를 서울국제정원박람회 관련도 기준으로 8단계 우선순위로 분류한다.
-- confirmed: 확정 관련
-- comparison: 타 행사 비교/연관
-- related_issue: 연계 이슈
-- political_context: 정치/선거 맥락
-- weak_match: 약한 신호 (AI 2차 판별 대상)
-- other_event_only: 타 행사 단독
-- irrelevant: 무관
-- ai_irrelevant: AI가 무관으로 판정
+검색 결과를 서울국제정원박람회 관련도 기준으로 8단계 카테고리로 분류한다.
+- confirmed: 순수 행사 관련 (정치/이슈/타행사 맥락 없이 본행사만 다루는 글)
+- comparison: 타 행사(고양꽃박람회 등)와 본행사를 함께 다루는 글
+- related_issue: 포켓몬/인파/혼잡 등 행사 연계 이슈
+- political_context: 오세훈/정원오/구청장/선거 등 정치 맥락에서 행사를 언급하는 글
+- weak_match: 약한 신호 (AI 2차 판별 대상) — 국제정원박람회만 있고 장소 단서 없음
+- other_event_only: 타 행사 단독 (본행사 관련성 없음)
+- irrelevant: 어떤 관련 키워드도 매칭되지 않음
+- ai_irrelevant: AI가 무관으로 판정 (ai_classifier에서 설정)
+
+분류 로직:
+1. is_target_event를 먼저 계산:
+   - strong_keep_terms 매칭 OR (정원박람회 + 장소 단서) OR matched_target_terms 존재
+   - 단, matched_target_terms가 "국제정원박람회/정원박람회"만이고 장소 단서 없으면 weak_match
+2. is_target_event가 true이면 맥락 카테고리 우선:
+   a. matched_other_event_terms가 있으면 → comparison
+   b. matched_political_terms가 있으면 → political_context
+   c. matched_issue_terms가 있으면 → related_issue
+   d. 위 맥락이 없으면 → confirmed
+3. is_target_event가 false이면:
+   - matched_other_event_terms만 있으면 → other_event_only
+   - 아무 단서 없으면 → irrelevant
 """
 import re
 import html
@@ -90,21 +103,18 @@ def _build_combined_text(item):
 def classify_relevance(item, config):
     """
     item을 규칙 기반으로 관련성 분류한다.
-    
-    판단 우선순위:
-    1. strong_keep_terms 매칭 → confirmed
-    2. 정원박람회 + 서울 장소 → confirmed
-    3. target + other_event → comparison
-    4. target + issue → related_issue
-    5. target + political → political_context
-    6. other_event only → other_event_only
-    7. 국제정원박람회만 (장소 단서 없음) → weak_match
-    8. 어느 것도 아님 → irrelevant
+
+    맥락 카테고리 우선 원칙:
+    - is_target_event가 true인 상태에서:
+      1) other_event_terms → comparison
+      2) political_terms → political_context
+      3) issue_terms → related_issue
+      4) 맥락 없음 → confirmed
     """
     rf = config.get("relevance_filter", {})
-    
+
     combined_text = _build_combined_text(item)
-    
+
     # 각 term 그룹 매칭
     matched_strong = match_terms(combined_text, rf.get("strong_keep_terms", []))
     matched_target = match_terms(combined_text, rf.get("target_terms", []))
@@ -112,10 +122,10 @@ def classify_relevance(item, config):
     matched_political = match_terms(combined_text, rf.get("political_terms", []))
     matched_issue = match_terms(combined_text, rf.get("issue_terms", []))
     matched_politician = match_politician_terms(combined_text, rf.get("politician_terms", {}))
-    
+
     # relevance_score 계산 (매칭된 target_terms 개수)
     relevance_score = len(matched_target)
-    
+
     # 기본 반환 구조
     result = {
         "matched_target_terms": matched_target,
@@ -133,80 +143,79 @@ def classify_relevance(item, config):
         "ai_reason": "",
         "public_visible_default": False
     }
-    
+
     # 장소 단서 목록
     location_terms = ["서울숲", "성동구", "성수동", "뚝섬", "광진구", "건대입구", "정원도시 서울"]
     matched_location = match_terms(combined_text, location_terms)
-    
-    # 정원박람회 관련 용어
+
+    # 정원박람회 관련 일반 용어 (strong이 아닌)
     garden_expo_terms = ["국제정원박람회", "정원박람회"]
     matched_garden_expo = match_terms(combined_text, garden_expo_terms)
-    
-    # ── 1. strong_keep_terms 매칭 ──
-    if matched_strong:
-        result["category"] = "confirmed"
-        result["filter_status"] = "kept"
-        result["filter_reason"] = "strong_keep_term_matched"
-        result["ai_needed"] = False
-        result["public_visible_default"] = True
+
+    # ── is_target_event 판단 ──
+    has_strong = bool(matched_strong)
+    has_event_and_location = bool(matched_garden_expo) and bool(matched_location)
+
+    # matched_target_terms가 정원박람회 계열만이고 장소 단서가 없으면 weak 후보
+    garden_expo_only_terms = {"국제정원박람회", "정원박람회"}
+    target_beyond_expo = [t for t in matched_target if t not in garden_expo_only_terms]
+    has_target_beyond_expo = bool(target_beyond_expo)
+
+    is_target_event = has_strong or has_event_and_location or has_target_beyond_expo
+
+    # ── 카테고리 결정 ──
+    if is_target_event:
+        # 맥락 카테고리 우선 (comparison > political_context > related_issue > confirmed)
+        if matched_other:
+            result["category"] = "comparison"
+            result["filter_status"] = "kept"
+            result["filter_reason"] = "target_event_and_other_event_both_matched"
+            result["public_visible_default"] = True
+        elif matched_political:
+            result["category"] = "political_context"
+            result["filter_status"] = "kept"
+            result["filter_reason"] = "target_event_with_political_context"
+            result["public_visible_default"] = True
+        elif matched_issue:
+            result["category"] = "related_issue"
+            result["filter_status"] = "kept"
+            result["filter_reason"] = "target_event_with_related_issue"
+            result["public_visible_default"] = True
+        else:
+            result["category"] = "confirmed"
+            result["filter_status"] = "kept"
+            result["filter_reason"] = "strong_keep_term_matched" if has_strong else "event_and_location_matched" if has_event_and_location else "target_terms_matched"
+            result["public_visible_default"] = True
         return result
-    
-    # ── 2. 정원박람회 + 서울 장소 매칭 ──
-    if matched_garden_expo and matched_location:
-        result["category"] = "confirmed"
-        result["filter_status"] = "kept"
-        result["filter_reason"] = "event_and_location_matched"
-        result["ai_needed"] = False
-        result["public_visible_default"] = True
-        return result
-    
-    # ── 3. target + other_event → comparison ──
-    if matched_target and matched_other:
-        result["category"] = "comparison"
-        result["filter_status"] = "kept"
-        result["filter_reason"] = "target_event_and_other_event_both_matched"
-        result["ai_needed"] = False
-        result["public_visible_default"] = True
-        return result
-    
-    # ── 4. target + issue → related_issue ──
-    if matched_target and matched_issue:
-        result["category"] = "related_issue"
-        result["filter_status"] = "kept"
-        result["filter_reason"] = "target_event_with_related_issue"
-        result["ai_needed"] = False
-        result["public_visible_default"] = True
-        return result
-    
-    # ── 5. target + political → political_context ──
-    if matched_target and matched_political:
-        result["category"] = "political_context"
-        result["filter_status"] = "kept"
-        result["filter_reason"] = "target_event_with_political_context"
-        result["ai_needed"] = False
-        result["public_visible_default"] = True
-        return result
-    
-    # ── 6. other_event only (target 없음) → other_event_only ──
-    if matched_other and not matched_target:
-        result["category"] = "other_event_only"
-        result["filter_status"] = "excluded"
-        result["filter_reason"] = "only_other_event_matched"
-        result["ai_needed"] = False
-        result["public_visible_default"] = False
-        return result
-    
-    # ── 7. 국제정원박람회만 있고 장소 단서 없음 → weak_match ──
+
+    # ── is_target_event가 false인 경우 ──
+
+    # 정원박람회만 있고 장소 단서 없음 → weak_match
     if matched_garden_expo and not matched_location:
+        # other_event가 함께 있으면 comparison (약한 target + other)
+        if matched_other:
+            result["category"] = "comparison"
+            result["filter_status"] = "kept"
+            result["filter_reason"] = "target_event_and_other_event_both_matched"
+            result["public_visible_default"] = True
+            return result
+
         result["category"] = "weak_match"
         result["filter_status"] = "review"
         result["filter_reason"] = "weak_target_signal"
         result["ai_needed"] = True
         result["public_visible_default"] = True
         return result
-    
-    # ── 8. 어떤 조건에도 안 걸림 → irrelevant ──
-    # (result는 이미 irrelevant 기본값으로 설정됨)
+
+    # other_event만 있고 target 없음 → other_event_only
+    if matched_other and not matched_target:
+        result["category"] = "other_event_only"
+        result["filter_status"] = "excluded"
+        result["filter_reason"] = "only_other_event_matched"
+        result["public_visible_default"] = False
+        return result
+
+    # 어떤 조건에도 안 걸림 → irrelevant
     return result
 
 
@@ -234,9 +243,9 @@ def apply_relevance_classification(items, config):
             item["ai_reason"] = ""
             item["public_visible_default"] = True
         return items
-    
+
     for item in items:
         classification = classify_relevance(item, config)
         item.update(classification)
-    
+
     return items

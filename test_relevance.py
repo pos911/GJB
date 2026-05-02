@@ -1,5 +1,5 @@
 """
-검증 스크립트: 사용자 요구 12개 시나리오 검증
+검증 스크립트: 사용자 요구 시나리오 검증 (맥락 카테고리 우선 로직)
 """
 import sys
 import json
@@ -15,9 +15,11 @@ with open('config.json', 'r', encoding='utf-8') as f:
     config = json.load(f)
 
 # ── 테스트 케이스 ──
+# 맥락 카테고리 우선 원칙:
+# is_target_event가 true일 때: comparison > political_context > related_issue > confirmed
 tests = [
     {
-        "name": "1. 서울국제정원박람회 개막",
+        "name": "1. 서울국제정원박람회 개막 (순수 행사)",
         "item": {
             "title": "서울국제정원박람회 개막",
             "description": "2026 서울국제정원박람회가 서울숲에서 개막했다",
@@ -28,18 +30,18 @@ tests = [
         "expected_public": True
     },
     {
-        "name": "2. 서울숲 국제정원박람회와 고양꽃박람회 비교",
+        "name": "2. 서울숲 국제정원박람회와 고양꽃박람회 비교 → comparison (타행사 우선)",
         "item": {
             "title": "서울숲 국제정원박람회와 고양꽃박람회 비교",
             "description": "올해 두 박람회를 비교해본다",
             "author_or_channel": "",
             "canonical_url": "https://example.com/2"
         },
-        "expected_category": "confirmed",  # strong_keep_term "서울숲 국제정원박람회" 매칭 가능, 또는 confirmed (event+location)
+        "expected_category": "comparison",
         "expected_public": True
     },
     {
-        "name": "3. 고양국제꽃박람회 방문 후기",
+        "name": "3. 고양국제꽃박람회 방문 후기 (타행사 단독)",
         "item": {
             "title": "고양국제꽃박람회 방문 후기",
             "description": "일산호수공원에서 열린 꽃박람회에 다녀왔습니다",
@@ -50,18 +52,18 @@ tests = [
         "expected_public": False
     },
     {
-        "name": "4. 오세훈, 서울국제정원박람회 참석",
+        "name": "4. 오세훈 + 서울국제정원박람회 → political_context (정치맥락 우선)",
         "item": {
             "title": "오세훈, 서울국제정원박람회 참석",
             "description": "서울시장이 박람회 개막식에 참석했다",
             "author_or_channel": "",
             "canonical_url": "https://example.com/4"
         },
-        "expected_category": "confirmed",  # strong_keep_term 매칭
+        "expected_category": "political_context",
         "expected_public": True
     },
     {
-        "name": "5. 정원오 후보, 서울숲 관련 발언",
+        "name": "5. 정원오 후보, 서울숲 관련 발언 → political_context",
         "item": {
             "title": "정원오 후보, 서울숲 관련 발언",
             "description": "성동구청장 후보가 서울숲 정책을 발표했다",
@@ -72,29 +74,29 @@ tests = [
         "expected_public": True
     },
     {
-        "name": "6. 구청장, 서울국제정원박람회 참석",
+        "name": "6. 구청장 + 서울국제정원박람회 참석 → political_context (정치맥락 우선)",
         "item": {
             "title": "구청장, 서울국제정원박람회 참석",
             "description": "성동구청장이 박람회에 참석했다",
             "author_or_channel": "",
             "canonical_url": "https://example.com/6"
         },
-        "expected_category": "confirmed",  # strong_keep_term 매칭
+        "expected_category": "political_context",
         "expected_public": True
     },
     {
-        "name": "7. 포켓몬 행사에 성수동 인파 몰려",
+        "name": "7. 포켓몬 + 서울국제정원박람회 → related_issue (이슈맥락 우선)",
         "item": {
             "title": "포켓몬 행사에 성수동 인파 몰려",
             "description": "서울국제정원박람회 포켓몬 시크릿 포레스트 행사에 인파가 몰렸다",
             "author_or_channel": "",
             "canonical_url": "https://example.com/7"
         },
-        "expected_category": "confirmed",  # description에 서울국제정원박람회가 있으므로 strong_keep_term
+        "expected_category": "related_issue",
         "expected_public": True
     },
     {
-        "name": "8. 국제정원박람회 일정 정리 (장소 단서 없음)",
+        "name": "8. 국제정원박람회 일정 정리 (장소 단서 없음) → weak_match",
         "item": {
             "title": "국제정원박람회 일정 정리",
             "description": "올해 열리는 국제정원박람회 일정을 정리합니다",
@@ -105,18 +107,18 @@ tests = [
         "expected_public": True
     },
     {
-        "name": "9. 순천만국제정원박람회 후기",
+        "name": "9. 순천만국제정원박람회 후기 → comparison",
         "item": {
             "title": "순천만국제정원박람회 후기",
             "description": "순천만에서 열린 정원박람회를 다녀왔습니다",
             "author_or_channel": "",
             "canonical_url": "https://example.com/9"
         },
-        "expected_category": "comparison",  # target_terms(정원박람회) + other(순천만)
+        "expected_category": "comparison",
         "expected_public": True
     },
     {
-        "name": "10. 완전 무관 글",
+        "name": "10. 완전 무관 글 → irrelevant",
         "item": {
             "title": "주식 시장 동향 분석",
             "description": "코스피 지수가 하락했다",
@@ -127,7 +129,7 @@ tests = [
         "expected_public": False
     },
     {
-        "name": "11. 타 행사 + 서울국제정원박람회 비교",
+        "name": "11. 고양꽃박람회 vs 국제정원박람회 → comparison",
         "item": {
             "title": "고양꽃박람회 vs 국제정원박람회",
             "description": "두 행사를 비교해본다",
@@ -138,20 +140,53 @@ tests = [
         "expected_public": True
     },
     {
-        "name": "12. 포켓몬 시크릿 포레스트 단독",
+        "name": "12. 포켓몬 시크릿 포레스트 + 서울숲 → related_issue",
         "item": {
             "title": "포켓몬 시크릿 포레스트 개장",
             "description": "서울숲에서 포켓몬 행사가 열립니다",
             "author_or_channel": "",
             "canonical_url": "https://example.com/12"
         },
-        "expected_category": "related_issue",  # target_terms(서울숲, 포켓몬 시크릿 포레스트) + issue_terms(포켓몬)
+        "expected_category": "related_issue",
+        "expected_public": True
+    },
+    {
+        "name": "13. 오세훈 + 고양꽃박람회 + 서울국제정원박람회 → comparison (타행사 > 정치)",
+        "item": {
+            "title": "오세훈 시장, 서울국제정원박람회와 고양꽃박람회 비교 발언",
+            "description": "서울시장이 두 박람회를 비교했다",
+            "author_or_channel": "",
+            "canonical_url": "https://example.com/13"
+        },
+        "expected_category": "comparison",
+        "expected_public": True
+    },
+    {
+        "name": "14. 포켓몬 인파 + 오세훈 + 서울숲 → comparison(X) political(X) → related_issue? No, political > issue 순서",
+        "item": {
+            "title": "서울숲 포켓몬 인파에 오세훈 시장 현장 방문",
+            "description": "성수동 인파 사태에 시장이 현장을 찾았다",
+            "author_or_channel": "",
+            "canonical_url": "https://example.com/14"
+        },
+        "expected_category": "political_context",
+        "expected_public": True
+    },
+    {
+        "name": "15. 서울숲 정원 산책 후기 (confirmed, 정치/이슈/타행사 없음)",
+        "item": {
+            "title": "서울숲 정원 산책 후기",
+            "description": "정원박람회 기간에 서울숲을 걸었습니다",
+            "author_or_channel": "",
+            "canonical_url": "https://example.com/15"
+        },
+        "expected_category": "confirmed",
         "expected_public": True
     }
 ]
 
 print("=" * 70)
-print("검색 결과 필터링 검증 시나리오")
+print("검색 결과 필터링 검증 시나리오 (맥락 카테고리 우선 로직)")
 print("=" * 70)
 
 passed = 0

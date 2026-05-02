@@ -33,7 +33,6 @@
   "relevance_filter": {
     "enabled": true,
     "ambiguous_ai_enabled": false,
-    "minimum_confirmed_score": 2,
     "strong_keep_terms": [
       "서울국제정원박람회",
       "2026 서울국제정원박람회",
@@ -101,13 +100,6 @@
       "other_event_only",
       "irrelevant",
       "ai_irrelevant"
-    ],
-    "public_categories": [
-      "confirmed",
-      "related_issue",
-      "comparison",
-      "political_context",
-      "weak_match"
     ],
     "dedupe_against_existing": true,
     "allow_overwrite_same_report_id": true

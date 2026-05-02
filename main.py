@@ -116,9 +116,32 @@ def check_required_keys(config):
         sys.exit(1)
 
 
-def _count_by_category(items, category):
-    """특정 category의 item 수를 반환."""
-    return sum(1 for item in items if item.get("category") == category)
+def _compute_source_stats(source_items, all_source_items, exclude_categories):
+    """source별 카테고리 통계를 계산하여 dict로 반환."""
+    def _cat_count(items, cat):
+        return sum(1 for i in items if i.get("category") == cat)
+    
+    public = [i for i in source_items if i.get("category") not in exclude_categories]
+    excluded = [i for i in source_items if i.get("category") in exclude_categories]
+    
+    return {
+        "audit_total_count": len(source_items),
+        "public_count": len(public),
+        "excluded_count": len(excluded),
+        "confirmed_count": _cat_count(source_items, "confirmed"),
+        "related_issue_count": _cat_count(source_items, "related_issue"),
+        "comparison_count": _cat_count(source_items, "comparison"),
+        "political_context_count": _cat_count(source_items, "political_context"),
+        "weak_match_count": _cat_count(source_items, "weak_match"),
+        "other_event_only_count": _cat_count(source_items, "other_event_only"),
+        "irrelevant_count": _cat_count(source_items, "irrelevant"),
+        "ai_irrelevant_count": _cat_count(source_items, "ai_irrelevant"),
+        "ai_needed_count": sum(1 for i in source_items if i.get("ai_needed", False)),
+        "ai_used_count": sum(1 for i in source_items if i.get("ai_used", False)),
+        "ai_relevant_count": sum(1 for i in source_items if i.get("ai_category") == "relevant"),
+        "ai_irrelevant_result_count": sum(1 for i in source_items if i.get("ai_category") == "irrelevant"),
+        "ai_uncertain_count": sum(1 for i in source_items if i.get("ai_category") == "uncertain"),
+    }
 
 
 def save_outputs(target_date, safe_keyword, summary_data, public_items, raw_data, audit_items=None):
@@ -153,7 +176,7 @@ def save_outputs(target_date, safe_keyword, summary_data, public_items, raw_data
                     "page_no": page.get("page_no"),
                     "requested_at_kst": page.get("requested_at_kst"),
                     "response_count": count,
-                    "status_code": 200 if count >= 0 else 500, # Approximate for success
+                    "status_code": 200 if count >= 0 else 500,
                     "error_message": rd.get("error_message", "")
                 })
         pd.DataFrame(raw_stats).to_excel(writer, sheet_name="RawStats", index=False)
@@ -242,8 +265,10 @@ def print_console(target_date, keyword, summary_data, detail_data, include_detai
     
     total_deduped = 0
     for s in summary_data:
+        if s.get("source") == "total":
+            continue  # total row는 별도 출력
         label = s["source_label"]
-        deduped = s["deduped_count"]
+        deduped = s["current_run_deduped_count"]
         raw = s["raw_count"]
         collected = s["collected_count"]
         status = s["status"]
@@ -254,18 +279,20 @@ def print_console(target_date, keyword, summary_data, detail_data, include_detai
     print(f"총합{'':<11} {total_deduped}개")
     print()
     
-    # 필터링 통계 출력
-    public_count = sum(s.get("public_count", s["deduped_count"]) for s in summary_data)
-    excluded_count = sum(s.get("excluded_count", 0) for s in summary_data)
-    existing_skipped = sum(s.get("existing_duplicate_skipped_count", 0) for s in summary_data)
-    
-    if excluded_count > 0 or existing_skipped > 0:
-        print("필터링 결과:")
-        print(f"  - Public 노출: {public_count}건")
-        print(f"  - 제외: {excluded_count}건")
-        if existing_skipped > 0:
-            print(f"  - 기존 적재 중복 제외: {existing_skipped}건")
-        print()
+    # total row에서 필터링 통계 가져오기
+    total_row = next((s for s in summary_data if s.get("source") == "total"), None)
+    if total_row:
+        public_count = total_row.get("public_count", 0)
+        excluded_count = total_row.get("excluded_count", 0)
+        existing_skipped = total_row.get("existing_duplicate_skipped_count", 0)
+        
+        if excluded_count > 0 or existing_skipped > 0:
+            print("필터링 결과:")
+            print(f"  - Public 노출: {public_count}건")
+            print(f"  - 제외: {excluded_count}건")
+            if existing_skipped > 0:
+                print(f"  - 기존 적재 중복 제외: {existing_skipped}건")
+            print()
     
     print("저장 파일:")
     for path in paths:
@@ -328,6 +355,10 @@ def main():
         summary_data = []
         raw_data = []
         
+        # source별 수집 카운트를 추적할 dict
+        source_collected_counts = {}
+        source_deduped_counts = {}
+        
         # ── 1. API 수집 ──
         for source in sources:
             logger.info(f"Fetching from {source}...")
@@ -372,14 +403,17 @@ def main():
             collected_count = len(normalized_items)
             deduped_count = len(deduped_items)
             
+            source_collected_counts[source] = collected_count
+            source_deduped_counts[source] = deduped_count
+            
             summary_data.append({
                 "target_date": target_date,
                 "keyword": keyword,
                 "source": source,
                 "source_label": source_label,
                 "collected_count": collected_count,
-                "raw_count": collected_count, # raw match since we filtered by date in collector
-                "deduped_count": deduped_count,
+                "raw_count": collected_count,
+                "current_run_deduped_count": deduped_count,
                 "error_count": 1 if status == "ERROR" else 0,
                 "api_pages_called": api_pages,
                 "status": status,
@@ -391,6 +425,7 @@ def main():
         # ── 4. 기존 적재 데이터 기준 중복 제거 ──
         total_collected_count = len(all_detail_data)
         existing_duplicate_skipped_count = 0
+        skipped_by_source = {}
         
         if rf.get("dedupe_against_existing", False):
             web_data_dir = "web/public/data"
@@ -398,11 +433,11 @@ def main():
             allow_overwrite = rf.get("allow_overwrite_same_report_id", True)
             
             existing_keys = load_existing_item_keys(web_data_dir, entry_id, allow_overwrite)
-            all_detail_data, existing_duplicate_skipped_count = filter_existing_duplicates(all_detail_data, existing_keys)
+            all_detail_data, existing_duplicate_skipped_count, skipped_by_source = filter_existing_duplicates(all_detail_data, existing_keys)
             
             logger.info(f"Existing duplicate check: {existing_duplicate_skipped_count} skipped")
         
-        current_run_deduped_count = len(all_detail_data)
+        after_existing_dedupe_count = len(all_detail_data)
         
         # ── 5. 규칙 기반 relevance 분류 ──
         all_detail_data = apply_relevance_classification(all_detail_data, config)
@@ -421,56 +456,38 @@ def main():
         public_items = [item for item in all_detail_data if item.get("category") not in exclude_categories]
         audit_items = all_detail_data  # 전체 (excluded 포함)
         
-        # ── 8. summary 통계 확장 ──
-        # 카테고리별 count
-        confirmed_count = _count_by_category(all_detail_data, "confirmed")
-        related_issue_count = _count_by_category(all_detail_data, "related_issue")
-        comparison_count = _count_by_category(all_detail_data, "comparison")
-        political_context_count = _count_by_category(all_detail_data, "political_context")
-        weak_match_count = _count_by_category(all_detail_data, "weak_match")
-        other_event_only_count = _count_by_category(all_detail_data, "other_event_only")
-        irrelevant_count = _count_by_category(all_detail_data, "irrelevant")
-        ai_irrelevant_count = _count_by_category(all_detail_data, "ai_irrelevant")
-        
-        # AI 통계
-        ai_needed_count = sum(1 for item in all_detail_data if item.get("ai_needed", False))
-        ai_used_count = sum(1 for item in all_detail_data if item.get("ai_used", False))
-        ai_relevant_count = sum(1 for item in all_detail_data if item.get("ai_category") == "relevant")
-        ai_uncertain_count = sum(1 for item in all_detail_data if item.get("ai_category") == "uncertain")
-        ai_irrelevant_ai_count = sum(1 for item in all_detail_data if item.get("ai_category") == "irrelevant")
-        
-        public_count = len(public_items)
-        excluded_count = len(all_detail_data) - public_count
-        
-        # summary_data에 확장 필드 추가
-        filter_stats = {
-            "total_collected_count": total_collected_count,
-            "current_run_deduped_count": current_run_deduped_count,
-            "existing_duplicate_skipped_count": existing_duplicate_skipped_count,
-            "audit_total_count": len(audit_items),
-            "public_count": public_count,
-            "excluded_count": excluded_count,
-            "confirmed_count": confirmed_count,
-            "related_issue_count": related_issue_count,
-            "comparison_count": comparison_count,
-            "political_context_count": political_context_count,
-            "weak_match_count": weak_match_count,
-            "other_event_only_count": other_event_only_count,
-            "irrelevant_count": irrelevant_count,
-            "ai_irrelevant_count": ai_irrelevant_count,
-            "ai_needed_count": ai_needed_count,
-            "ai_used_count": ai_used_count,
-            "ai_relevant_count": ai_relevant_count,
-            "ai_irrelevant_ai_count": ai_irrelevant_ai_count,
-            "ai_uncertain_count": ai_uncertain_count
-        }
-        
+        # ── 8. summary 통계: source별 정확한 계산 ──
         for s in summary_data:
-            s.update(filter_stats)
-            s["public_count"] = len([item for item in public_items if item.get("source") == s["source"]])
-            s["excluded_count"] = len([item for item in all_detail_data 
-                                       if item.get("source") == s["source"] and item.get("category") in exclude_categories])
-            s["existing_duplicate_skipped_count"] = existing_duplicate_skipped_count
+            src = s["source"]
+            source_items = [i for i in all_detail_data if i.get("source") == src]
+            
+            # source별 existing duplicate skipped count
+            s["existing_duplicate_skipped_count"] = skipped_by_source.get(src, 0)
+            s["after_existing_dedupe_count"] = s["current_run_deduped_count"] - skipped_by_source.get(src, 0)
+            
+            # source별 카테고리/AI 통계
+            stats = _compute_source_stats(source_items, all_detail_data, exclude_categories)
+            s.update(stats)
+        
+        # ── 9. 전체 합계 row 추가 ──
+        total_stats = _compute_source_stats(all_detail_data, all_detail_data, exclude_categories)
+        total_row = {
+            "target_date": target_date,
+            "keyword": keyword,
+            "source": "total",
+            "source_label": "전체",
+            "collected_count": sum(s["collected_count"] for s in summary_data),
+            "raw_count": sum(s["raw_count"] for s in summary_data),
+            "current_run_deduped_count": total_collected_count,
+            "existing_duplicate_skipped_count": existing_duplicate_skipped_count,
+            "after_existing_dedupe_count": after_existing_dedupe_count,
+            "error_count": sum(s["error_count"] for s in summary_data),
+            "api_pages_called": sum(s["api_pages_called"] for s in summary_data),
+            "status": "OK",
+            "message": "",
+        }
+        total_row.update(total_stats)
+        summary_data.append(total_row)
         
         # Save Outputs (public_items for details, audit_items for filter_audit)
         try:

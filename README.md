@@ -62,14 +62,22 @@ python main.py --keyword "인공지능" --date 2026-05-01 --sources naver_news,y
 
 | 카테고리 | 설명 | 웹 노출 |
 |----------|------|---------|
-| `confirmed` | 서울국제정원박람회 확정 관련 | ✅ |
-| `related_issue` | 포켓몬, 인파, 교통 등 연계 이슈 | ✅ |
-| `comparison` | 서울국제정원박람회와 타 행사 비교 글 | ✅ |
-| `political_context` | 정치인/선거 맥락에서 행사 언급 | ✅ |
-| `weak_match` | 약한 매칭 (AI 검토 대상) | ✅ |
-| `other_event_only` | 타 행사 단독 글 | ❌ |
-| `irrelevant` | 무관 | ❌ |
-| `ai_irrelevant` | AI 판정 무관 | ❌ |
+| `confirmed` | **순수 행사 관련.** 정치/이슈/타행사 맥락 없이 서울국제정원박람회만 다루는 글 | ✅ |
+| `related_issue` | **행사 연계 이슈.** 포켓몬/인파/혼잡/교통/행사 중단 등 행사에서 파생된 이슈를 다루는 글 | ✅ |
+| `comparison` | **타 행사 비교.** 고양꽃박람회/순천만 등 타 행사와 서울국제정원박람회를 함께 다루는 글 | ✅ |
+| `political_context` | **정치 맥락.** 오세훈/정원오/구청장/선거/공약 등 정치 맥락에서 행사를 언급하는 글 | ✅ |
+| `weak_match` | **약한 매칭.** "국제정원박람회"만 있고 서울 장소 단서가 없는 글 (AI 검토 대상) | ✅ |
+| `other_event_only` | **타 행사 단독.** 고양꽃박람회, 순천만 등 타 행사만 다루고 본행사 관련성이 없는 글 | ❌ |
+| `irrelevant` | **무관.** 어떤 관련 키워드도 매칭되지 않는 글 | ❌ |
+| `ai_irrelevant` | **AI 판정 무관.** Gemini AI가 무관으로 판정한 글 | ❌ |
+
+> [!IMPORTANT]
+> **맥락 카테고리 우선 원칙**: 본행사 관련성이 확인된 상태에서 정치/이슈/타행사 맥락이 동시에 존재하면, **comparison > political_context > related_issue > confirmed** 순서로 분류됩니다.
+> 
+> - "오세훈 + 서울국제정원박람회" → `political_context` (confirmed가 아님)
+> - "포켓몬 인파 + 서울국제정원박람회" → `related_issue` (confirmed가 아님)
+> - "고양꽃박람회 + 서울국제정원박람회 비교" → `comparison` (confirmed가 아님)
+> - `other_event_only`, `irrelevant`, `ai_irrelevant`는 **public details에 저장되지 않고** filter_audit에만 저장됩니다.
 
 ---
 

@@ -49,7 +49,7 @@ const FilterPanel = ({ onFilterChange, categoryCounts, totalPublic, displayedCou
   const [toggles, setToggles] = useState(savedState?.toggles || {});
   const [excludeKeywords, setExcludeKeywords] = useState(savedState?.excludeKeywords || '');
   const [strongKeywordPriority, setStrongKeywordPriority] = useState(
-    savedState?.strongKeywordPriority !== undefined ? savedState.strongKeywordPriority : true
+    savedState?.strongKeywordPriority !== undefined ? savedState.strongKeywordPriority : false
   );
   const [isExpanded, setIsExpanded] = useState(false);
 
