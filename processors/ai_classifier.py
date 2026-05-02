@@ -21,25 +21,29 @@ GEMINI_BATCH_PROMPT_TEMPLATE = """당신은 '2026 서울국제정원박람회' �
    - 공식 행사명(서울국제정원박람회 등)이 명시됨
    - 서울 내 개최 장소(서울숲, 뚝섬, 성동구 등)와 '정원박람회'가 함께 언급됨
    - 서울시/오세훈 시장의 정원 도시 정책 맥락임
+   - 주차/입장료/추천/예약/가이드/코스 등 방문 정보가 서울 행사와 연결됨
 2. Irrelevant 조건:
    - 타 지역(순천, 고양, 태안, 울산 등)의 정원/꽃 박람회 단독 글
    - 도시재생, 파크골프장, 쓰레기 매립지 공원화 등 박람회와 무관한 공원 조성 글
    - 서울국제정원박람회와 명시적 연결이 없는 일반 여행/숙박/맛집 정보
    - 서울 앵커(장소/명칭)가 없고 일반적인 '정원박람회' 키워드만 있는 글
+3. Comparison 조건:
+   - 서울국제정원박람회와 타 행사(고양꽃박람회 등)가 제목/본문에서 함께 언급되거나 실제 비교되는 경우에만 해당함.
 
 [주의사항]
 - '관련 있을 수도 있음'이라는 추론은 배제하고 명시적 근거로만 판단하십시오.
-- 타 지역 행사는 서울 행사와 직접 비교/언급하는 경우에만 'relevant'(category: comparison)로 분류하십시오.
-- 애매하면 'uncertain' 또는 'irrelevant'로 분류하십시오.
+- 서울 앵커가 없고 타 지역/도시재생/파크골프장/숙박/여행성 문맥이면 반드시 irrelevant입니다.
+- 주차/입장료/추천/예약/가이드/코스는 서울 앵커가 있을 때는 정상 방문 정보로 간주하십시오.
+- 애매하면 'relevant'가 아니라 'uncertain' 또는 'irrelevant'로 답하십시오.
 
 [반환 형식]
-반드시 아래와 같은 JSON array 형식으로만 응답하십시오.
+반드시 아래와 같은 JSON array 형식으로만 응답하십시오. 다른 텍스트는 포함하지 마십시오.
 [
   {{
     "id": 0,
     "result": "relevant|irrelevant|uncertain",
     "category": "confirmed|related_issue|comparison|political_context|weak_match|irrelevant",
-    "reason": "서울 앵커 유무를 포함한 1문장 판단 근거"
+    "reason": "판단 근거 (1문장)"
   }},
   ...
 ]
@@ -50,34 +54,37 @@ GEMINI_BATCH_PROMPT_TEMPLATE = """당신은 '2026 서울국제정원박람회' �
 
 def get_gemini_api_key(config):
     """Gemini API 키를 가져온다."""
-    key = os.getenv("GEMINI_API_KEY")
-    if key and key != "YOUR_GEMINI_API_KEY":
-        return key
+    # main.py에서 config에 이미 모든 secret이 merge되어 있음
     key = config.get("gemini_api_key")
     if key and key != "YOUR_GEMINI_API_KEY":
         return key
-    secret_str = os.getenv("SECRET_JSON")
-    if secret_str:
-        try:
-            secrets = json.loads(secret_str)
-            key = secrets.get("gemini_api_key")
-            if key and key != "YOUR_GEMINI_API_KEY":
-                return key
-        except json.JSONDecodeError:
-            pass
+    
+    # Fallback to direct environment variables
+    key = os.getenv("GEMINI_API_KEY")
+    if key and key != "YOUR_GEMINI_API_KEY":
+        return key
+        
     return None
 
 
 def calculate_risk_score(item):
     """항목의 위험도/모호성 점수를 계산한다 (AI 우선순위용)."""
     score = 0
-    if item.get("category") == "weak_match": score += 5
-    if item.get("seoul_anchor_score", 0) == 0: score += 5
-    if item.get("other_event_score", 0) > 0: score += 3
-    if item.get("noise_score", 0) > 0: score += 2
+    cat = item.get("category")
+    seoul_score = item.get("seoul_anchor_score", 0)
+    other_score = item.get("other_event_score", 0)
+    noise_score = item.get("noise_score", 0)
+    
+    if cat == "weak_match": score += 10
+    if seoul_score == 0: score += 5
+    if other_score > 0: score += 5
+    if noise_score > 0: score += 3
     if item.get("source") == "naver_blog": score += 2
-    if item.get("category") in ["comparison", "related_issue"] and item.get("seoul_anchor_score", 0) < 2:
-        score += 4
+    
+    # 비교/이슈인데 서울 앵커가 약한 경우
+    if cat in ["comparison", "related_issue"] and seoul_score < 2:
+        score += 7
+        
     return score
 
 
@@ -88,7 +95,6 @@ def _call_gemini_batch(items_to_send, api_key):
     except ImportError:
         return None, "google-genai package not installed"
     
-    # AI에 전달할 컨텍스트 확장
     formatted_items = []
     for i, item in enumerate(items_to_send):
         formatted_items.append({
@@ -96,11 +102,22 @@ def _call_gemini_batch(items_to_send, api_key):
             "source": item.get("source", ""),
             "title": item.get("title", ""),
             "description": item.get("description", ""),
-            "author": item.get("author_or_channel", ""),
-            "category_before": item.get("category", ""),
+            "author_or_channel": item.get("author_or_channel", ""),
+            "canonical_url": item.get("canonical_url", ""),
+            "category_before_ai": item.get("category", ""),
+            "filter_reason": item.get("filter_reason", ""),
             "seoul_anchor_score": item.get("seoul_anchor_score", 0),
             "other_event_score": item.get("other_event_score", 0),
-            "noise_score": item.get("noise_score", 0)
+            "noise_score": item.get("noise_score", 0),
+            "issue_score": item.get("issue_score", 0),
+            "matched_official_event_terms": item.get("matched_official_event_terms", []),
+            "matched_location_anchor_terms": item.get("matched_location_anchor_terms", []),
+            "matched_program_anchor_terms": item.get("matched_program_anchor_terms", []),
+            "matched_ambiguous_event_terms": item.get("matched_ambiguous_event_terms", []),
+            "matched_other_event_terms": item.get("matched_other_event_terms", []),
+            "matched_other_event_terms_in_main_text": item.get("matched_other_event_terms_in_main_text", []),
+            "matched_noise_terms": item.get("matched_noise_terms", []),
+            "matched_issue_terms": item.get("matched_issue_terms", [])
         })
     
     items_json = json.dumps(formatted_items, ensure_ascii=False, indent=2)
@@ -133,22 +150,41 @@ def apply_ai_classification(items, config):
     
     api_key = get_gemini_api_key(config)
     if not api_key:
+        logger.warning("Gemini API key missing. Skipping AI classification.")
         return items
 
-    # AI 검토가 필요한 항목 식별
-    # 1. weak_match
-    # 2. seoul_anchor_score가 낮은데 context(issue/comparison)가 있는 경우
-    # 3. 블로그 중 모호한 항목
+    allowed_results = ["relevant", "irrelevant", "uncertain"]
+    allowed_categories = ["confirmed", "related_issue", "comparison", "political_context", "weak_match", "irrelevant"]
+
+    # AI 검토 대상 선별
     ai_candidates = []
     for item in items:
         needed = False
-        if item.get("category") == "weak_match":
-            needed = True
-        elif item.get("category") in ["comparison", "related_issue"] and item.get("seoul_anchor_score", 0) < 2:
-            needed = True
-        elif item.get("source") == "naver_blog" and item.get("seoul_anchor_score", 0) == 0 and len(item.get("matched_ambiguous_event_terms", [])) > 0:
-            needed = True
+        cat = item.get("category")
+        seoul_score = item.get("seoul_anchor_score", 0)
+        other_score = item.get("other_event_score", 0)
         
+        # 1. weak_match는 무조건 검토
+        if cat == "weak_match":
+            needed = True
+        # 2. comparison인데 타지역 점수가 높음 (진짜 비교인지 확인)
+        elif cat == "comparison" and other_score > 0:
+            needed = True
+        # 3. related_issue인데 서울 앵커가 없음
+        elif cat == "related_issue" and seoul_score == 0:
+            needed = True
+        # 4. 블로그인데 서울 앵커 없고 모호한 용어 존재
+        elif item.get("source") == "naver_blog" and seoul_score == 0 and len(item.get("matched_ambiguous_event_terms", [])) > 0:
+            needed = True
+        # 5. 비교 근거가 약한 경우 (relevance.py에서 ai_needed=True로 설정됨)
+        elif item.get("ai_needed"):
+            needed = True
+            
+        # 제외 조건: 서울 앵커가 확실하고 노이즈가 없으며 이미 확실한 카테고리인 경우 스킵
+        if seoul_score > 0 and other_score == 0 and item.get("noise_score", 0) == 0:
+            if cat in ["confirmed", "related_issue"]:
+                needed = False
+
         if needed:
             item["ai_needed"] = True
             item["risk_score"] = calculate_risk_score(item)
@@ -157,7 +193,7 @@ def apply_ai_classification(items, config):
     if not ai_candidates:
         return items
 
-    # 리스크 점수 순으로 정렬 후 상위 N건만 처리
+    # 리스크 점수 순 정렬 후 상위 N건만 처리
     max_items = rf.get("max_ai_items_per_run", 50)
     ai_candidates.sort(key=lambda x: x.get("risk_score", 0), reverse=True)
     
@@ -179,11 +215,13 @@ def apply_ai_classification(items, config):
         results, error = _call_gemini_batch(batch, api_key)
         
         if error:
+            logger.error(f"Gemini API error: {error}")
             for item in batch:
                 item["ai_used"] = False
                 item["ai_reason"] = f"api_error: {error}"
             continue
 
+        # 결과 매핑 및 검증
         for res in results:
             try:
                 idx = int(res.get("id", -1))
@@ -192,25 +230,38 @@ def apply_ai_classification(items, config):
                     ai_result = res.get("result", "uncertain")
                     ai_category = res.get("category", "weak_match")
                     
+                    # 반환값 검증
+                    if ai_result not in allowed_results:
+                        ai_result = "uncertain"
+                    if ai_category not in allowed_categories:
+                        ai_category = "weak_match"
+                        item["ai_reason_internal"] = "invalid_ai_category"
+                    
                     item["ai_used"] = True
                     item["ai_result"] = ai_result
                     item["ai_category"] = ai_category
                     item["ai_reason"] = res.get("reason", "")
                     
-                    # 2차 판별 결과에 따른 카테고리 갱신
+                    # AI 판별 결과에 따른 카테고리/상태 갱신
                     if ai_result == "irrelevant":
                         item["category"] = "ai_irrelevant"
                         item["filter_status"] = "excluded"
                         item["public_visible_default"] = False
                     elif ai_result == "relevant":
                         item["category"] = ai_category
-                        item["filter_status"] = "kept"
-                        item["public_visible_default"] = True
+                        # Category가 public 허용값이 아니면 노출 안함
+                        if ai_category in ["confirmed", "related_issue", "comparison", "political_context"]:
+                            item["filter_status"] = "kept"
+                            item["public_visible_default"] = True
+                        else:
+                            item["filter_status"] = "review"
+                            item["public_visible_default"] = False
                     else:
                         item["category"] = "weak_match"
                         item["filter_status"] = "review"
                         item["public_visible_default"] = False
-            except:
+            except Exception as e:
+                logger.warning(f"Error parsing AI result entry: {e}")
                 continue
         
         time.sleep(0.5)

@@ -53,11 +53,21 @@ def match_politician_terms(text, politician_terms):
 
 
 def _build_combined_text(item):
+    """제목, 설명, 작성자, URL을 모두 합친 텍스트 (전체 검색용)"""
     parts = [
         item.get("title", ""),
         item.get("description", ""),
         item.get("author_or_channel", ""),
         item.get("canonical_url", ""),
+    ]
+    return " ".join(parts)
+
+
+def _build_main_text(item):
+    """제목과 설명만 합친 텍스트 (엄격한 비교/판별용)"""
+    parts = [
+        item.get("title", ""),
+        item.get("description", ""),
     ]
     return " ".join(parts)
 
@@ -68,9 +78,10 @@ def classify_relevance(item, config):
     """
     rf = config.get("relevance_filter", {})
     combined_text = _build_combined_text(item)
+    main_text = _build_main_text(item)
     source = item.get("source", "")
 
-    # 항목별 매칭 수행
+    # 항목별 매칭 수행 (전체 텍스트 기준)
     matched_official = match_terms(combined_text, rf.get("official_event_terms", []))
     matched_location = match_terms(combined_text, rf.get("location_anchor_terms", []))
     matched_program = match_terms(combined_text, rf.get("program_anchor_terms", []))
@@ -81,6 +92,9 @@ def classify_relevance(item, config):
     matched_issue = match_terms(combined_text, rf.get("issue_terms", []))
     matched_politician = match_politician_terms(combined_text, rf.get("politician_terms", {}))
     has_politician = any(bool(terms) for terms in matched_politician.values())
+
+    # 타 지역 행사 매칭 (본문/제목 기준 재검증 - Comparison용)
+    matched_other_main = match_terms(main_text, rf.get("other_event_terms", []))
 
     # 점수 계산
     seoul_anchor_score = len(matched_official) + len(matched_location) + len(matched_program)
@@ -95,6 +109,7 @@ def classify_relevance(item, config):
         "matched_program_anchor_terms": matched_program,
         "matched_ambiguous_event_terms": matched_ambiguous,
         "matched_other_event_terms": matched_other,
+        "matched_other_event_terms_in_main_text": matched_other_main,
         "matched_noise_terms": matched_noise,
         "matched_political_terms": matched_political,
         "matched_issue_terms": matched_issue,
@@ -133,7 +148,6 @@ def classify_relevance(item, config):
 
     # 노이즈 기반 제외 (서울 앵커가 없을 때)
     if noise_score > 0 and seoul_anchor_score == 0:
-        # 뉴스인 경우 weak_match로 두어 AI 검토 기회 부여, 블로그는 즉시 제외
         if source == "naver_news":
             result["category"] = "weak_match"
             result["filter_status"] = "review"
@@ -144,27 +158,30 @@ def classify_relevance(item, config):
             result["filter_reason"] = "noise_score_positive_no_seoul_anchor"
         return result
 
-    # 서울 앵커가 있는 경우
+    # 서울 앵커가 있는 경우 (우선순위: political -> comparison -> issue -> confirmed)
     if seoul_anchor_score > 0:
         result["filter_status"] = "kept"
         result["public_visible_default"] = True
         
-        # 정치 맥락
+        # 1) 정치 맥락
         if matched_political or has_politician:
             result["category"] = "political_context"
             result["filter_reason"] = "seoul_anchor_with_political"
-        # 이슈/인파 맥락
+            
+        # 2) 타 지역과 비교 맥락 (본문/제목에 타 행사가 언급되어야 함)
+        elif seoul_anchor_score > 0 and len(matched_other_main) > 0:
+            result["category"] = "comparison"
+            result["filter_reason"] = "seoul_anchor_with_other_event_in_main"
+            # 비교 근거가 약하면 AI 검토 요청
+            if len(matched_other_main) == 1 and len(matched_official) == 0:
+                result["ai_needed"] = True
+                
+        # 3) 이슈/인파 맥락
         elif matched_issue:
             result["category"] = "related_issue"
             result["filter_reason"] = "seoul_anchor_with_issue"
-        # 타 지역과 비교 맥락
-        elif other_event_score > 0:
-            result["category"] = "comparison"
-            result["filter_reason"] = "seoul_anchor_with_other_event"
-            # 비교 근거가 약하면 AI 검토 요청
-            if other_event_score == 1 and len(matched_official) == 0:
-                result["ai_needed"] = True
-        # 확증된 서울 행사
+            
+        # 4) 확증된 서울 행사
         else:
             result["category"] = "confirmed"
             result["filter_reason"] = "seoul_anchor_confirmed"
