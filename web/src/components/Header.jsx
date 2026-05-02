@@ -1,13 +1,39 @@
 import React from 'react';
 
-const Header = ({ datasets, selectedId, onSelect }) => {
+function formatKSTTime(isoString) {
+  if (!isoString) return '';
+  try {
+    const date = new Date(isoString);
+    // KST = UTC+9
+    const kstOptions = {
+      timeZone: 'Asia/Seoul',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    };
+    return date.toLocaleString('ko-KR', kstOptions);
+  } catch {
+    return isoString;
+  }
+}
+
+const Header = ({ datasets, selectedId, onSelect, lastScanTime }) => {
   return (
     <header className="header glass animate-fade-in">
       <div className="header-top">
         <div className="header-title">
           <h1>Dashboard</h1>
-          <p>Public Opinion & PR Monitoring</p>
+          <p>Public Opinion &amp; PR Monitoring</p>
         </div>
+        {lastScanTime && (
+          <div className="last-scan">
+            <span className="scan-dot"></span>
+            <span className="scan-text">최종 스캔: {formatKSTTime(lastScanTime)}</span>
+          </div>
+        )}
       </div>
       
       <div className="header-controls">

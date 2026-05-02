@@ -125,6 +125,7 @@ function App() {
   });
   const [showAudit, setShowAudit] = useState(false);
   const [auditFileUrl, setAuditFileUrl] = useState('');
+  const [lastScanTime, setLastScanTime] = useState('');
 
   // Fetch available datasets
   useEffect(() => {
@@ -163,6 +164,7 @@ function App() {
           setSummary(summaryData);
           setDetails(detailsData);
           setAuditFileUrl(dataset.filter_audit_file || '');
+          setLastScanTime(dataset.generated_at || '');
           setLoading(false);
         })
         .catch(err => {
@@ -198,7 +200,8 @@ function App() {
       <Header 
         datasets={datasets} 
         selectedId={selectedId} 
-        onSelect={setSelectedId} 
+        onSelect={setSelectedId}
+        lastScanTime={lastScanTime}
       />
       
       {loading ? (
