@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+
+const EXCLUDED_CATEGORIES = ['other_event_only', 'irrelevant', 'ai_irrelevant'];
 
 const AuditPanel = ({ auditFileUrl, onClose }) => {
   const [auditData, setAuditData] = useState(null);
@@ -7,26 +9,23 @@ const AuditPanel = ({ auditFileUrl, onClose }) => {
 
   useEffect(() => {
     if (!auditFileUrl) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
-    
+
     fetch(auditFileUrl)
       .then(res => {
         if (!res.ok) throw new Error('Audit file not found');
         return res.json();
       })
       .then(data => {
-        // filter_status = excluded 또는 category in [other_event_only, irrelevant, ai_irrelevant]
-        const excludedItems = data.filter(item => 
-          item.filter_status === 'excluded' ||
-          ['other_event_only', 'irrelevant', 'ai_irrelevant'].includes(item.category)
-        );
+        const excludedItems = data.filter(item => EXCLUDED_CATEGORIES.includes(item.category));
         setAuditData(excludedItems);
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
-        setError('제외 후보 데이터를 불러올 수 없습니다.');
+        setError('제외 후보 데이터를 불러오지 못했습니다.');
         setLoading(false);
       });
   }, [auditFileUrl]);
@@ -35,18 +34,18 @@ const AuditPanel = ({ auditFileUrl, onClose }) => {
 
   const getCategoryBadgeClass = (category) => {
     const map = {
-      'other_event_only': 'badge-other-event',
-      'irrelevant': 'badge-irrelevant',
-      'ai_irrelevant': 'badge-ai-irrelevant'
+      other_event_only: 'badge-other-event',
+      irrelevant: 'badge-irrelevant',
+      ai_irrelevant: 'badge-ai-irrelevant'
     };
     return map[category] || 'badge-default';
   };
 
   const getCategoryLabel = (category) => {
     const map = {
-      'other_event_only': '타 행사',
-      'irrelevant': '무관',
-      'ai_irrelevant': 'AI 무관'
+      other_event_only: '타 행사 단독',
+      irrelevant: '무관',
+      ai_irrelevant: 'AI 무관'
     };
     return map[category] || category;
   };
@@ -55,8 +54,8 @@ const AuditPanel = ({ auditFileUrl, onClose }) => {
     <div className="audit-overlay" onClick={onClose}>
       <div className="audit-modal glass" onClick={e => e.stopPropagation()}>
         <div className="audit-header">
-          <h3>🔍 제외 후보 검수</h3>
-          <button className="audit-close-btn" onClick={onClose}>✕</button>
+          <h3>제외 후보 검수</h3>
+          <button className="audit-close-btn" onClick={onClose}>닫기</button>
         </div>
 
         {loading && <div className="audit-loading">Loading...</div>}
@@ -65,7 +64,7 @@ const AuditPanel = ({ auditFileUrl, onClose }) => {
         {auditData && (
           <>
             <div className="audit-summary">
-              <span>총 {auditData.length}건 제외됨</span>
+              <span>총 {auditData.length}건 제외 후보</span>
             </div>
 
             <div className="audit-list">
@@ -78,15 +77,15 @@ const AuditPanel = ({ auditFileUrl, onClose }) => {
                     <span className="audit-source">{item.source_label}</span>
                   </div>
 
-                  <a 
-                    href={item.canonical_url} 
-                    target="_blank" 
+                  <a
+                    href={item.canonical_url}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="audit-item-title"
                   >
                     {item.title}
                   </a>
-                  
+
                   <p className="audit-item-desc">{item.description}</p>
 
                   <div className="audit-meta-grid">
@@ -97,14 +96,14 @@ const AuditPanel = ({ auditFileUrl, onClose }) => {
 
                     {item.matched_target_terms && item.matched_target_terms.length > 0 && (
                       <div className="audit-meta-item">
-                        <span className="audit-meta-label">매칭 target</span>
+                        <span className="audit-meta-label">대상 매칭</span>
                         <span className="audit-meta-value">{item.matched_target_terms.join(', ')}</span>
                       </div>
                     )}
 
                     {item.matched_other_event_terms && item.matched_other_event_terms.length > 0 && (
                       <div className="audit-meta-item">
-                        <span className="audit-meta-label">매칭 타 행사</span>
+                        <span className="audit-meta-label">타 행사</span>
                         <span className="audit-meta-value">{item.matched_other_event_terms.join(', ')}</span>
                       </div>
                     )}
@@ -112,7 +111,7 @@ const AuditPanel = ({ auditFileUrl, onClose }) => {
                     {item.ai_used && (
                       <div className="audit-meta-item">
                         <span className="audit-meta-label">AI 판별</span>
-                        <span className="audit-meta-value">{item.ai_category} — {item.ai_reason}</span>
+                        <span className="audit-meta-value">{item.ai_category} - {item.ai_reason}</span>
                       </div>
                     )}
                   </div>

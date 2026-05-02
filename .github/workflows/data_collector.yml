@@ -17,17 +17,24 @@ on:
         required: false
         default: 'today'
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   collect-data:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
+        # v4 is kept intentionally; Node.js deprecation warnings from GitHub-hosted
+        # actions should be resolved by upstream action releases.
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
+        # v5 is current for this workflow and remains compatible with Python 3.11.
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -55,9 +62,24 @@ jobs:
           SECRET_JSON: ${{ secrets.SECRET_JSON }}
         run: python main.py --date ${{ steps.date_opt.outputs.DATE_OPTION }}
 
+      - name: Upload Run Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gjb-run-${{ github.run_id }}
+          path: |
+            outputs/**
+            logs/**
+          if-no-files-found: ignore
+
       - name: Commit and Push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add web/public/data/ outputs/
-          git diff --cached --quiet || (git commit -m "Auto-update collected data $(TZ=Asia/Seoul date +'%Y-%m-%d %H:%M KST')" && git push)
+          git add web/public/data/
+          if git diff --cached --quiet; then
+            echo "No web data changes to commit."
+            exit 0
+          fi
+          git commit -m "Auto-update collected web data $(TZ=Asia/Seoul date +'%Y-%m-%d %H:%M KST')"
+          git pull --rebase origin main
+          git push origin main || (git pull --rebase origin main && git push origin main)

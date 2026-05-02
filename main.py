@@ -116,17 +116,17 @@ def check_required_keys(config):
         sys.exit(1)
 
 
-def _compute_source_stats(source_items, all_source_items, exclude_categories):
+def _compute_source_stats(source_items, exclude_categories):
     """source별 카테고리 통계를 계산하여 dict로 반환."""
     def _cat_count(items, cat):
         return sum(1 for i in items if i.get("category") == cat)
     
-    public = [i for i in source_items if i.get("category") not in exclude_categories]
+    source_public_items = [i for i in source_items if i.get("category") not in exclude_categories]
     excluded = [i for i in source_items if i.get("category") in exclude_categories]
     
     return {
         "audit_total_count": len(source_items),
-        "public_count": len(public),
+        "public_count": len(source_public_items),
         "excluded_count": len(excluded),
         "confirmed_count": _cat_count(source_items, "confirmed"),
         "related_issue_count": _cat_count(source_items, "related_issue"),
@@ -466,17 +466,18 @@ def main():
             s["after_existing_dedupe_count"] = s["current_run_deduped_count"] - skipped_by_source.get(src, 0)
             
             # source별 카테고리/AI 통계
-            stats = _compute_source_stats(source_items, all_detail_data, exclude_categories)
+            stats = _compute_source_stats(source_items, exclude_categories)
             s.update(stats)
         
         # ── 9. 전체 합계 row 추가 ──
-        total_stats = _compute_source_stats(all_detail_data, all_detail_data, exclude_categories)
+        total_stats = _compute_source_stats(all_detail_data, exclude_categories)
         total_row = {
             "target_date": target_date,
             "keyword": keyword,
             "source": "total",
             "source_label": "전체",
             "collected_count": sum(s["collected_count"] for s in summary_data),
+            "total_collected_count": sum(s["collected_count"] for s in summary_data),
             "raw_count": sum(s["raw_count"] for s in summary_data),
             "current_run_deduped_count": total_collected_count,
             "existing_duplicate_skipped_count": existing_duplicate_skipped_count,

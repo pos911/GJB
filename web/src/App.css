@@ -139,11 +139,25 @@
   margin-bottom: 0.4rem;
 }
 
+.stat-value-label {
+  font-size: 0.72rem;
+  color: var(--accent-color);
+  font-weight: 600;
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+}
+
 .stat-sub {
   font-size: 0.8rem;
   color: var(--text-secondary);
   display: flex;
   justify-content: space-between;
+}
+
+.stat-sub-stack {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.15rem;
 }
 
 .stat-sub span.success {

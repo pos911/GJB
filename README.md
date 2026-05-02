@@ -208,3 +208,45 @@ Cron이나 스케줄러에 등록하여 일일 단위로 실행할 수 있습니
 1. **API 키 오류**: `config.json`의 키가 유효한지 확인합니다. 네이버 `401`/`403`, YouTube `keyInvalid` 등의 오류는 키 문제일 확률이 높습니다.
 2. **할당량 초과**: 네이버 `429`, YouTube `quotaExceeded`가 발생하면 일일 호출 횟수를 초과한 것입니다. 다음 날까지 대기하거나 할당량을 증설해야 합니다.
 3. **상세 로그 확인**: 문제 발생 시 `logs/{target_date}_{keyword}_run.log` 파일을 열어 구체적인 에러 메시지와 스택 트레이스를 확인하세요.
+
+---
+
+## 운영 메모: Public count, 화면 표시, artifact
+
+### Public 노출 count와 현재 표시 count
+
+웹 상단 Summary Card의 큰 숫자는 **Public 노출** 기준입니다. 즉 수집/중복 제거/관련도 분류 파이프라인을 통과해 `*_details.json`에 저장된 건수입니다.
+
+반면 FilterPanel의 **현재 표시** 숫자는 사용자가 웹에서 카테고리, 포켓몬 숨기기, 정치인 숨기기, 직접 제외 키워드 같은 토글을 적용한 뒤 실제 화면에 남아 있는 건수입니다. 웹 토글은 저장된 데이터를 삭제하거나 재분류하지 않고, public details 안에서 화면 표시만 제어합니다.
+
+### public details와 filter_audit
+
+`other_event_only`, `irrelevant`, `ai_irrelevant`는 public details에 저장하지 않습니다. 이 항목들은 `*_filter_audit.json`에만 남겨서 제외 후보 검수 화면에서 확인합니다.
+
+`confirmed`, `related_issue`, `comparison`, `political_context`, `weak_match`는 기본 public 노출 대상입니다. 단, 웹 토글을 켜면 public details 안에서도 화면 표시가 일시적으로 숨겨질 수 있습니다.
+
+### GitHub Actions 산출물 정책
+
+GitHub Actions 자동 실행은 Vercel 화면에 필요한 `web/public/data/*.json`만 레포에 커밋합니다. `outputs/`와 `logs/`는 Git 레포에 커밋하지 않고, Actions artifact로 업로드합니다.
+
+artifact 이름은 `gjb-run-${{ github.run_id }}` 형식이며 포함 대상은 다음과 같습니다.
+
+```text
+outputs/**
+logs/**
+```
+
+Actions 실행 결과는 GitHub 저장소의 **Actions** 탭에서 해당 workflow run을 열어 확인합니다. 수집 로그와 Excel/CSV/원본 JSON 산출물은 run 하단의 Artifacts 영역에서 내려받아 검수할 수 있습니다.
+
+### 자동 실행 확인 순서
+
+1. GitHub Actions의 `Data Collector Pipeline` run이 성공했는지 확인합니다.
+2. `Run Collector` 단계에서 수집 결과와 저장 경로가 출력되는지 확인합니다.
+3. `Commit and Push` 단계에서 `web/public/data/` 변경분만 commit되는지 확인합니다.
+4. `outputs/`와 `logs/`가 `gjb-run-${{ github.run_id }}` artifact에 포함되는지 확인합니다.
+5. Vercel 배포 후 웹이 최신 `web/public/data/index.json`을 읽는지 확인합니다.
+6. 웹의 `제외 후보 보기`에서 `other_event_only`, `irrelevant`, `ai_irrelevant`만 표시되는지 확인합니다.
+
+### GitHub Actions Node.js warning
+
+현재 workflow는 `actions/checkout@v4`, `actions/setup-python@v5`, `actions/upload-artifact@v4`를 사용합니다. GitHub-hosted action 내부 런타임에 대한 Node.js deprecation warning이 보일 수 있으나, 이는 현재 수집 실패의 직접 원인이 아닙니다. upstream action의 최신 major가 필요한 시점에 별도로 갱신합니다.
