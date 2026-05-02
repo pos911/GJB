@@ -8,7 +8,6 @@ secret.json
 
 # Outputs & Logs
 logs/
-outputs/
 
 # Web App
 web/node_modules/
