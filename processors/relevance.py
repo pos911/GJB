@@ -9,40 +9,44 @@ import html
 import re
 
 
-def normalize_text(text):
+def normalize_text(text, remove_all_spaces=False):
     """Normalize text for case-insensitive substring matching."""
     if not text:
         return ""
     text = html.unescape(text)
     text = re.sub(r"<[^>]+>", "", text)
     text = text.replace("\xa0", " ").replace("\u3000", " ").replace("\t", " ")
-    text = re.sub(r"\s+", " ", text).strip()
-    return text.lower()
+    if remove_all_spaces:
+        text = re.sub(r"\s+", "", text)
+    else:
+        text = re.sub(r"\s+", " ", text)
+    return text.lower().strip()
 
 
 def match_terms(text, terms):
-    """Return configured terms contained in text."""
+    """Return configured terms contained in text (space-insensitive)."""
     if not text or not terms:
         return []
-    normalized = normalize_text(text)
+    # 공백 제거 버전을 사용하여 매칭률 향상
+    normalized = normalize_text(text, remove_all_spaces=True)
     matched = []
     for term in terms:
-        normalized_term = normalize_text(term)
+        normalized_term = normalize_text(term, remove_all_spaces=True)
         if normalized_term and normalized_term in normalized:
             matched.append(term)
     return matched
 
 
 def match_politician_terms(text, politician_terms):
-    """Return politician term matches grouped by configured key."""
+    """Return politician term matches grouped by configured key (space-insensitive)."""
     if not text or not politician_terms:
         return {}
-    normalized = normalize_text(text)
+    normalized = normalize_text(text, remove_all_spaces=True)
     result = {}
     for key, terms in politician_terms.items():
         matched = []
         for term in terms:
-            normalized_term = normalize_text(term)
+            normalized_term = normalize_text(term, remove_all_spaces=True)
             if normalized_term and normalized_term in normalized:
                 matched.append(term)
         result[key] = matched
