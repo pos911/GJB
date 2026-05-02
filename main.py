@@ -1,540 +1,168 @@
 import os
-import sys
 import json
-import argparse
 import logging
-from datetime import datetime, timedelta
-import pandas as pd
-import re
-import pytz
-
-KST = pytz.timezone('Asia/Seoul')
-
+import argparse
+from datetime import datetime
 from collectors.naver import fetch_naver_news, fetch_naver_blog
 from collectors.youtube import fetch_youtube_videos
 from processors.normalize import normalize_data
 from processors.dedupe import deduplicate
 from processors.relevance import apply_relevance_classification
 from processors.ai_classifier import apply_ai_classification
-from processors.existing_dedupe import load_existing_item_keys, filter_existing_duplicates
 
-def setup_directories():
-    os.makedirs("outputs", exist_ok=True)
-    os.makedirs("logs", exist_ok=True)
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
-def setup_logging(target_date, keyword):
-    safe_keyword = re.sub(r'[^a-zA-Z0-9가-힣]', '_', keyword)
-    log_filename = f"logs/{target_date}_{safe_keyword}_run.log"
-    
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    
-    # Remove existing handlers
-    if logger.hasHandlers():
-        logger.handlers.clear()
-        
-    fh = logging.FileHandler(log_filename, encoding='utf-8')
-    fh.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    # 로그 시간을 KST로 강제
-    formatter.converter = lambda *args: datetime.now(KST).timetuple()
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
-    
-    return logger, safe_keyword
-
-def load_config(config_path):
-    config = {}
-    if os.path.exists(config_path):
-        with open(config_path, 'r', encoding='utf-8') as f:
-            config = json.load(f)
-            
-    # Load secrets
-    secret_str = os.getenv("SECRET_JSON")
-    if secret_str:
-        try:
-            secrets = json.loads(secret_str)
-            config.update(secrets)
-        except json.JSONDecodeError:
-            print("오류: SECRET_JSON 환경변수가 올바른 JSON 포맷이 아닙니다.")
-    elif os.path.exists("secret.json"):
-        with open("secret.json", 'r', encoding='utf-8') as f:
+def load_config(config_path='config.json', secret_path='secret.json'):
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
+    if os.path.exists(secret_path):
+        with open(secret_path, 'r', encoding='utf-8') as f:
             secrets = json.load(f)
             config.update(secrets)
-            
     return config
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Multi-channel PR/Public Opinion Data Collector")
-    parser.add_argument("--config", type=str, default="config.json", help="Path to config file")
-    parser.add_argument("--date", type=str, help="Target date in YYYY-MM-DD KST")
-    parser.add_argument("--keyword", type=str, help="Search keyword")
-    parser.add_argument("--sources", type=str, help="Comma-separated sources (naver_news,naver_blog,youtube)")
-    parser.add_argument("--max-pages", type=int, help="Max pages to fetch")
-    
-    # Mutually exclusive group for detail
-    detail_group = parser.add_mutually_exclusive_group()
-    detail_group.add_argument("--detail", action="store_true", help="Print detailed list to console")
-    detail_group.add_argument("--no-detail", action="store_false", dest="detail", help="Do not print detailed list")
-    parser.set_defaults(detail=None)
-    return parser.parse_args()
+def apply_safety_gate(items, config):
+    """
+    Gemini 판별 결과 이후 최종 검증 단계.
+    AI가 관련 있다고 해도 명백한 노이즈나 서울 앵커 부재 시 차단한다.
+    """
+    rf = config.get("relevance_filter", {})
+    if not rf.get("safety_gate_enabled", True):
+        return items
 
+    for item in items:
+        if item.get("filter_status") == "excluded":
+            continue
 
-def merge_config(file_config, args):
-    config = file_config.copy()
-    now_kst = datetime.now(KST)
-    
-    date_val = args.date if args.date else file_config.get("target_date")
-    if date_val == "today":
-        config["target_date"] = now_kst.strftime("%Y-%m-%d")
-    elif date_val == "yesterday":
-        config["target_date"] = (now_kst - timedelta(days=1)).strftime("%Y-%m-%d")
-    else:
-        config["target_date"] = date_val
+        seoul_score = item.get("seoul_anchor_score", 0)
+        other_score = item.get("other_event_score", 0)
+        noise_score = item.get("noise_score", 0)
+        source = item.get("source", "")
+        ai_result = item.get("ai_result", "")
+        
+        gate_reason = None
+        
+        if source == "naver_blog" and seoul_score == 0:
+            gate_reason = "safety_gate:blog_no_seoul_anchor"
+        elif seoul_score == 0 and (other_score > 0 or noise_score > 0):
+            gate_reason = "safety_gate:no_seoul_anchor_with_noise_or_other"
+        elif item.get("ai_needed") and (not item.get("ai_used") or ai_result != "relevant"):
+            gate_reason = "safety_gate:ai_unverified_or_uncertain"
 
-    if args.keyword:
-        config["keywords"] = [args.keyword]
-    if args.sources:
-        config["sources"] = [s.strip() for s in args.sources.split(",")]
-    if args.max_pages is not None:
-        if "max_pages" not in config:
-            config["max_pages"] = {}
-        for src in ["naver_news", "naver_blog", "youtube"]:
-            config["max_pages"][src] = args.max_pages
-            
-    if args.detail is not None:
-        config["include_detail_list"] = args.detail
-        
-    return config
+        if gate_reason:
+            item["safety_gate_reason"] = gate_reason
+            item["filter_status"] = "excluded"
+            item["public_visible_default"] = False
+            if ai_result == "relevant":
+                item["category"] = "ai_irrelevant"
 
-def check_required_keys(config):
-    if not config.get("naver_client_id") or not config.get("naver_client_secret"):
-        print("오류: 네이버 API 키(naver_client_id, naver_client_secret)가 secret.json 또는 SECRET_JSON에 설정되지 않았습니다.")
-        sys.exit(1)
-    if "youtube" in config.get("sources", []) and not config.get("youtube_api_key"):
-        print("오류: YouTube API 키(youtube_api_key)가 secret.json 또는 SECRET_JSON에 설정되지 않았습니다.")
-        sys.exit(1)
-
-
-def _compute_source_stats(source_items, exclude_categories):
-    """source별 카테고리 통계를 계산하여 dict로 반환."""
-    def _cat_count(items, cat):
-        return sum(1 for i in items if i.get("category") == cat)
-    
-    source_public_items = [i for i in source_items if i.get("category") not in exclude_categories]
-    excluded = [i for i in source_items if i.get("category") in exclude_categories]
-    
-    return {
-        "audit_total_count": len(source_items),
-        "public_count": len(source_public_items),
-        "excluded_count": len(excluded),
-        "confirmed_count": _cat_count(source_items, "confirmed"),
-        "related_issue_count": _cat_count(source_items, "related_issue"),
-        "comparison_count": _cat_count(source_items, "comparison"),
-        "political_context_count": _cat_count(source_items, "political_context"),
-        "weak_match_count": _cat_count(source_items, "weak_match"),
-        "other_event_only_count": _cat_count(source_items, "other_event_only"),
-        "irrelevant_count": _cat_count(source_items, "irrelevant"),
-        "ai_irrelevant_count": _cat_count(source_items, "ai_irrelevant"),
-        "ai_needed_count": sum(1 for i in source_items if i.get("ai_needed", False)),
-        "ai_called_count": sum(1 for i in source_items if i.get("ai_used", False) or i.get("ai_reason")),
-        "ai_used_count": sum(1 for i in source_items if i.get("ai_used", False)),
-        "ai_relevant_count": sum(1 for i in source_items if i.get("ai_result") == "relevant"),
-        "ai_irrelevant_result_count": sum(1 for i in source_items if i.get("ai_result") == "irrelevant" or i.get("ai_category") == "ai_irrelevant"),
-        "ai_uncertain_count": sum(1 for i in source_items if i.get("ai_result") == "uncertain"),
-    }
-
-
-def save_outputs(target_date, safe_keyword, summary_data, public_items, raw_data, audit_items=None):
-    base_prefix = f"outputs/{target_date}_{safe_keyword}"
-    web_data_dir = "web/public/data"
-    os.makedirs(web_data_dir, exist_ok=True)
-    web_prefix = f"{web_data_dir}/{target_date}_{safe_keyword}"
-    
-    summary_df = pd.DataFrame(summary_data)
-    
-    # public_items에서 CSV/Excel용 데이터 구성
-    detail_data = public_items
-    detail_df = pd.DataFrame(detail_data)
-    
-    # 1. xlsx
-    xlsx_path = f"{base_prefix}_summary.xlsx"
-    with pd.ExcelWriter(xlsx_path) as writer:
-        summary_df.to_excel(writer, sheet_name="Summary", index=False)
-        detail_df.to_excel(writer, sheet_name="Details", index=False)
-        
-        # Build raw stats
-        raw_stats = []
-        for rd in raw_data:
-            source = rd.get("source")
-            keyword = rd.get("keyword")
-            for page in rd.get("pages", []):
-                resp = page.get("response", {})
-                count = len(resp.get("items", [])) if isinstance(resp, dict) else 0
-                raw_stats.append({
-                    "source": source,
-                    "keyword": keyword,
-                    "page_no": page.get("page_no"),
-                    "requested_at_kst": page.get("requested_at_kst"),
-                    "response_count": count,
-                    "status_code": 200 if count >= 0 else 500,
-                    "error_message": rd.get("error_message", "")
-                })
-        pd.DataFrame(raw_stats).to_excel(writer, sheet_name="RawStats", index=False)
-        
-    # 2. csv (public items only)
-    summary_csv_path = f"{base_prefix}_summary.csv"
-    summary_df.to_csv(summary_csv_path, index=False, encoding="utf-8-sig")
-    
-    detail_csv_path = f"{base_prefix}_details.csv"
-    detail_df.to_csv(detail_csv_path, index=False, encoding="utf-8-sig")
-    
-    # 3. json (public items only)
-    detail_json_path = f"{base_prefix}_details.json"
-    with open(detail_json_path, 'w', encoding='utf-8') as f:
-        json.dump(detail_data, f, ensure_ascii=False, indent=2)
-        
-    raw_json_path = f"{base_prefix}_raw.json"
-    with open(raw_json_path, 'w', encoding='utf-8') as f:
-        json.dump(raw_data, f, ensure_ascii=False, indent=2)
-    
-    # 4. filter_audit (all items including excluded)
-    if audit_items is not None:
-        audit_json_path = f"{base_prefix}_filter_audit.json"
-        with open(audit_json_path, 'w', encoding='utf-8') as f:
-            json.dump(audit_items, f, ensure_ascii=False, indent=2)
-        
-        web_audit_json_path = f"{web_prefix}_filter_audit.json"
-        with open(web_audit_json_path, 'w', encoding='utf-8') as f:
-            json.dump(audit_items, f, ensure_ascii=False, indent=2)
-        
-    # 5. Web Data Export
-    summary_json_path = f"{web_prefix}_summary.json"
-    with open(summary_json_path, 'w', encoding='utf-8') as f:
-        json.dump(summary_data, f, ensure_ascii=False, indent=2)
-        
-    web_detail_json_path = f"{web_prefix}_details.json"
-    with open(web_detail_json_path, 'w', encoding='utf-8') as f:
-        json.dump(detail_data, f, ensure_ascii=False, indent=2)
-        
-    # Update index.json
-    index_path = f"{web_data_dir}/index.json"
-    index_data = []
-    if os.path.exists(index_path):
-        try:
-            with open(index_path, 'r', encoding='utf-8') as f:
-                index_data = json.load(f)
-        except:
-            pass
-            
-    # Check if entry already exists and update
-    entry_id = f"{target_date}_{safe_keyword}"
-    existing = next((item for item in index_data if item["id"] == entry_id), None)
-    
-    entry_obj = {
-        "id": entry_id,
-        "target_date": target_date,
-        "keyword": safe_keyword,
-        "summary_file": f"/data/{entry_id}_summary.json",
-        "details_file": f"/data/{entry_id}_details.json",
-        "filter_audit_file": f"/data/{entry_id}_filter_audit.json" if audit_items is not None else "",
-        "generated_at": datetime.now(KST).isoformat()
-    }
-    
-    if not existing:
-        index_data.append(entry_obj)
-    else:
-        existing.update(entry_obj)
-        
-    # Sort descending by date
-    index_data.sort(key=lambda x: x["target_date"], reverse=True)
-    
-    with open(index_path, 'w', encoding='utf-8') as f:
-        json.dump(index_data, f, ensure_ascii=False, indent=2)
-        
-    return xlsx_path, detail_csv_path, detail_json_path, raw_json_path
-
-def print_console(target_date, keyword, summary_data, detail_data, include_detail_list, paths):
-    print("=" * 50)
-    print("다채널 홍보/여론 데이터 수집 결과")
-    print(f"수집 기준일: {target_date} KST")
-    print(f"검색어: {keyword}")
-    print("=" * 50)
-    print()
-    print(f"{'영역':<15} {'수집 건수':<10} {'원천 건수':<10} {'중복 제거':<10} {'상태'}")
-    print("-" * 50)
-    
-    total_deduped = 0
-    for s in summary_data:
-        if s.get("source") == "total":
-            continue  # total row는 별도 출력
-        label = s["source_label"]
-        deduped = s["current_run_deduped_count"]
-        raw = s["raw_count"]
-        collected = s["collected_count"]
-        status = s["status"]
-        print(f"{label:<15} {collected:<10} {raw:<10} {collected - deduped:<10} {status}")
-        total_deduped += deduped
-        
-    print("-" * 50)
-    print(f"총합{'':<11} {total_deduped}개")
-    print()
-    
-    # total row에서 필터링 통계 가져오기
-    total_row = next((s for s in summary_data if s.get("source") == "total"), None)
-    if total_row:
-        public_count = total_row.get("public_count", 0)
-        excluded_count = total_row.get("excluded_count", 0)
-        existing_skipped = total_row.get("existing_duplicate_skipped_count", 0)
-        
-        if excluded_count > 0 or existing_skipped > 0:
-            print("필터링 결과:")
-            print(f"  - Public 노출: {public_count}건")
-            print(f"  - 제외: {excluded_count}건")
-            if existing_skipped > 0:
-                print(f"  - 기존 적재 중복 제외: {existing_skipped}건")
-            print()
-            
-        if total_row.get("ai_needed_count", 0) > 0:
-            print("AI 검토 결과:")
-            print(f"  - AI 검토대상: {total_row.get('ai_needed_count', 0)}건")
-            print(f"  - AI 호출: {total_row.get('ai_called_count', 0)}건")
-            print(f"  - AI 관련 있음: {total_row.get('ai_relevant_count', 0)}건")
-            print(f"  - AI 무관 제외: {total_row.get('ai_irrelevant_result_count', 0)}건")
-            print(f"  - AI 판단불가: {total_row.get('ai_uncertain_count', 0)}건")
-            print()
-    
-    print("저장 파일:")
-    for path in paths:
-        print(f"- {path}")
-    print()
-    
-    if include_detail_list:
-        print("상세 리스트 출력 옵션: 활성화됨\n")
-        sources = {"naver_news": "[네이버 뉴스]", "naver_blog": "[네이버 블로그]", "youtube": "[유튜브]"}
-        
-        for src_key, src_title in sources.items():
-            print(src_title)
-            items = [item for item in detail_data if item["source"] == src_key]
-            for idx, item in enumerate(items, 1):
-                title = item["title"]
-                url = item["canonical_url"]
-                category = item.get("category", "")
-                category_badge = f" [{category}]" if category else ""
-                
-                if src_key == "naver_news":
-                    date_str = item["published_at_kst"]
-                    print(f"{idx}. {title}{category_badge}\n   - 일시: {date_str}\n   - 링크: {url}")
-                elif src_key == "naver_blog":
-                    date_str = item["published_date_kst"]
-                    author = item["author_or_channel"]
-                    print(f"{idx}. {title}{category_badge}\n   - 작성자: {author}\n   - 일시: {date_str}\n   - 링크: {url}")
-                elif src_key == "youtube":
-                    date_str = item["published_at_kst"]
-                    channel = item["author_or_channel"]
-                    print(f"{idx}. {title}{category_badge}\n   - 채널: {channel}\n   - 일시: {date_str}\n   - 링크: {url}")
-            print()
-    else:
-        print("상세 리스트 출력 옵션: 파일 저장 경로만 출력 (비활성화됨)\n")
+    return items
 
 def main():
-    if sys.stdout.encoding.lower() != 'utf-8':
-        sys.stdout.reconfigure(encoding='utf-8')
-    setup_directories()
-    args = parse_args()
-    file_config = load_config(args.config)
-    config = merge_config(file_config, args)
+    parser = argparse.ArgumentParser(description='GJB Data Collector Pipeline')
+    parser.add_argument('--date', type=str, help='Target date (YYYY-MM-DD or "today" or "yesterday")')
+    parser.add_argument('--keyword', type=str, help='Search keyword override')
+    parser.add_argument('--sources', type=str, help='Comma-separated sources (e.g., youtube,naver_news)')
+    parser.add_argument('--max-pages', type=int, help='Max pages override')
+    args = parser.parse_args()
+
+    config = load_config()
     
-    check_required_keys(config)
+    target_date = args.date or config.get('target_date', 'today')
+    if target_date == 'today':
+        target_date = datetime.now().strftime('%Y-%m-%d')
+    elif target_date == 'yesterday':
+        from datetime import timedelta
+        target_date = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
     
-    keywords = config.get("keywords", [])
-    target_date = config.get("target_date")
-    sources = config.get("sources", [])
-    include_detail_list = config.get("include_detail_list", False)
-    rf = config.get("relevance_filter", {})
+    search_keyword = args.keyword or config.get('keywords', ['국제정원박람회'])[0]
+    sources_to_run = args.sources.split(',') if args.sources else config.get('sources', [])
     
-    if not keywords or not target_date:
-        print("오류: 검색어(keywords)와 기준일(target_date)은 필수입니다.")
-        sys.exit(1)
+    logger.info(f"Starting data collection for '{search_keyword}' on {target_date}")
+    
+    all_items = []
+    
+    if 'naver_news' in sources_to_run:
+        res = fetch_naver_news(config, search_keyword, target_date)
+        all_items.extend(res.get('data', []))
         
-    for keyword in keywords:
-        logger, safe_keyword = setup_logging(target_date, keyword)
-        logger.info(f"Starting data collection for '{keyword}' on {target_date}")
+    if 'naver_blog' in sources_to_run:
+        res = fetch_naver_blog(config, search_keyword, target_date)
+        all_items.extend(res.get('data', []))
         
-        # AI settings logs
-        from processors.ai_classifier import get_gemini_api_key
-        has_gemini_key = bool(get_gemini_api_key(config))
-        logger.info(f"ambiguous_ai_enabled: {rf.get('ambiguous_ai_enabled', False)}")
-        logger.info(f"gemini_api_key: {'exists' if has_gemini_key else 'missing'}")
-        logger.info(f"weak_match_public_default: {rf.get('weak_match_public_default', False)}")
-        logger.info(f"keep_weak_match_when_ai_unavailable: {rf.get('keep_weak_match_when_ai_unavailable', True)}")
+    if 'youtube' in sources_to_run:
+        res = fetch_youtube_videos(config, search_keyword, target_date)
+        all_items.extend(res.get('data', []))
+
+    if not all_items:
+        logger.warning("No items collected. Exiting.")
+        return
+
+    items = normalize_data(all_items)
+    items = deduplicate(items)
+    items = apply_relevance_classification(items, config)
+    items = apply_ai_classification(items, config)
+    items = apply_safety_gate(items, config)
+
+    public_items = [
+        item for item in items 
+        if item.get("filter_status") == "kept" 
+        and item.get("public_visible_default", False)
+        and not item.get("safety_gate_reason")
+    ]
+    
+    summary = {
+        "target_date": target_date,
+        "search_keyword": search_keyword,
+        "generated_at": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        "total_collected": len(all_items),
+        "total_processed": len(items),
+        "public_count": len(public_items),
+        "source_stats": {},
+        "category_stats": {},
+        "seoul_anchor_count": sum(1 for item in items if item.get("seoul_anchor_score", 0) > 0),
+        "other_event_excluded_count": sum(1 for item in items if item.get("category") == "other_event_only"),
+        "noise_excluded_count": sum(1 for item in items if item.get("noise_score", 0) > 0 and item.get("filter_status") == "excluded"),
+        "safety_gate_excluded_count": sum(1 for item in items if item.get("safety_gate_reason")),
+        "ai_candidate_count": sum(1 for item in items if item.get("ai_needed")),
+        "ai_called_count": sum(1 for item in items if item.get("ai_used")),
+        "ai_relevant_count": sum(1 for item in items if item.get("ai_result") == "relevant"),
+        "ai_irrelevant_count": sum(1 for item in items if item.get("ai_result") == "irrelevant"),
+        "ai_uncertain_count": sum(1 for item in items if item.get("ai_result") == "uncertain")
+    }
+    
+    for item in public_items:
+        src = item.get('source', 'unknown')
+        cat = item.get('category', 'unknown')
+        summary['source_stats'][src] = summary['source_stats'].get(src, 0) + 1
+        summary['category_stats'][cat] = summary['category_stats'].get(cat, 0) + 1
+
+    os.makedirs('outputs', exist_ok=True)
+    os.makedirs('web/public/data', exist_ok=True)
+    
+    prefix = f"{target_date}_{search_keyword}"
+    
+    with open(f"outputs/{prefix}_filter_audit.json", 'w', encoding='utf-8') as f:
+        json.dump(items, f, ensure_ascii=False, indent=2)
+    with open(f"web/public/data/{prefix}_filter_audit.json", 'w', encoding='utf-8') as f:
+        json.dump(items, f, ensure_ascii=False, indent=2)
         
-        all_detail_data = []
-        summary_data = []
-        raw_data = []
+    with open(f"outputs/{prefix}_details.json", 'w', encoding='utf-8') as f:
+        json.dump(public_items, f, ensure_ascii=False, indent=2)
+    with open(f"web/public/data/{prefix}_details.json", 'w', encoding='utf-8') as f:
+        json.dump(public_items, f, ensure_ascii=False, indent=2)
         
-        # source별 수집 카운트를 추적할 dict
-        source_collected_counts = {}
-        source_deduped_counts = {}
-        
-        # ── 1. API 수집 ──
-        for source in sources:
-            logger.info(f"Fetching from {source}...")
-            
-            if source == "naver_news":
-                res = fetch_naver_news(config, keyword, target_date)
-                source_label = "네이버 뉴스"
-            elif source == "naver_blog":
-                res = fetch_naver_blog(config, keyword, target_date)
-                source_label = "네이버 블로그"
-            elif source == "youtube":
-                res = fetch_youtube_videos(config, keyword, target_date)
-                source_label = "유튜브"
-            else:
-                logger.warning(f"Unknown source: {source}")
-                continue
-                
-            status = res["status"]
-            message = res["message"]
-            raw_items = res["data"]
-            api_pages = res["api_pages_called"]
-            
-            if status == "ERROR":
-                logger.error(f"Error in {source}: {message}")
-            else:
-                logger.info(f"Success in {source}. Items collected: {len(raw_items)}")
-                
-            # Keep raw data
-            raw_data.append({
-                "source": source,
-                "keyword": keyword,
-                "pages": res["raw"],
-                "error_message": message if status == "ERROR" else ""
-            })
-            
-            # ── 2. 정규화 ──
-            normalized_items = normalize_data(raw_items)
-            
-            # ── 3. 현재 실행 내 중복 제거 ──
-            deduped_items = deduplicate(normalized_items)
-            
-            collected_count = len(normalized_items)
-            deduped_count = len(deduped_items)
-            
-            source_collected_counts[source] = collected_count
-            source_deduped_counts[source] = deduped_count
-            
-            summary_data.append({
-                "target_date": target_date,
-                "keyword": keyword,
-                "source": source,
-                "source_label": source_label,
-                "collected_count": collected_count,
-                "raw_count": collected_count,
-                "current_run_deduped_count": deduped_count,
-                "error_count": 1 if status == "ERROR" else 0,
-                "api_pages_called": api_pages,
-                "status": status,
-                "message": message
-            })
-            
-            all_detail_data.extend(deduped_items)
-        
-        # ── 4. 기존 적재 데이터 기준 중복 제거 ──
-        total_collected_count = len(all_detail_data)
-        existing_duplicate_skipped_count = 0
-        skipped_by_source = {}
-        
-        if rf.get("dedupe_against_existing", False):
-            web_data_dir = "web/public/data"
-            entry_id = f"{target_date}_{safe_keyword}"
-            allow_overwrite = rf.get("allow_overwrite_same_report_id", True)
-            
-            existing_keys = load_existing_item_keys(web_data_dir, entry_id, allow_overwrite)
-            all_detail_data, existing_duplicate_skipped_count, skipped_by_source = filter_existing_duplicates(all_detail_data, existing_keys)
-            
-            logger.info(f"Existing duplicate check: {existing_duplicate_skipped_count} skipped")
-        
-        after_existing_dedupe_count = len(all_detail_data)
-        
-        # ── 5. 규칙 기반 relevance 분류 ──
-        all_detail_data = apply_relevance_classification(all_detail_data, config)
-        logger.info("Relevance classification applied")
-        
-        # ── 6. Gemini 2차 판별 (조건부) ──
-        try:
-            all_detail_data = apply_ai_classification(all_detail_data, config)
-        except Exception as e:
-            logger.error(f"AI classification error (non-fatal): {e}")
-        
-        # ── 7. public/audit 분리 ──
-        exclude_categories = rf.get("exclude_from_public_categories", 
-                                     ["other_event_only", "irrelevant", "ai_irrelevant"])
-        
-        weak_default = rf.get("weak_match_public_default", False)
-        keep_unavailable = rf.get("keep_weak_match_when_ai_unavailable", True)
-        
-        public_items = []
-        for item in all_detail_data:
-            cat = item.get("category")
-            if cat in exclude_categories:
-                continue
-            if cat == "weak_match":
-                if weak_default:
-                    public_items.append(item)
-                else:
-                    ai_reason = str(item.get("ai_reason", ""))
-                    if keep_unavailable and (ai_reason == "gemini_api_key_missing" or ai_reason.startswith("gemini_error")):
-                        public_items.append(item)
-            else:
-                public_items.append(item)
-                
-        audit_items = all_detail_data  # 전체 (excluded 포함)
-        
-        # ── 8. summary 통계: source별 정확한 계산 ──
-        for s in summary_data:
-            src = s["source"]
-            source_items = [i for i in all_detail_data if i.get("source") == src]
-            
-            # source별 existing duplicate skipped count
-            s["existing_duplicate_skipped_count"] = skipped_by_source.get(src, 0)
-            s["after_existing_dedupe_count"] = s["current_run_deduped_count"] - skipped_by_source.get(src, 0)
-            
-            # source별 카테고리/AI 통계
-            stats = _compute_source_stats(source_items, exclude_categories)
-            s.update(stats)
-        
-        # ── 9. 전체 합계 row 추가 ──
-        total_stats = _compute_source_stats(all_detail_data, exclude_categories)
-        total_row = {
-            "target_date": target_date,
-            "keyword": keyword,
-            "source": "total",
-            "source_label": "전체",
-            "collected_count": sum(s["collected_count"] for s in summary_data),
-            "total_collected_count": sum(s["collected_count"] for s in summary_data),
-            "raw_count": sum(s["raw_count"] for s in summary_data),
-            "current_run_deduped_count": total_collected_count,
-            "existing_duplicate_skipped_count": existing_duplicate_skipped_count,
-            "after_existing_dedupe_count": after_existing_dedupe_count,
-            "error_count": sum(s["error_count"] for s in summary_data),
-            "api_pages_called": sum(s["api_pages_called"] for s in summary_data),
-            "status": "OK",
-            "message": "",
-        }
-        total_row.update(total_stats)
-        summary_data.append(total_row)
-        
-        # Save Outputs (public_items for details, audit_items for filter_audit)
-        try:
-            paths = save_outputs(target_date, safe_keyword, summary_data, public_items, raw_data, audit_items)
-            logger.info("Output files saved successfully.")
-        except Exception as e:
-            logger.error(f"Failed to save output files: {e}")
-            paths = []
-            
-        # Print Console (public_items 기준)
-        print_console(target_date, keyword, summary_data, public_items, include_detail_list, paths)
+    with open(f"outputs/{prefix}_summary.json", 'w', encoding='utf-8') as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+    with open(f"web/public/data/{prefix}_summary.json", 'w', encoding='utf-8') as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+
+    logger.info(f"Output saved. Public items: {len(public_items)}/{len(items)}")
 
 if __name__ == "__main__":
     main()

@@ -1,9 +1,9 @@
 """
-Rule-based relevance classifier for collected search results.
+processors/relevance.py
+점수 기반 서울국제정원박람회 관련성 판별 모듈.
 
-The classifier keeps every result in the audit trail, but only public-facing
-categories are exported to details JSON. Context categories take priority over
-plain confirmed so "confirmed" stays close to pure event coverage.
+서울 앵커(공식명칭, 장소, 프로그램) 점수를 기반으로 1차 분류를 수행하고,
+AI 검토가 필요한 항목을 선별한다.
 """
 import html
 import re
@@ -27,7 +27,6 @@ def match_terms(text, terms):
     """Return configured terms contained in text (space-insensitive)."""
     if not text or not terms:
         return []
-    # 공백 제거 버전을 사용하여 매칭률 향상
     normalized = normalize_text(text, remove_all_spaces=True)
     matched = []
     for term in terms:
@@ -65,46 +64,45 @@ def _build_combined_text(item):
 
 def classify_relevance(item, config):
     """
-    Classify one item.
-
-    Priority:
-    1. Other-event only -> excluded
-    2. Weak garden-expo-only signal -> review/AI candidate
-    3. Target event with context -> comparison, political_context, related_issue
-    4. Target event without context -> confirmed
-    5. No signal -> irrelevant
+    점수 기반 1차 분류.
     """
     rf = config.get("relevance_filter", {})
     combined_text = _build_combined_text(item)
+    source = item.get("source", "")
 
-    matched_strong = match_terms(combined_text, rf.get("strong_keep_terms", []))
-    matched_target = match_terms(combined_text, rf.get("target_terms", []))
+    # 항목별 매칭 수행
+    matched_official = match_terms(combined_text, rf.get("official_event_terms", []))
+    matched_location = match_terms(combined_text, rf.get("location_anchor_terms", []))
+    matched_program = match_terms(combined_text, rf.get("program_anchor_terms", []))
+    matched_ambiguous = match_terms(combined_text, rf.get("ambiguous_event_terms", []))
     matched_other = match_terms(combined_text, rf.get("other_event_terms", []))
+    matched_noise = match_terms(combined_text, rf.get("noise_terms", []))
     matched_political = match_terms(combined_text, rf.get("political_terms", []))
     matched_issue = match_terms(combined_text, rf.get("issue_terms", []))
     matched_politician = match_politician_terms(combined_text, rf.get("politician_terms", {}))
     has_politician = any(bool(terms) for terms in matched_politician.values())
 
-    location_terms = [
-        "서울숲",
-        "성동구",
-        "성수동",
-        "뚝섬",
-        "광진구",
-        "건대입구",
-        "정원전시 서울",
-    ]
-    garden_expo_terms = ["국제정원박람회", "정원박람회"]
-    matched_location = match_terms(combined_text, location_terms)
-    matched_garden_expo = match_terms(combined_text, garden_expo_terms)
-
+    # 점수 계산
+    seoul_anchor_score = len(matched_official) + len(matched_location) + len(matched_program)
+    other_event_score = len(matched_other)
+    noise_score = len(matched_noise)
+    issue_score = len(matched_issue)
+    
+    # 결과 초기화
     result = {
-        "matched_target_terms": matched_target,
+        "matched_official_event_terms": matched_official,
+        "matched_location_anchor_terms": matched_location,
+        "matched_program_anchor_terms": matched_program,
+        "matched_ambiguous_event_terms": matched_ambiguous,
         "matched_other_event_terms": matched_other,
+        "matched_noise_terms": matched_noise,
         "matched_political_terms": matched_political,
         "matched_issue_terms": matched_issue,
         "matched_politician_terms": matched_politician,
-        "relevance_score": len(matched_target),
+        "seoul_anchor_score": seoul_anchor_score,
+        "other_event_score": other_event_score,
+        "noise_score": noise_score,
+        "issue_score": issue_score,
         "category": "irrelevant",
         "filter_status": "excluded",
         "filter_reason": "no_relevant_signal",
@@ -113,84 +111,81 @@ def classify_relevance(item, config):
         "ai_category": "",
         "ai_reason": "",
         "public_visible_default": False,
+        "classification_policy_version": rf.get("classification_policy_version", "2026-05-v1")
     }
 
-    has_strong = bool(matched_strong)
-    has_event_and_location = bool(matched_garden_expo) and bool(matched_location)
-    has_context = bool(matched_other or matched_political or matched_issue or has_politician)
+    # 블로그 전용 필터링 (서울 앵커 필수)
+    if source == "naver_blog" and rf.get("blog_requires_seoul_anchor", True):
+        if seoul_anchor_score == 0:
+            if other_event_score > 0:
+                result["category"] = "other_event_only"
+                result["filter_reason"] = "blog_no_seoul_anchor_with_other_event"
+            else:
+                result["category"] = "irrelevant"
+                result["filter_reason"] = "blog_no_seoul_anchor"
+            return result
 
-    garden_expo_only_terms = {"국제정원박람회", "정원박람회"}
-    target_beyond_expo = [term for term in matched_target if term not in garden_expo_only_terms]
-    weak_target_only = (
-        bool(matched_garden_expo)
-        and not matched_location
-        and not has_strong
-        and not target_beyond_expo
-    )
-
-    is_target_event = (
-        has_strong
-        or has_event_and_location
-        or bool(target_beyond_expo)
-        or (bool(matched_target) and (has_context or not weak_target_only))
-    )
-
-    if matched_other and not is_target_event:
+    # 타 지역 확증 시 제외 (서울 앵커가 없을 때)
+    if other_event_score > 0 and seoul_anchor_score == 0:
         result["category"] = "other_event_only"
-        result["filter_status"] = "excluded"
-        result["filter_reason"] = "only_other_event_matched"
-        result["public_visible_default"] = False
+        result["filter_reason"] = "other_event_score_positive_no_seoul_anchor"
         return result
 
-    if weak_target_only and not has_context:
-        result["category"] = "weak_match"
-        result["filter_status"] = "review"
-        result["filter_reason"] = "weak_target_signal"
-        result["ai_needed"] = True
-        result["public_visible_default"] = True
+    # 노이즈 기반 제외 (서울 앵커가 없을 때)
+    if noise_score > 0 and seoul_anchor_score == 0:
+        # 뉴스인 경우 weak_match로 두어 AI 검토 기회 부여, 블로그는 즉시 제외
+        if source == "naver_news":
+            result["category"] = "weak_match"
+            result["filter_status"] = "review"
+            result["ai_needed"] = True
+            result["filter_reason"] = "news_noise_with_no_seoul_anchor"
+        else:
+            result["category"] = "irrelevant"
+            result["filter_reason"] = "noise_score_positive_no_seoul_anchor"
         return result
 
-    if is_target_event:
+    # 서울 앵커가 있는 경우
+    if seoul_anchor_score > 0:
         result["filter_status"] = "kept"
-        result["ai_needed"] = False
         result["public_visible_default"] = True
-
-        if matched_other:
-            result["category"] = "comparison"
-            result["filter_reason"] = "target_event_and_other_event_both_matched"
-        elif matched_political or has_politician:
+        
+        # 정치 맥락
+        if matched_political or has_politician:
             result["category"] = "political_context"
-            result["filter_reason"] = "target_event_with_political_context"
+            result["filter_reason"] = "seoul_anchor_with_political"
+        # 이슈/인파 맥락
         elif matched_issue:
             result["category"] = "related_issue"
-            result["filter_reason"] = "target_event_with_related_issue"
+            result["filter_reason"] = "seoul_anchor_with_issue"
+        # 타 지역과 비교 맥락
+        elif other_event_score > 0:
+            result["category"] = "comparison"
+            result["filter_reason"] = "seoul_anchor_with_other_event"
+            # 비교 근거가 약하면 AI 검토 요청
+            if other_event_score == 1 and len(matched_official) == 0:
+                result["ai_needed"] = True
+        # 확증된 서울 행사
         else:
             result["category"] = "confirmed"
-            result["filter_reason"] = "target_event_confirmed"
+            result["filter_reason"] = "seoul_anchor_confirmed"
+        return result
+
+    # 모호한 표현(정원박람회 등)만 있는 경우
+    if matched_ambiguous:
+        result["category"] = "weak_match"
+        result["filter_status"] = "review"
+        result["ai_needed"] = True
+        result["filter_reason"] = "ambiguous_terms_only_no_seoul_anchor"
+        result["public_visible_default"] = rf.get("weak_match_public_default", False)
         return result
 
     return result
 
 
 def apply_relevance_classification(items, config):
-    """Apply relevance classification to every item."""
+    """전체 항목에 대해 관련성 분류 적용."""
     rf = config.get("relevance_filter", {})
     if not rf.get("enabled", False):
-        for item in items:
-            item["category"] = "confirmed"
-            item["filter_status"] = "kept"
-            item["filter_reason"] = "filter_disabled"
-            item["matched_target_terms"] = []
-            item["matched_other_event_terms"] = []
-            item["matched_political_terms"] = []
-            item["matched_issue_terms"] = []
-            item["matched_politician_terms"] = {}
-            item["relevance_score"] = 0
-            item["ai_needed"] = False
-            item["ai_used"] = False
-            item["ai_category"] = ""
-            item["ai_reason"] = ""
-            item["public_visible_default"] = True
         return items
 
     for item in items:
