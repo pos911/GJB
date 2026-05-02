@@ -1,0 +1,27 @@
+{
+  "target_date": "2026-05-03",
+  "search_keyword": "국제정원박람회",
+  "safe_keyword": "국제정원박람회",
+  "generated_at": "2026-05-03T00:41:06.737054+09:00",
+  "total_collected": 13,
+  "total_processed": 13,
+  "public_count": 9,
+  "source_stats": {
+    "naver_blog": 8,
+    "youtube": 1
+  },
+  "category_stats": {
+    "confirmed": 4,
+    "related_issue": 5
+  },
+  "seoul_anchor_count": 9,
+  "other_event_excluded_count": 4,
+  "noise_excluded_count": 1,
+  "safety_gate_excluded_count": 0,
+  "ai_candidate_count": 0,
+  "ai_called_count": 0,
+  "ai_relevant_count": 0,
+  "ai_irrelevant_count": 0,
+  "ai_uncertain_count": 0,
+  "ai_skipped_due_to_limit_count": 0
+}
