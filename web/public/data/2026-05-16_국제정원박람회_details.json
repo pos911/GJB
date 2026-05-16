@@ -1,0 +1,2343 @@
+[
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_news",
+    "source_label": "네이버 뉴스",
+    "title": "이번 주말엔 서울숲·어린이대공원 가서 조각작품 감상 어때요",
+    "description": "서울숲에서는 ‘2026 서울국제정원박람회’와 연계해 김포조각가협회가 ‘조각 곁, 숲 곁’ 전시를 연다. 백종인 ‘탑기린’, 김도훈 ‘빛의 결정체’ 등 유명 작가들의 총 13개의 작품을 만날 수 있다.... ",
+    "author_or_channel": "",
+    "published_at_original": "Sat, 16 May 2026 07:16:00 +0900",
+    "published_at_kst": "2026-05-16T07:16:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://biz.heraldcorp.com/article/10739012?ref=naver",
+    "original_url": "https://n.news.naver.com/mnews/article/016/0002644203?sid=102",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:43.856590+09:00",
+    "raw_rank": 3,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "2026 서울국제정원박람회 방문 주말 놀거리 서울 명소 국내... ",
+    "description": "서울숲 2026 서울국제정원박람회 방문후기 서울숲 Pokemon Secret Forest 안녕하세요  함께가요... 서울숲 산책 후기 서울숲은 언제 와도 좋은 곳이지만 이번 정원박람회 시즌에는 정말 분위기가 특별했습니다.... ",
+    "author_or_channel": "BMW전기차와 함께 떠나는 여행(차박/캠핑/여행/맛집)",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/bmw_i4/224287210070",
+    "original_url": "https://blog.naver.com/bmw_i4/224287210070",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690648+09:00",
+    "raw_rank": 2,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "맛집",
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 2,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "성수동 놀거리 BEST7, 성수 근처 놀거리 서울숲까지",
+    "description": "131개의 정원으로 조성된 곳인 서울숲 : 국제정원박람회에 다녀왔어요. 저희는 자차로 방문해 서울숲... 박람회 운영 시간은 오후 12시부터 오후 7시까지예요. 입구부터 잔디마당을 중심으로 다양한 정원이... ",
+    "author_or_channel": "데이트팝",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/seouldatepop/224287208012",
+    "original_url": "https://blog.naver.com/seouldatepop/224287208012",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690663+09:00",
+    "raw_rank": 3,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲",
+      "성수동"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 2,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "[성수/서울숲] 가볼곳 디올성수 방문실패",
+    "description": "근사한 향수매장 데이지크 암튼 디올은 다음을 기약하고 5월부터 열리는 서울숲 국제정원박람회먼저 보기로.. https://blog.naver.com/nccr100/224265165188 https://blog.naver.com/nccr100/221570099249 #성수역가볼곳... ",
+    "author_or_channel": "기록의 미",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/nccr100/224279811823",
+    "original_url": "https://blog.naver.com/nccr100/224279811823",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690689+09:00",
+    "raw_rank": 5,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 1,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "성수 서울숲 나들이 2026 서울국제정원박람회",
+    "description": "초록이 무르익고 풍성해진 나무들 시원한 밤 산책까지 ~ 서울숲이 내 집 앞이였으면 좋겠다~ #서울숲 #2026서울국제정원박람회 #서울국제정원박람회 #서울국제정원 #서울숲박람회 #서울숲정원박람회... ",
+    "author_or_channel": "부기log",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/gpwls9604/224287191270",
+    "original_url": "https://blog.naver.com/gpwls9604/224287191270",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690718+09:00",
+    "raw_rank": 7,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "2026 서울국제정원박람회  정원 위치·주차·포켓몬 시크릿... ",
+    "description": "2026 서울국제정원박람회 정원도슨트 프로그램 예약 바로가기 2026 서울국제정원박람회 정원 모음 & 관람 포인트 역동적인 현장감 한국마사회 정원 한국 마사회 기업정원 \"나도 저렇게 빠르게 달리고 싶치... ",
+    "author_or_channel": "서울특별시 공식블로그",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/haechiseoul/224286542623",
+    "original_url": "https://blog.naver.com/haechiseoul/224286542623",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690758+09:00",
+    "raw_rank": 9,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차",
+      "예약"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 2,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울국제정원박람회 주차 꿀팁 서울숲 부스 추천",
+    "description": "2026 서울국제정원박람회 일시 : 2026년 5월 1일 ~ 2026년 10월 27일 12:00 - 19:00 장소 : 서울숲 성수 일대 서울숲은 박람회 운영시간 외에도 자유롭게 이용할 수 있습니다. 규모 : 약 15만평 이상 10월까지 하고 있으니... ",
+    "author_or_channel": "세계정복을 꿈꾸는 여대생",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/dykong950728/224287174398",
+    "original_url": "https://blog.naver.com/dykong950728/224287174398",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690773+09:00",
+    "raw_rank": 10,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차",
+      "추천"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 2,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "한강으로가는길",
+    "description": "#서울국제정원박람회 #한강정원 #서울숲 #정원도시서울 #서울은여행이다 #연플일상매거진 #두근두근서울라이프 #서울을기록하다 #오월의서울 #정원산책 #한강산책",
+    "author_or_channel": "연플일상매거진",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/sonamuo0810/224287134274",
+    "original_url": "https://blog.naver.com/sonamuo0810/224287134274",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690786+09:00",
+    "raw_rank": 11,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "정원도시 서울"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 2026 서울국제정원박람회 후기",
+    "description": "서울숲 2026 서울국제정원박람회 방문 후기  계획없이 장소만 알고가서 사실 살짝 대충.. 봤고 어떻게... 하는걸 정원박람회 다녀와서 알게됐다 ✨ 근데 카드를 어디서 어떻게 받을 수 있는지는 아직도 모룸 ..... ",
+    "author_or_channel": "잡블",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/ttyy2383/224287128871",
+    "original_url": "https://blog.naver.com/ttyy2383/224287128871",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690807+09:00",
+    "raw_rank": 12,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "여기저기",
+    "description": "#오월찬란 #서울국제정원박람회 #서울숲 #한강산책 #정원도시서울 #서울은여행이다 #연플일상매거진 #초록의시간 #서울을기록하다 #두근두근서울라이프 #서울국제정원박람회 #서울숲 #서울은여행이다... ",
+    "author_or_channel": "연플일상매거진",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/sonamuo0810/224287125842",
+    "original_url": "https://blog.naver.com/sonamuo0810/224287125842",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690822+09:00",
+    "raw_rank": 13,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "정원도시 서울"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 국제정원박람회 추천 관람 코스 정리",
+    "description": "코스 구성 서울숲 국제정원박람회는 작가 정원, 참여정원, 동행 정원, 매력 정원 이렇게 네 가지 테마로 나뉘어 있어요. 처음 방문이라면 테마별 정원을 먼저 보고 마지막에 포토존과 성수동 카페거리로... ",
+    "author_or_channel": "오늘 여기어디",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/ohyeodi/224281061782",
+    "original_url": "https://blog.naver.com/ohyeodi/224281061782",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690835+09:00",
+    "raw_rank": 14,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲",
+      "성수동"
+    ],
+    "matched_program_anchor_terms": [
+      "매력정원"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "추천",
+      "코스"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 2,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "2026 서울국제정원박람회 서울숲 가볼만한곳 총정리 | 일정... ",
+    "description": "박람회 지도 & 전체 구성 서울국제정원박람회는 특정 공간 하나만 운영되는 것이 아니라 서울숲 전반에 걸쳐 다양한 테마 정원이 조성되어 있었어요. 규모가 생각보다 정말 커서 가볍게 산책 느낌으로... ",
+    "author_or_channel": "더 나음 세상☀️",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/naeumlove/224287119514",
+    "original_url": "https://blog.naver.com/naeumlove/224287119514",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690847+09:00",
+    "raw_rank": 15,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 국제정원박람회 지도 관람동선, 주차, 도슨트 후기",
+    "description": "서울숲 정원박람회 지도, 배치도 2026 서울 국제정원박람회 주요정원 배치도 입니다. 세로버전과 가로버전 두가지 지도를 남겨 드릴께요. 서울 국제정원박람회 주차, 서울숲 주차장은 다들 아시는 것 처럼... ",
+    "author_or_channel": "Oi슬Oi's Food & Trip",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/oisuloi/224287114931",
+    "original_url": "https://blog.naver.com/oisuloi/224287114931",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690859+09:00",
+    "raw_rank": 16,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "둘이 같이",
+    "description": "밥을 먹어도, 운동을 해도 둘이 같이 하면 즐거움이 배가 돼요~ 오늘 함께라 더 즐거웠던 일이 있었다면 공유해 주세요~ #서울국제정원박람회 #서울숲 #서울은여행이다 #연플일상매거진 #정원도시서울... ",
+    "author_or_channel": "연플일상매거진",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/sonamuo0810/224287112993",
+    "original_url": "https://blog.naver.com/sonamuo0810/224287112993",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690871+09:00",
+    "raw_rank": 17,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "정원도시 서울"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울국제정원박람회 틈만나면가는곳",
+    "description": "서울숲 엄지척 #서울숲 #서울숲작약 #작약 #오월의작약 #꽃스타그램 #서울은여행이다 #서울산책 #정원산책 #서울국제정원박람회 #두근두근서울라이프 #연플일상매거진 #작약정원 #꽃사진 #감성사진 #봄꽃... ",
+    "author_or_channel": "연플일상매거진",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/sonamuo0810/224287110756",
+    "original_url": "https://blog.naver.com/sonamuo0810/224287110756",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690883+09:00",
+    "raw_rank": 18,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [
+      "울산"
+    ],
+    "matched_other_event_terms_in_main_text": [
+      "울산"
+    ],
+    "matched_noise_terms": [
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 1,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_other_event_in_main",
+    "ai_needed": true,
+    "ai_used": true,
+    "ai_category": "confirmed",
+    "ai_reason": "서울숲과 서울국제정원박람회가 함께 언급되어 relevant합니다.",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1",
+    "risk_score": 10,
+    "ai_result": "relevant"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 모델촬영 (2026 국제정원박람회)... ",
+    "description": "서울숲 국제정원박람회는 2026년 5월 1일부터 10월 27일까지 서울숲과 성수, 한강 일대에서 열리며, 역대... 작가 정원: 국제 공모로 선정된 5개 작품 • 기업·기관 기부정원: 50개 이상 • 시민·학생 참여정원... ",
+    "author_or_channel": "photographer 지존",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/yuh4706/224272764670",
+    "original_url": "https://blog.naver.com/yuh4706/224272764670",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690895+09:00",
+    "raw_rank": 19,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 1,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 2026 포켓몬 시크릿 포레스트 방문후기",
+    "description": "서울국제정원박람회와 함께 포켓몬 메가 페스타 2026의 일환으로 열리고 있는 포켓몬 시크릿 포레스트가 운영중이였어요. 푸르른 자연 속에서 귀여운 포켓몬들을 만날 수 있어서 정말 힐링 가득한 시간을 보내고... ",
+    "author_or_channel": "하얀거북이",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/hello-0117/224287095880",
+    "original_url": "https://blog.naver.com/hello-0117/224287095880",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690922+09:00",
+    "raw_rank": 21,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "포켓몬 시크릿 포레스트"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "[임신 30주차] 서울 나들이, 포레스트아웃팅스 용인점... ",
+    "description": "(대구에서 6월 15일은 그냥 대프리카인걸로..^^) 서울국제정원박람회 때문에 서울숲 일부가 막혀있고 통행제한이 있었다. 산책하는데 약간 방해됨 ㅠㅠ 빙 돌아가게 되고, 공사판처럼 되어있고,,, 오랜만에... ",
+    "author_or_channel": "쑴쑴 | 슬기로운 리뷰생활",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/ukng1612/224285578635",
+    "original_url": "https://blog.naver.com/ukng1612/224285578635",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690952+09:00",
+    "raw_rank": 23,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "[축제] \"오늘 당장 가야 해!\" 2026 서울가든페스티벌 개막... ",
+    "description": "이번 축제는 역대급 규모로 열리고 있는 '2026 서울국제정원박람회'와 연계되어 볼거리가 더욱 풍성한데요. 싱그러운 정원 속에서 귀호강 시켜줄 역대급 뮤지션들의 공연 소식과 꿀팁을 지금 바로 공유해... ",
+    "author_or_channel": "달리는 토끼 AI",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/nannajaeduk/224287084375",
+    "original_url": "https://blog.naver.com/nannajaeduk/224287084375",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690963+09:00",
+    "raw_rank": 24,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울국제정원박람회 예약 방법 및 포켓몬 입장료 주차 공연 안내",
+    "description": "서울국제정원박람회 소식을 알게 되었어요. 다양한 정원과 조형물을 한자리에서 볼 수 있고, 포켓몬... 특히 우천 시 취소 및 환불 규정은 박람회 운영 정책마다 다르니 환불 수수료나 일정 변경 가능 여부를 꼭... ",
+    "author_or_channel": "정진바이오랩",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/daejinchemtech/224286786933",
+    "original_url": "https://blog.naver.com/daejinchemtech/224286786933",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690976+09:00",
+    "raw_rank": 25,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차",
+      "입장료",
+      "예약"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 2,
+    "other_event_score": 0,
+    "noise_score": 3,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 포켓몬 시크릿 포레스트: 가는길, 입장대기 등록, 피카츄... ",
+    "description": "#포켓몬시크릿포레스트 #서울숲포켓몬 #2026서울국제정원박람회 #포켓몬스터30주년 #성수동핫플 #서울숲데이트 #성수동가볼만한곳 #서울주말나들이 #서울숲정원박람회 #포켓몬팝업스토어 #서울숲맛집... ",
+    "author_or_channel": "나미의 관심, 사고, 생활",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/sjn1203/224287080082",
+    "original_url": "https://blog.naver.com/sjn1203/224287080082",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690987+09:00",
+    "raw_rank": 26,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲",
+      "성수동"
+    ],
+    "matched_program_anchor_terms": [
+      "포켓몬 시크릿 포레스트"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "맛집"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬",
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 6,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 2,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울국제정원박람회.서울숲",
+    "description": "2026.5.15",
+    "author_or_channel": "자강불식(自强不息). 백두대간.명산100",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/yeods5734/224287070795",
+    "original_url": "https://blog.naver.com/yeods5734/224287070795",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.690997+09:00",
+    "raw_rank": 27,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "성수동 서울숲 맛집 함바그요시 직화구이 함바그정식... ",
+    "description": "서울숲국제정원박람회맛집 #국제정원박람회맛집 #서울숲웨이팅맛집 #서울함바그정식 서울 성동구 서울숲 6길 22 1층 2호선 뚝섬역 8번 출구에서 284m 매일 11:30~21:00 20:00 라스트 오더 문의전화 0507-1371-2074 지인이... ",
+    "author_or_channel": "지존의 통통녀들이 만들어가는 세상",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/choimildiron/224286610083",
+    "original_url": "https://blog.naver.com/choimildiron/224286610083",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691012+09:00",
+    "raw_rank": 28,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲",
+      "성수동",
+      "성동구",
+      "뚝섬"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "맛집"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "[성수] 포켓몬 30주년 팝업 후기｜시크릿 포레스트·메타몽... ",
+    "description": "27 기간 동안 서울국제정원박람회도 진행 중이었다 이번에는 팝업 위주로 둘러봤지만, 다음에는 조금 더 여유롭게 산책하러 다시 방문해 보고 싶다 포켓몬 시크릿 포레스트 후기 26.05.01 ~ 06.21, 매일 12:00 - 19:00... ",
+    "author_or_channel": "따사로운 일상",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/zzing_717/224287066841",
+    "original_url": "https://blog.naver.com/zzing_717/224287066841",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691037+09:00",
+    "raw_rank": 30,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [],
+    "matched_program_anchor_terms": [
+      "포켓몬 시크릿 포레스트"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 국제정원박람회 입장방법 주차 볼거리 방문후기",
+    "description": "서울숲 국제정원박람회 무료입장 볼거리 두 번 방문 후기 167개 정원이 조성된 초대형 야외 전시장 기간... 서울숲 정원박람회를 알리는 귀여운 조형물이 생겼어요 성수동 일대까지 축제네요 서울숲 역 앞... ",
+    "author_or_channel": "✅상하수도배관설비010.2680.2597",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/qloolpvv/224286860583",
+    "original_url": "https://blog.naver.com/qloolpvv/224286860583",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691091+09:00",
+    "raw_rank": 34,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲",
+      "성수동"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 2,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "4月, 생각없는생각에털썩머무르자",
+    "description": "두쫀스시 국제정원박람회 준비한다고 자주가던 서울숲 일대가 싸악 공사중이길ㄹㅐ 처음으로 사슴구역까지 다녀옴 여기 좋다 못지나다니게 막아둔 구역은 다리 위로 • • 아쉬워서 젤라또 하나 먹고... ",
+    "author_or_channel": "BE LAZZY",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/zi_biin/224287029092",
+    "original_url": "https://blog.naver.com/zi_biin/224287029092",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691115+09:00",
+    "raw_rank": 36,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 1,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "2026 서울국제정원박람회 서울숲 나들이 포켓몬 포레스트... ",
+    "description": "2026 서울국제정원박람회 굿즈샵 방문 후기 서울숲을 둘러보다가 굿즈샵도 발견했어요. 정원박람회 분위기랑 잘 어울리는 가드닝 굿즈들이 많아서 구경하는 재미가 있더라구요. 특히 선데이플래닛47 제품들이... ",
+    "author_or_channel": "봉봉에뚜알 여행과 미식",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/bon_etoile/224287024191",
+    "original_url": "https://blog.naver.com/bon_etoile/224287024191",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691133+09:00",
+    "raw_rank": 37,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "팝업",
+    "description": "메타몽 놀이터 & 시크릿 포레스트: 5월 1일 ~ 6월 21일 | 성수 팝가 및 서울숲 야외 | 보랏빛 메타몽 테마 공간 및 서울국제정원박람회 연계 야외 체험. 부산 커피 위크 in 성수: 5월 14일 ~ 5월 23일 | 바스켓... ",
+    "author_or_channel": "룰루랄라",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/sw5472/224286999582",
+    "original_url": "https://blog.naver.com/sw5472/224286999582",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691172+09:00",
+    "raw_rank": 39,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [
+      "부산"
+    ],
+    "matched_other_event_terms_in_main_text": [
+      "부산"
+    ],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 1,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_other_event_in_main",
+    "ai_needed": true,
+    "ai_used": true,
+    "ai_category": "confirmed",
+    "ai_reason": "서울숲과 서울국제정원박람회가 함께 언급되어 relevant합니다.",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1",
+    "risk_score": 7,
+    "ai_result": "relevant"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "성수대교 건너서 서울숲까지 차로만 지나던 다리를 직접... ",
+    "description": "서울숲에서 진행하고 있는 2026 국제정원박람회까지 즐길 수 있어서 성수 데이트 코스로도 정말... 국제정원박람회 피카츄도 구경하고 서울숲 한 바퀴 돌아보니 넘 힐링되고 좋더라구요! 서울에서 특별한 산책... ",
+    "author_or_channel": "재밌게 살자 :) 다 해보기",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/tmtks09/224286989795",
+    "original_url": "https://blog.naver.com/tmtks09/224286989795",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691208+09:00",
+    "raw_rank": 42,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "코스"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 1,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 놀거리, 2026 서울국제정원박람회 방문 후기(주차장... ",
+    "description": "서울국제정원박람회. 궁금해서 직접 방문!! 행사 기간 5/1 - 10/27 *박람회 운영 시간 12:00 - 19:00 장소... 비밀의 정원 너무 들어가고 싶었지만 100% 예약제^^ 이 후기를 보고 방문하는 사람들은 냅다 여기부터 가서... ",
+    "author_or_channel": "먹짱여행러 ARCHIVE",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/wvibe_archive/224286983779",
+    "original_url": "https://blog.naver.com/wvibe_archive/224286983779",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691221+09:00",
+    "raw_rank": 43,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차",
+      "예약",
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 3,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "결국 또 간 파르코 | 성수 화덕피자 파스타 국제정원박람회 맛집",
+    "description": "‘서울국제정원박람회’랑 주말 공연/플리마켓 행사 때문에 분위기가 활기차졌어요 다양한 브랜드별 정원 전시도 많고, 주말마다 공연이나 체험 행사도 있어서 서울숲 산책하고 성수 골목 구경하다가... ",
+    "author_or_channel": "•ᴥ•",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/shimyeeun/224286977074",
+    "original_url": "https://blog.naver.com/shimyeeun/224286977074",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691245+09:00",
+    "raw_rank": 45,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "맛집"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "5월 서울 가 볼 만한 곳 / 서울숲 국제정원 박람회, 2026... ",
+    "description": "감성 가득한 성수동 아뜰리에길에서부터 싱그러운 꽃과 정원이 가득한 서울숲 국제정원박람회까지 이어지는 코스입니다. 하루 데이트나 주말 나들이 장소로 정말 만족스러운 장소에요. 요건 성수역... ",
+    "author_or_channel": "알록달록 반짝반짝 세상구경❤️",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/the_lamo26/224286965355",
+    "original_url": "https://blog.naver.com/the_lamo26/224286965355",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691283+09:00",
+    "raw_rank": 48,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲",
+      "성수동"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "코스"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 2,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "2026 서울국제정원박람회 대중교통 이용꿀팁, 포토존 포켓몬... ",
+    "description": "안녕하세요, 2026 서울국제정원박람회 이용꿀팁, 포토존, 포켓몬 포레스트 평일 웨이팅 후기를... 너무감사드리는데, 정원박람회가 무료라니 여기서 또 한번 기절... 큰 작약꽃과 큰 장미꽃 , 고급스러운, 요... ",
+    "author_or_channel": "밀짱의 데일리 블로그",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/pmlzzang/224286953792",
+    "original_url": "https://blog.naver.com/pmlzzang/224286953792",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691337+09:00",
+    "raw_rank": 52,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬",
+      "교통"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 2,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲 국제정원박람회 | 지도, 공연 일정 정리해봤어요.",
+    "description": "취지도 갓벽한 도담정원 국제정원박람회가 갖는 뜻이 생각보다 많다. 포켓몬이랑 장미가든은 사람이... 포켓몬 아니더라도 둘러볼 곳이 너무 많은 박람회 개인적으로는 이 호수앞에 데크가 깔려서 편하게 쉴... ",
+    "author_or_channel": "collect moments",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/dkksii/224286926352",
+    "original_url": "https://blog.naver.com/dkksii/224286926352",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691349+09:00",
+    "raw_rank": 53,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 1,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "5월 15일 성수 & 서울숲 포켓몬 팝업스토어 후기 (30주년 파티... ",
+    "description": "원래는 포켓몬 시크릿 포레스트 말고도 정원박람회 전부 다 돌아볼 계획이었으나 31도의 뜨거운 햇빛이 강력했고 오전부터 몸 상태도 안 좋고 오후 2시가 거의 다 되어 가는데 점심을 못 먹어서 버스 타고... ",
+    "author_or_channel": "다람쥐 은신처",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/elly044/224286919167",
+    "original_url": "https://blog.naver.com/elly044/224286919167",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691361+09:00",
+    "raw_rank": 54,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "포켓몬 시크릿 포레스트"
+    ],
+    "matched_ambiguous_event_terms": [
+      "정원박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 2,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울 숲에서 열리는 서울 국제 정원박람회 2026",
+    "description": "세계적인 정원 디자이너들의 작품과 아름다운 식물, 다양한 체험 프로그램까지 한자리에서 만날 수 있는 특별한 박람회인데요. 바로 서울국제정원박람회 2026입니다. 이번 글에서는 이 박람회가 왜 많은... ",
+    "author_or_channel": "KIN렌탈",
+    "published_at_original": "20260516",
+    "published_at_kst": "2026-05-16T00:00:00+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://blog.naver.com/9dolips/224285849606",
+    "original_url": "https://blog.naver.com/9dolips/224285849606",
+    "external_id": "",
+    "collected_at_kst": "2026-05-16T11:43:53.691376+09:00",
+    "raw_rank": 55,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "youtube",
+    "source_label": "유튜브",
+    "title": "🌸2026서울국제정원박람회 #서울숲 #나비정원 #사계데이지 #거울연못 #Seoul Forest # Butterfly Garden 🦋 #Seoul #Korea 🇰🇷",
+    "description": "",
+    "author_or_channel": "그린티라떼와 에버",
+    "published_at_original": "2026-05-16T01:18:32Z",
+    "published_at_kst": "2026-05-16T10:18:32+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://www.youtube.com/watch?v=vs6Do5FRAgo",
+    "original_url": "https://www.youtube.com/watch?v=vs6Do5FRAgo",
+    "external_id": "vs6Do5FRAgo",
+    "collected_at_kst": "2026-05-16T11:44:03.494809+09:00",
+    "raw_rank": 1,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "youtube",
+    "source_label": "유튜브",
+    "title": "#오늘은왠지   #이찬원   #서울숲    #2026국제정원박람회",
+    "description": "",
+    "author_or_channel": "아나이스",
+    "published_at_original": "2026-05-16T00:59:45Z",
+    "published_at_kst": "2026-05-16T09:59:45+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://www.youtube.com/watch?v=fZz9JeOcwkI",
+    "original_url": "https://www.youtube.com/watch?v=fZz9JeOcwkI",
+    "external_id": "fZz9JeOcwkI",
+    "collected_at_kst": "2026-05-16T11:44:03.494898+09:00",
+    "raw_rank": 2,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 1,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "youtube",
+    "source_label": "유튜브",
+    "title": "&quot;초여름 햇살 가득한 서울숲 산책 🌿☀️&quot; #서울숲 #성수동 #서울국제정원박람회 #서울숲산책 #성수핫플 #서울가볼만한곳 #초여름풍경 #힐링산책 #서울데이트 #쇼츠",
+    "description": "NewChapterTravels A Sunny Early Summer Walk at Seoul Forest ☀️ #SeoulForest #Seongsu #SeoulTravel #KoreaTravel ...",
+    "author_or_channel": "NewChapterTravels",
+    "published_at_original": "2026-05-16T00:19:34Z",
+    "published_at_kst": "2026-05-16T09:19:34+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://www.youtube.com/watch?v=ee2V8B_qI1g",
+    "original_url": "https://www.youtube.com/watch?v=ee2V8B_qI1g",
+    "external_id": "ee2V8B_qI1g",
+    "collected_at_kst": "2026-05-16T11:44:03.494966+09:00",
+    "raw_rank": 3,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲",
+      "성수동"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "youtube",
+    "source_label": "유튜브",
+    "title": "안 가면 손해! 서울국제정원박람회 + 포켓몬 시크릿포레스트 6월 21일 전에 꼭 가세요!!",
+    "description": "서울국제정원박람회 + 서울숲 포켓몬 시크릿포레스트를 하루에 다 즐기는 완벽 코스를 소개합니다! 서울 도심 한복판, 서울숲이 ...",
+    "author_or_channel": "우주트래블로그",
+    "published_at_original": "2026-05-15T23:00:04Z",
+    "published_at_kst": "2026-05-16T08:00:04+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://www.youtube.com/watch?v=420gC5SGkI4",
+    "original_url": "https://www.youtube.com/watch?v=420gC5SGkI4",
+    "external_id": "420gC5SGkI4",
+    "collected_at_kst": "2026-05-16T11:44:03.495029+09:00",
+    "raw_rank": 4,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "포켓몬 시크릿 포레스트"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "코스"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-05-16",
+    "keyword": "국제정원박람회",
+    "source": "youtube",
+    "source_label": "유튜브",
+    "title": "국제정원박람회 #shorts # 국제정원박람회 #서울숲 #힐링여행 #박람회 #garden #exhibition #seoul #korea",
+    "description": "",
+    "author_or_channel": "Smile Traveller 스마일 트레블러",
+    "published_at_original": "2026-05-15T21:42:09Z",
+    "published_at_kst": "2026-05-16T06:42:09+09:00",
+    "published_date_kst": "2026-05-16",
+    "canonical_url": "https://www.youtube.com/watch?v=3xQBTI_FYNM",
+    "original_url": "https://www.youtube.com/watch?v=3xQBTI_FYNM",
+    "external_id": "3xQBTI_FYNM",
+    "collected_at_kst": "2026-05-16T11:44:03.495086+09:00",
+    "raw_rank": 5,
+    "page_no": 1,
+    "matched_official_event_terms": [],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 1,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  }
+]
