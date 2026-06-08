@@ -1,5 +1,15 @@
 [
   {
+    "id": "2026-06-08_국제정원박람회",
+    "target_date": "2026-06-08",
+    "keyword": "국제정원박람회",
+    "safe_keyword": "국제정원박람회",
+    "summary_file": "/data/2026-06-08_국제정원박람회_summary.json",
+    "details_file": "/data/2026-06-08_국제정원박람회_details.json",
+    "filter_audit_file": "/data/2026-06-08_국제정원박람회_filter_audit.json",
+    "generated_at": "2026-06-08T12:46:09.374377+09:00"
+  },
+  {
     "id": "2026-06-07_국제정원박람회",
     "target_date": "2026-06-07",
     "keyword": "국제정원박람회",
