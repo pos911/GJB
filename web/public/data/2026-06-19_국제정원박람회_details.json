@@ -13,7 +13,7 @@
     "canonical_url": "https://www.kidshankook.kr/news/articleView.html?idxno=17447",
     "original_url": "https://www.kidshankook.kr/news/articleView.html?idxno=17447",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:19.532214+09:00",
+    "collected_at_kst": "2026-06-19T21:43:33.561432+09:00",
     "raw_rank": 6,
     "page_no": 1,
     "matched_official_event_terms": [
@@ -58,6 +58,356 @@
     "keyword": "국제정원박람회",
     "source": "naver_blog",
     "source_label": "네이버 블로그",
+    "title": "서울 한강공원 용비쉼터 놀빛광장 서울숲까지 걷기 좋은 길",
+    "description": "그리고 정원박람회가 열리고 있는 서울숲까지 이어지는 코스는 초여름 서울 걷기 좋은 길이었습니다. 1.... 2026 서울국제정원박람회가 한창 개최 중이기 때문이에요. 무려 167개에 달하는 국내외 작가, 시민... ",
+    "author_or_channel": "여럿이 함께",
+    "published_at_original": "20260619",
+    "published_at_kst": "2026-06-19T00:00:00+09:00",
+    "published_date_kst": "2026-06-19",
+    "canonical_url": "https://blog.naver.com/ontheroad_gh/224321239681",
+    "original_url": "https://blog.naver.com/ontheroad_gh/224321239681",
+    "external_id": "",
+    "collected_at_kst": "2026-06-19T21:43:41.776539+09:00",
+    "raw_rank": 1,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "코스"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 4,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-06-19",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "서울숲의 여름",
+    "description": "서울국제정원박람회 : 2026년 5월 1일~10월 27일 서울숲 오늘 나들이 코스 : 서울숲역 3번출구->언드스탠드에비뉴->서울숲 군마상->바닥분수->서울숲 거울연못->메타세쿼이아길->도시락정원->서울숲 호수... ",
+    "author_or_channel": "미니혁이네",
+    "published_at_original": "20260619",
+    "published_at_kst": "2026-06-19T00:00:00+09:00",
+    "published_date_kst": "2026-06-19",
+    "canonical_url": "https://blog.naver.com/ststoh/224321220880",
+    "original_url": "https://blog.naver.com/ststoh/224321220880",
+    "external_id": "",
+    "collected_at_kst": "2026-06-19T21:43:41.776566+09:00",
+    "raw_rank": 2,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "코스"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-06-19",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "명소 한신아파트나들목 + 서울숲 2026 서울국제정원박람회 후기",
+    "description": "특히 작년 보라매공원에서 열린 정원박람회의 최고 인기 포토존이 메타몽이었다면, 올해 서울숲 정원박람회의 주인공은 단연 포켓몬이에요. 서울국제정원박람회와 포켓몬 협업으로 조성된 ‘포켓몬 정원’과... ",
+    "author_or_channel": "Move.인나",
+    "published_at_original": "20260619",
+    "published_at_kst": "2026-06-19T00:00:00+09:00",
+    "published_date_kst": "2026-06-19",
+    "canonical_url": "https://blog.naver.com/moveinna/224321199038",
+    "original_url": "https://blog.naver.com/moveinna/224321199038",
+    "external_id": "",
+    "collected_at_kst": "2026-06-19T21:43:41.776584+09:00",
+    "raw_rank": 3,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "포켓몬 정원"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 5,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-06-19",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "2026 서울국제정원박람회: 서울숲에서 인생샷 남기는 꿀팁... ",
+    "description": "자차 이용 시 서울숲 주차장을 이용할 수 있지만 공간이 한정적입니다. #서울국제정원박람회 #서울숲 #정원박람회 #2026정원박람회 #서울축제 #가볼만한곳 #포켓몬정원 #서울나들이 #주말여행 #무료전시",
+    "author_or_channel": "제이크의 세상만사",
+    "published_at_original": "20260619",
+    "published_at_kst": "2026-06-19T00:00:00+09:00",
+    "published_date_kst": "2026-06-19",
+    "canonical_url": "https://blog.naver.com/jkcho0207/224321192783",
+    "original_url": "https://blog.naver.com/jkcho0207/224321192783",
+    "external_id": "",
+    "collected_at_kst": "2026-06-19T21:43:41.776601+09:00",
+    "raw_rank": 4,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "2026 서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "서울숲"
+    ],
+    "matched_program_anchor_terms": [
+      "포켓몬 정원"
+    ],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "주차",
+      "여행"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "포켓몬"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 5,
+    "other_event_score": 0,
+    "noise_score": 2,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-06-19",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "양정원 사랑해",
+    "description": "#방문인증이벤트 #정원 #서울국제정원박람회 @seoulinternationalgardenshow",
+    "author_or_channel": "여고생일상무료공개",
+    "published_at_original": "20260619",
+    "published_at_kst": "2026-06-19T00:00:00+09:00",
+    "published_date_kst": "2026-06-19",
+    "canonical_url": "https://blog.naver.com/solyu-301/224321191869",
+    "original_url": "https://blog.naver.com/solyu-301/224321191869",
+    "external_id": "",
+    "collected_at_kst": "2026-06-19T21:43:41.776617+09:00",
+    "raw_rank": 5,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [],
+    "matched_political_terms": [],
+    "matched_issue_terms": [],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 2,
+    "other_event_score": 0,
+    "noise_score": 0,
+    "issue_score": 0,
+    "category": "confirmed",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_confirmed",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-06-19",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
+    "title": "성수 맛집 '스시도쿠 더성수' 가성비 성수동 스시, 절품 스시와... ",
+    "description": "마침 서울 국제정원박람회 중! 점심은 성수동 점심 맛집 찾아 스시도쿠 더성수로! 고고! 붉은 벽돌의 건물 멀리서도 한눈에 띄는 외관인데요. 성수동 스시 맛집이라 그런지 외국인들도 많이 오나 봅니다.... ",
+    "author_or_channel": "또또쓰 아무거나 블로그",
+    "published_at_original": "20260619",
+    "published_at_kst": "2026-06-19T00:00:00+09:00",
+    "published_date_kst": "2026-06-19",
+    "canonical_url": "https://blog.naver.com/viviwiwi/224321168517",
+    "original_url": "https://blog.naver.com/viviwiwi/224321168517",
+    "external_id": "",
+    "collected_at_kst": "2026-06-19T21:43:41.776632+09:00",
+    "raw_rank": 6,
+    "page_no": 1,
+    "matched_official_event_terms": [
+      "서울국제정원박람회",
+      "서울 국제정원박람회"
+    ],
+    "matched_location_anchor_terms": [
+      "성수동"
+    ],
+    "matched_program_anchor_terms": [],
+    "matched_ambiguous_event_terms": [
+      "국제정원박람회",
+      "정원박람회",
+      "국제 정원 박람회",
+      "정원 박람회"
+    ],
+    "matched_other_event_terms": [],
+    "matched_other_event_terms_in_main_text": [],
+    "matched_noise_terms": [
+      "맛집"
+    ],
+    "matched_political_terms": [],
+    "matched_issue_terms": [
+      "성수동"
+    ],
+    "matched_politician_terms": {
+      "oh_sehoon": [],
+      "jung_wonoh": [],
+      "district_mayor": []
+    },
+    "seoul_anchor_score": 3,
+    "other_event_score": 0,
+    "noise_score": 1,
+    "issue_score": 1,
+    "category": "related_issue",
+    "filter_status": "kept",
+    "filter_reason": "seoul_anchor_with_issue",
+    "ai_needed": false,
+    "ai_used": false,
+    "ai_category": "",
+    "ai_reason": "",
+    "public_visible_default": true,
+    "classification_policy_version": "2026-05-seoul-anchor-v1"
+  },
+  {
+    "target_date": "2026-06-19",
+    "keyword": "국제정원박람회",
+    "source": "naver_blog",
+    "source_label": "네이버 블로그",
     "title": "일상 기록 :: 다음에 또 가고 싶은 서울숲 맛집, 온류 성수",
     "description": "다만, 아쉬운 점이 있다면 화장실 정도? 다음에는 가족과 함께 다시 방문하고 싶어요. 서울숲에서 국제정원박람회를 진행 중이니, 다음에도 온류에 들러봐야겠어요. 감사합니다♥",
     "author_or_channel": "Daily Moments",
@@ -67,8 +417,8 @@
     "canonical_url": "https://blog.naver.com/knwithjh/224320863499",
     "original_url": "https://blog.naver.com/knwithjh/224320863499",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913135+09:00",
-    "raw_rank": 1,
+    "collected_at_kst": "2026-06-19T21:43:41.776646+09:00",
+    "raw_rank": 7,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -121,8 +471,8 @@
     "canonical_url": "https://blog.naver.com/popcolor/224321076791",
     "original_url": "https://blog.naver.com/popcolor/224321076791",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913175+09:00",
-    "raw_rank": 3,
+    "collected_at_kst": "2026-06-19T21:43:41.776683+09:00",
+    "raw_rank": 9,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -182,8 +532,8 @@
     "canonical_url": "https://blog.naver.com/wishmeluck2000/224321055400",
     "original_url": "https://blog.naver.com/wishmeluck2000/224321055400",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913191+09:00",
-    "raw_rank": 4,
+    "collected_at_kst": "2026-06-19T21:43:41.776704+09:00",
+    "raw_rank": 10,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -236,8 +586,8 @@
     "canonical_url": "https://blog.naver.com/kcsil0616/224321038943",
     "original_url": "https://blog.naver.com/kcsil0616/224321038943",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913205+09:00",
-    "raw_rank": 5,
+    "collected_at_kst": "2026-06-19T21:43:41.776718+09:00",
+    "raw_rank": 11,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -290,8 +640,8 @@
     "canonical_url": "https://blog.naver.com/gigrgigr2/224319693714",
     "original_url": "https://blog.naver.com/gigrgigr2/224319693714",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913218+09:00",
-    "raw_rank": 6,
+    "collected_at_kst": "2026-06-19T21:43:41.776732+09:00",
+    "raw_rank": 12,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -345,8 +695,8 @@
     "canonical_url": "https://blog.naver.com/red_black2604/224320931674",
     "original_url": "https://blog.naver.com/red_black2604/224320931674",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913288+09:00",
-    "raw_rank": 10,
+    "collected_at_kst": "2026-06-19T21:43:41.776789+09:00",
+    "raw_rank": 16,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -400,8 +750,8 @@
     "canonical_url": "https://blog.naver.com/powhome/224320095409",
     "original_url": "https://blog.naver.com/powhome/224320095409",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913342+09:00",
-    "raw_rank": 14,
+    "collected_at_kst": "2026-06-19T21:43:41.776848+09:00",
+    "raw_rank": 20,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -458,8 +808,8 @@
     "canonical_url": "https://blog.naver.com/sally0065/224320829114",
     "original_url": "https://blog.naver.com/sally0065/224320829114",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913356+09:00",
-    "raw_rank": 15,
+    "collected_at_kst": "2026-06-19T21:43:41.776861+09:00",
+    "raw_rank": 21,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -517,8 +867,8 @@
     "canonical_url": "https://blog.naver.com/jjoggomi0110/224320805942",
     "original_url": "https://blog.naver.com/jjoggomi0110/224320805942",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913367+09:00",
-    "raw_rank": 16,
+    "collected_at_kst": "2026-06-19T21:43:41.776872+09:00",
+    "raw_rank": 22,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -574,8 +924,8 @@
     "canonical_url": "https://blog.naver.com/picks_log/224319014846",
     "original_url": "https://blog.naver.com/picks_log/224319014846",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913426+09:00",
-    "raw_rank": 20,
+    "collected_at_kst": "2026-06-19T21:43:41.776915+09:00",
+    "raw_rank": 25,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -629,8 +979,8 @@
     "canonical_url": "https://blog.naver.com/wjdtjs180/224320701872",
     "original_url": "https://blog.naver.com/wjdtjs180/224320701872",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913438+09:00",
-    "raw_rank": 21,
+    "collected_at_kst": "2026-06-19T21:43:41.776927+09:00",
+    "raw_rank": 26,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -685,8 +1035,8 @@
     "canonical_url": "https://blog.naver.com/nicebizmap_kr/224320695559",
     "original_url": "https://blog.naver.com/nicebizmap_kr/224320695559",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913464+09:00",
-    "raw_rank": 23,
+    "collected_at_kst": "2026-06-19T21:43:41.776951+09:00",
+    "raw_rank": 28,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -741,8 +1091,8 @@
     "canonical_url": "https://blog.naver.com/gov15/224320690287",
     "original_url": "https://blog.naver.com/gov15/224320690287",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913476+09:00",
-    "raw_rank": 24,
+    "collected_at_kst": "2026-06-19T21:43:41.776963+09:00",
+    "raw_rank": 29,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -802,8 +1152,8 @@
     "canonical_url": "https://blog.naver.com/eunwoon402/224319638078",
     "original_url": "https://blog.naver.com/eunwoon402/224319638078",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913488+09:00",
-    "raw_rank": 25,
+    "collected_at_kst": "2026-06-19T21:43:41.776978+09:00",
+    "raw_rank": 30,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -862,8 +1212,8 @@
     "canonical_url": "https://blog.naver.com/peony416/224320657595",
     "original_url": "https://blog.naver.com/peony416/224320657595",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913524+09:00",
-    "raw_rank": 28,
+    "collected_at_kst": "2026-06-19T21:43:41.777014+09:00",
+    "raw_rank": 33,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -922,8 +1272,8 @@
     "canonical_url": "https://blog.naver.com/yh584275/224320616813",
     "original_url": "https://blog.naver.com/yh584275/224320616813",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913562+09:00",
-    "raw_rank": 31,
+    "collected_at_kst": "2026-06-19T21:43:41.777050+09:00",
+    "raw_rank": 36,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -974,8 +1324,8 @@
     "canonical_url": "https://blog.naver.com/jacknal2/224320594093",
     "original_url": "https://blog.naver.com/jacknal2/224320594093",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913602+09:00",
-    "raw_rank": 33,
+    "collected_at_kst": "2026-06-19T21:43:41.777076+09:00",
+    "raw_rank": 38,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -1036,8 +1386,8 @@
     "canonical_url": "https://blog.naver.com/sunnyku0324/224320583584",
     "original_url": "https://blog.naver.com/sunnyku0324/224320583584",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913626+09:00",
-    "raw_rank": 35,
+    "collected_at_kst": "2026-06-19T21:43:41.777127+09:00",
+    "raw_rank": 40,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -1097,8 +1447,8 @@
     "canonical_url": "https://blog.naver.com/cafeplanet/224317426652",
     "original_url": "https://blog.naver.com/cafeplanet/224317426652",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913666+09:00",
-    "raw_rank": 38,
+    "collected_at_kst": "2026-06-19T21:43:41.777170+09:00",
+    "raw_rank": 43,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -1149,8 +1499,8 @@
     "canonical_url": "https://blog.naver.com/dodobird_min/224320518746",
     "original_url": "https://blog.naver.com/dodobird_min/224320518746",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913678+09:00",
-    "raw_rank": 39,
+    "collected_at_kst": "2026-06-19T21:43:41.777183+09:00",
+    "raw_rank": 44,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -1202,8 +1552,8 @@
     "canonical_url": "https://blog.naver.com/bbangya--/224320371025",
     "original_url": "https://blog.naver.com/bbangya--/224320371025",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913731+09:00",
-    "raw_rank": 43,
+    "collected_at_kst": "2026-06-19T21:43:41.777231+09:00",
+    "raw_rank": 48,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -1257,8 +1607,8 @@
     "canonical_url": "https://blog.naver.com/parkcckr/224320357747",
     "original_url": "https://blog.naver.com/parkcckr/224320357747",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913742+09:00",
-    "raw_rank": 44,
+    "collected_at_kst": "2026-06-19T21:43:41.777243+09:00",
+    "raw_rank": 49,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -1315,8 +1665,8 @@
     "canonical_url": "https://blog.naver.com/jsh5571/224320348599",
     "original_url": "https://blog.naver.com/jsh5571/224320348599",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913757+09:00",
-    "raw_rank": 45,
+    "collected_at_kst": "2026-06-19T21:43:41.777261+09:00",
+    "raw_rank": 50,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -1371,8 +1721,8 @@
     "canonical_url": "https://blog.naver.com/beastnjisu/224320347687",
     "original_url": "https://blog.naver.com/beastnjisu/224320347687",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913768+09:00",
-    "raw_rank": 46,
+    "collected_at_kst": "2026-06-19T21:43:41.777274+09:00",
+    "raw_rank": 51,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -1427,8 +1777,8 @@
     "canonical_url": "https://blog.naver.com/blue77y/224320335999",
     "original_url": "https://blog.naver.com/blue77y/224320335999",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913780+09:00",
-    "raw_rank": 47,
+    "collected_at_kst": "2026-06-19T21:43:41.777286+09:00",
+    "raw_rank": 52,
     "page_no": 1,
     "matched_official_event_terms": [],
     "matched_location_anchor_terms": [
@@ -1479,8 +1829,8 @@
     "canonical_url": "https://blog.naver.com/graceecc/224320324971",
     "original_url": "https://blog.naver.com/graceecc/224320324971",
     "external_id": "",
-    "collected_at_kst": "2026-06-19T19:19:28.913791+09:00",
-    "raw_rank": 48,
+    "collected_at_kst": "2026-06-19T21:43:41.777298+09:00",
+    "raw_rank": 53,
     "page_no": 1,
     "matched_official_event_terms": [
       "서울국제정원박람회",
@@ -1539,7 +1889,7 @@
     "canonical_url": "https://www.youtube.com/watch?v=AknCSNrKhyk",
     "original_url": "https://www.youtube.com/watch?v=AknCSNrKhyk",
     "external_id": "AknCSNrKhyk",
-    "collected_at_kst": "2026-06-19T19:19:38.210001+09:00",
+    "collected_at_kst": "2026-06-19T21:43:50.522853+09:00",
     "raw_rank": 1,
     "page_no": 1,
     "matched_official_event_terms": [],
@@ -1589,7 +1939,7 @@
     "canonical_url": "https://www.youtube.com/watch?v=ktWspTGID64",
     "original_url": "https://www.youtube.com/watch?v=ktWspTGID64",
     "external_id": "ktWspTGID64",
-    "collected_at_kst": "2026-06-19T19:19:38.210088+09:00",
+    "collected_at_kst": "2026-06-19T21:43:50.522949+09:00",
     "raw_rank": 2,
     "page_no": 1,
     "matched_official_event_terms": [
@@ -1647,7 +1997,7 @@
     "canonical_url": "https://www.youtube.com/watch?v=kDyJ0gPB1l4",
     "original_url": "https://www.youtube.com/watch?v=kDyJ0gPB1l4",
     "external_id": "kDyJ0gPB1l4",
-    "collected_at_kst": "2026-06-19T19:19:38.210154+09:00",
+    "collected_at_kst": "2026-06-19T21:43:50.523034+09:00",
     "raw_rank": 3,
     "page_no": 1,
     "matched_official_event_terms": [],
@@ -1697,7 +2047,7 @@
     "canonical_url": "https://www.youtube.com/watch?v=BHx5nK0Pj08",
     "original_url": "https://www.youtube.com/watch?v=BHx5nK0Pj08",
     "external_id": "BHx5nK0Pj08",
-    "collected_at_kst": "2026-06-19T19:19:38.210215+09:00",
+    "collected_at_kst": "2026-06-19T21:43:50.523138+09:00",
     "raw_rank": 4,
     "page_no": 1,
     "matched_official_event_terms": [
@@ -1752,7 +2102,7 @@
     "canonical_url": "https://www.youtube.com/watch?v=om-bS3rlQVA",
     "original_url": "https://www.youtube.com/watch?v=om-bS3rlQVA",
     "external_id": "om-bS3rlQVA",
-    "collected_at_kst": "2026-06-19T19:19:38.210275+09:00",
+    "collected_at_kst": "2026-06-19T21:43:50.523228+09:00",
     "raw_rank": 5,
     "page_no": 1,
     "matched_official_event_terms": [
